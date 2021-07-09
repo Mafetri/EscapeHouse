@@ -54,6 +54,9 @@ public class EscapeRoom {
 
     }
 
+    // =================================
+    //        Leectura de .txt
+    // =================================
     public static void leectura(String ubicacion, GrafoEtiq casa, DiccionarioAVL habitaciones, DiccionarioAVL desafios, DiccionarioHash equipos){
         try{
             BufferedReader archivo = new BufferedReader(new FileReader(ubicacion));
@@ -76,11 +79,11 @@ public class EscapeRoom {
         }catch(IOException e){
             System.out.println("| > Error " + e);
         }
-        System.out.println(habitaciones.toString());
-        System.out.println(equipos.listar().toString());
-        System.out.println(desafios.toString());
-        System.out.println(casa.toString());
     }
+    
+    // =================================
+    //          Carga de Datos
+    // =================================
     // ---- Carga de Habitacion ---- 
     public static void cargarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa,String linea){
         // Variables de habitacion
@@ -234,6 +237,7 @@ public class EscapeRoom {
             switch(opcion){
                 case 1: mostrarHabitacion(habitaciones); break;
                 case 2: habitacionesContiguas(casa); break;
+                case 3: esPosibleLlegar(casa); break;
             }
         }while(opcion != 0);
         
@@ -292,7 +296,23 @@ public class EscapeRoom {
         System.out.println("|------------------------------------------------|");
     }
     // ---- Es Posible Llegar ----
+    public static void esPosibleLlegar(GrafoEtiq casa){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese numero de la primera habitacion: ");
+        int hab1 = sc.nextInt();
+        System.out.print("| > Ingrese numero de la segunda habitacion: ");
+        int hab2 = sc.nextInt();
+        System.out.print("| > Ingrese puntaje acumulado: ");
+        int puntaje = sc.nextInt();
+        System.out.println("|------------------------------------------------|");
 
+        int puntajeNecesario = casa.etiquetaArco(hab1, hab2);
+        if(puntajeNecesario >= 0 && puntajeNecesario - puntaje <= 0){
+            System.out.println("| > Es posible llegar con " + puntaje + " puntos.");
+        }else{
+            System.out.println("| > No es posible llegar");
+        }   
+    }
     // ---- Sin Pasar Por ----
 
 

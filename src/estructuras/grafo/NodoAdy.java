@@ -17,7 +17,7 @@ class NodoAdy {
     public NodoAdy getSigAdyacente() {
         return sigAdyacente;
     }
-    public Object getEtiqueta() {
+    public int getEtiqueta() {
         return etiqueta;
     }
     public void setVertice(NodoVert nodo){
