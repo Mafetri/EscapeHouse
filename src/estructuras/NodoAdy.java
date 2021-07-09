@@ -3,9 +3,9 @@ package estructuras;
 class NodoAdy {
     private NodoVert vertice;
     private NodoAdy sigAdyacente;
-    private Object etiqueta;
+    private int etiqueta;
 
-    public NodoAdy(NodoVert unVertice, NodoAdy unSigAdyacente, Object unaEtiqueta) {
+    public NodoAdy(NodoVert unVertice, NodoAdy unSigAdyacente, int unaEtiqueta) {
         vertice = unVertice;
         sigAdyacente = unSigAdyacente;
         etiqueta = unaEtiqueta;
@@ -26,7 +26,7 @@ class NodoAdy {
     public void setSigAdyacente(NodoAdy nodo){
         sigAdyacente = nodo;
     }
-    public void setEtiqueta(Object unaEtiqueta){
+    public void setEtiqueta(int unaEtiqueta){
         etiqueta = unaEtiqueta;
     }
 }

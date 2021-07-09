@@ -67,10 +67,10 @@ public class GrafoEtiq {
     }
 
     // ---- Insertar Arco ----
-    public boolean insertarArco(Object origen, Object destino, Object etiqueta) {
+    public boolean insertarArco(Object origen, Object destino, int etiqueta) {
         boolean exito = false;
         // Si la etiquieta no es nula
-        if (this.inicio != null && etiqueta != null) {
+        if (this.inicio != null) {
             // Busco al vertice de "origen" y el de "destino"
             NodoVert verticeOrigen = ubicarVertice(origen);
             NodoVert verticeDestino = ubicarVertice(destino);
@@ -162,6 +162,23 @@ public class GrafoEtiq {
     // ---- Es Vacio ----
     public boolean esVacio() {
         return this.inicio == null;
+    }
+
+    // ---- nodosAdyacentes ----
+    public String nodosAdyacentes(Object clave){
+        String enTexto = "";
+        NodoVert verticeClave = ubicarVertice(clave);
+        NodoAdy adyClave = verticeClave.getPrimerAdy();
+        while(adyClave != null){
+            enTexto += adyClave.getVertice().getElem().toString() + " con un puntaje necesario de " + adyClave.getEtiqueta().toString() + " ";
+            if (adyClave.getSigAdyacente() != null) {
+                enTexto += ", ";
+            } else {
+                enTexto += ". ";
+            }
+            adyClave = adyClave.getSigAdyacente();
+        }
+        return enTexto;
     }
 
     // ---- To String ----
