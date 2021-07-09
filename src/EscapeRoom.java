@@ -66,9 +66,10 @@ public class EscapeRoom {
 
                 // Segun la categoria lo mando a su respectivo modulo de llenado de la estructura correspondiente
                 switch(categoria){
-                    case 'H': cargarHabitacion(habitaciones, linea); break;
+                    case 'H': cargarHabitacion(habitaciones, casa,linea); break;
                     case 'E': cargarEquipo(equipos, linea); break;
-                    case 'D': cargarDesafio(desafios, linea);
+                    case 'D': cargarDesafio(desafios, linea); break;
+                    case 'P': cargarPuerta(casa, linea);
                 }
             }
             archivo.close();
@@ -78,9 +79,10 @@ public class EscapeRoom {
         System.out.println(habitaciones.toString());
         System.out.println(equipos.listar().toString());
         System.out.println(desafios.toString());
+        System.out.println(casa.toString());
     }
     // ---- Carga de Habitacion ---- 
-    public static void cargarHabitacion(DiccionarioAVL habitaciones, String linea){
+    public static void cargarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa,String linea){
         // Variables de habitacion
         int codigo = 0, planta = 0, metrosCuadrados = 0;
         String nombre = "";
@@ -113,6 +115,9 @@ public class EscapeRoom {
 
         // Guardo en el el AVL de habitaciones la nueva habitacion con el codigo como clave y "nueva" como dato
         habitaciones.insertar(codigo, nueva);
+
+        // Agrego la habitacion a la casa
+        casa.insertarVertice(codigo);
     }
     // ---- Carga de Equipo ---- 
     public static void cargarEquipo(DiccionarioHash equipos, String linea){
@@ -180,7 +185,34 @@ public class EscapeRoom {
         // Guardo en el el AVL de desafios el nuevo desafio con el nombre como clave y "nuevo" como dato
         desafios.insertar(puntaje, nuevo);
     }
-    
+    // ---- Carga de Puertas ----
+    public static void cargarPuerta(GrafoEtiq casa, String linea){
+        // Variables de puerta
+        int origen = 0, destino = 0, puntaje = 0;
+
+        // Token guarda las cadenas de Strings entre los ;
+        StringTokenizer token = new StringTokenizer(linea, ";");
+
+        // cantTokens guarda la cantidad de tokens guardados
+        int cantTokens = token.countTokens();
+
+        // tokenAcutal guarda el token actual para analizar a que variable pertenece
+        String tokenActual;
+
+        // Desde 0 hasta la cantidad de tokens, analiza token por token y segun el valor de
+        // i (veces que ya guardo cosas) determina a que variable le corresponde el token
+        for(int i = 0; i < cantTokens; i++){
+            tokenActual = token.nextToken();
+            switch(i){
+                case 0: origen = Integer.parseInt(tokenActual); break;
+                case 1: destino = Integer.parseInt(tokenActual); break;
+                case 2: puntaje = Integer.parseInt(tokenActual); 
+            }
+        }
+
+        // Inserto la conexion entre las habitaciones
+        casa.insertarArco(origen, destino, puntaje);
+    }
     
     // =================================
     //   Altas, bajas y modificaciones
