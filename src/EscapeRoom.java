@@ -1,9 +1,11 @@
 import estructuras.arbol.*;
-import estructuras.datos.Habitacion;
+import estructuras.datos.*;
 import estructuras.hash.*;
 import estructuras.grafo.*;
 import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
+import java.io.*;
+import java.util.StringTokenizer;
 
 public class EscapeRoom {
     public static void main(String[] args) {
@@ -25,7 +27,7 @@ public class EscapeRoom {
 
         if(opcion != 0){
             switch (opcion) {
-                case 1: leectura("\\estructuras\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
+                case 1: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
                 case 2: leectura("\\estructuras\\partidas\\PartidaGuardada.txt", casa, habitaciones, desafios, equipos);
             }
 
@@ -45,6 +47,7 @@ public class EscapeRoom {
 
 
         }
+        sc.close();
         cartelFinal();
         
 
@@ -52,10 +55,96 @@ public class EscapeRoom {
     }
 
     public static void leectura(String ubicacion, GrafoEtiq casa, DiccionarioAVL habitaciones, DiccionarioAVL desafios, DiccionarioHash equipos){
-        Habitacion habitacion1 = new Habitacion(2, "Cocina", 0, 25, true);
-        habitaciones.insertar(2, habitacion1);
+        try{
+            BufferedReader archivo = new BufferedReader(new FileReader(ubicacion));
+            String linea;
+            // En cada iteracion, guardo en la variable linea el string una linea de texto
+            while((linea = archivo.readLine()) != null){
+                // Analizo a que categoria pertenece (grupo, habitacion, desafio, etc)
+                char categoria = linea.charAt(0);
+                linea = linea.substring(2);
+
+                // Segun la categoria lo mando a su respectivo modulo de llenado de la estructura correspondiente
+                switch(categoria){
+                    case 'H': cargarHabitacion(habitaciones, linea); break;
+                    case 'E': cargarEquipo(equipos, linea);
+                }
+            }
+            archivo.close();
+        }catch(IOException e){
+            System.out.println("| > Error " + e);
+        }
+        System.out.println(habitaciones.toString());
+        System.out.println(equipos.listar().toString());
     }
-    
+    // ---- Carga de Habitacion ---- 
+    public static void cargarHabitacion(DiccionarioAVL habitaciones, String linea){
+        // Variables de habitacion
+        int codigo = 0, planta = 0, metrosCuadrados = 0;
+        String nombre = "";
+        boolean salida = false;
+
+        // Token guarda las cadenas de Strings entre los ;
+        StringTokenizer token = new StringTokenizer(linea, ";");
+
+        // cantTokens guarda la cantidad de tokens guardados
+        int cantTokens = token.countTokens();
+
+        // tokenAcutal guarda el token actual para analizar a que variable pertenece
+        String tokenActual;
+
+        // Desde 0 hasta la cantidad de tokens, analiza token por token y segun el valor de
+        // i (veces que ya guardo cosas) determina a que variable le corresponde el token
+        for(int i = 0; i < cantTokens; i++){
+            tokenActual = token.nextToken();
+            switch(i){
+                case 0: codigo = Integer.parseInt(tokenActual); break;
+                case 1: nombre = tokenActual; break;
+                case 2: planta = Integer.parseInt(tokenActual); break;
+                case 3: metrosCuadrados = Integer.parseInt(tokenActual); break;
+                case 4: salida = Boolean.parseBoolean(tokenActual);
+            }
+        }
+
+        // Luego creo la habitacion con las variables llenadas con los tokens
+        Habitacion nueva = new Habitacion(codigo, nombre, planta, metrosCuadrados,salida);
+
+        habitaciones.insertar(codigo, nueva);
+    }
+    // ---- Carga de Equipo ---- 
+    public static void cargarEquipo(DiccionarioHash equipos, String linea){
+        // Variables de equipo
+        String nombre = "";
+        int puntajeSalida = 0, puntajeTotal = 0, puntajeActual = 0, habitacionActual = 0;
+
+        // Token guarda las cadenas de Strings entre los ;
+        StringTokenizer token = new StringTokenizer(linea, ";");
+
+        // cantTokens guarda la cantidad de tokens guardados
+        int cantTokens = token.countTokens();
+
+        // tokenAcutal guarda el token actual para analizar a que variable pertenece
+        String tokenActual;
+
+        // Desde 0 hasta la cantidad de tokens, analiza token por token y segun el valor de
+        // i (veces que ya guardo cosas) determina a que variable le corresponde el token
+        for(int i = 0; i < cantTokens; i++){
+            tokenActual = token.nextToken();
+            switch(i){
+                case 0: nombre = tokenActual; break;
+                case 1: puntajeSalida = Integer.parseInt(tokenActual); break;
+                case 2: puntajeTotal = Integer.parseInt(tokenActual); break;
+                case 3: habitacionActual = Integer.parseInt(tokenActual); break;
+                case 4: puntajeActual = Integer.parseInt(tokenActual);
+            }
+        }
+
+        // Luego creo el equipo con las variables llenadas con los tokens
+        Equipo nuevo = new Equipo(nombre, puntajeSalida, puntajeTotal, habitacionActual, puntajeActual);
+
+        equipos.insertar(nombre, nuevo);
+    }
+
     // =================================
     //   Altas, bajas y modificaciones
     // =================================
@@ -161,8 +250,8 @@ public class EscapeRoom {
         String titulo = "E S C A P E   H O U S E";
         String costado1 = "|            ";
         String costado2 = "             |";
-        int esperaRapida = 15;
-        int esperaLenta = 80;
+        int esperaRapida = 0;
+        int esperaLenta = 0;
         for(int i = 0; i <50; i++){
             System.out.print("=");
             sleepMilisegundos(esperaRapida);

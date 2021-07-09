@@ -26,7 +26,7 @@ public class DiccionarioHash {
 
     // ---- Insertar ----
     public boolean insertar(Object elem, Equipo dato) {
-        int pos = elem.hashCode() % TAMANIO;
+        int pos = (-1 * elem.hashCode()) % TAMANIO;
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 

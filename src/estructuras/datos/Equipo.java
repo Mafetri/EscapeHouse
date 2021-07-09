@@ -4,10 +4,10 @@ public class Equipo {
     private String nombre;
     private int puntajeSalida;
     private int puntajeTotal;
-    private Habitacion habitacionActual;
+    private int habitacionActual;
     private int puntajeActual; 
 
-    public Equipo(String nombre, int puntajeSalida, int puntajeTotal, Habitacion habitacionActual, int puntajeActual){
+    public Equipo(String nombre, int puntajeSalida, int puntajeTotal, int habitacionActual, int puntajeActual){
         this.nombre = nombre;
         this.puntajeSalida = puntajeSalida;
         this.puntajeTotal = puntajeTotal;
@@ -23,7 +23,7 @@ public class Equipo {
     public int getPuntajeTotal(){
         return puntajeTotal;
     }
-    public Habitacion getHabitacionActual(){
+    public int getHabitacionActual(){
         return habitacionActual;
     }
     public int getPuntajeActual(){
@@ -39,7 +39,7 @@ public class Equipo {
     public void setPuntajeTotal(int puntajeTotal){
         this.puntajeTotal = puntajeTotal;
     }
-    public void setHabitacion(Habitacion habitacionActual){
+    public void setHabitacion(int habitacionActual){
         this.habitacionActual = habitacionActual;
     }
     public void setPuntajeAcutal(int puntajeActual){
