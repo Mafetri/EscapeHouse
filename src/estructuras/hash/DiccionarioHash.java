@@ -14,20 +14,20 @@ package estructuras.hash;
 import estructuras.lista.Lista;
 import estructuras.datos.Equipo;
 
-public class HashAbierto {
+public class DiccionarioHash {
     private static final int TAMANIO = 20;
-    private NodoHashEquipos[] tabla;
+    private NodoHashDicc[] tabla;
     private int cant;
 
-    public HashAbierto() {
-        this.tabla = new NodoHashEquipos[TAMANIO - 1];
+    public DiccionarioHash() {
+        this.tabla = new NodoHashDicc[TAMANIO - 1];
         cant = 0;
     }
 
     // ---- Insertar ----
     public boolean insertar(Object elem, Equipo dato) {
         int pos = elem.hashCode() % TAMANIO;
-        NodoHashEquipos aux = this.tabla[pos];
+        NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
         // Busco si existe en los nodos de la posicion hash de elem
@@ -39,7 +39,7 @@ public class HashAbierto {
         // Si no lo encontro, entonces crea un nuevo nodo con elem y el enlace al otro
         // nodo que esta en la posicion
         if (!encontrado) {
-            this.tabla[pos] = new NodoHashEquipos(elem, dato, this.tabla[pos]);
+            this.tabla[pos] = new NodoHashDicc(elem, dato, this.tabla[pos]);
             this.cant++;
         }
 
@@ -50,7 +50,7 @@ public class HashAbierto {
     public boolean eliminar(Object elem) {
         int pos = elem.hashCode() % TAMANIO;
         int posNodo = 0;
-        NodoHashEquipos aux = this.tabla[pos];
+        NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
         // Busco el elem
@@ -93,7 +93,7 @@ public class HashAbierto {
     // ---- Pertenece ----
     public boolean pertenece(Object elem){
         int pos = elem.hashCode() % TAMANIO;
-        NodoHashEquipos aux = this.tabla[pos];
+        NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
         // Busco si existe en los nodos de la posicion hash de elem
@@ -113,7 +113,7 @@ public class HashAbierto {
     // ---- Listar ----
     public Lista listar(){
         Lista lis = new Lista();
-        NodoHashEquipos aux;
+        NodoHashDicc aux;
         int i = 1, cantRecorridos = 0;
 
         while(i < TAMANIO-1 && cantRecorridos < this.cant){
@@ -129,5 +129,22 @@ public class HashAbierto {
         }
 
         return lis;
+    }
+
+    // ---- Recuperar Datos ----
+    public NodoHashDicc recuperarDatos(Object clave){
+        int pos = clave.hashCode() % TAMANIO;
+        NodoHashDicc aux = this.tabla[pos];
+        boolean encontrado = false;
+
+        // Busco si existe en los nodos de la posicion hash de elem
+        while (!encontrado && aux != null) {
+            encontrado = aux.getElem().equals(clave);
+            if(!encontrado){
+                aux = aux.getEnlace();
+            }
+        }
+
+        return aux;
     }
 }

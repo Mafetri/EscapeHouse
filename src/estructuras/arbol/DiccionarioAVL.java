@@ -1,21 +1,20 @@
 package estructuras.arbol;
-import estructuras.datos.Desafio;
 import estructuras.lista.Lista;
 
-public class DiccAVLDesafios {
-    private NodoAVLDesafios raiz;
+public class DiccionarioAVL {
+    private NodoAVLDicc raiz;
 
-    public DiccAVLDesafios() {
+    public DiccionarioAVL() {
         this.raiz = null;
     }
 
     // ---- Insertar ----
-    public boolean insertar(Comparable clave, Desafio dato) {
+    public boolean insertar(Comparable clave, Object dato) {
         boolean exito = false;
 
         // Si el arbol esta vacio coloco clave en su raiz
         if (this.raiz == null) {
-            this.raiz = new NodoAVLDesafios(clave, dato,null, null);
+            this.raiz = new NodoAVLDicc(clave, dato,null, null);
         } else {
             // Sino lo agrego en la posicion correspondiente
             exito = insertarAux(this.raiz, clave, dato, null);
@@ -23,7 +22,7 @@ public class DiccAVLDesafios {
         
         return exito;
     }
-    private boolean insertarAux(NodoAVLDesafios nodo, Comparable elem, Desafio dato, NodoAVLDesafios padre) {
+    private boolean insertarAux(NodoAVLDicc nodo, Comparable elem, Object dato, NodoAVLDicc padre) {
         boolean exito = true;
 
         // Si el elemento del nodo actual es igual a elem
@@ -37,7 +36,7 @@ public class DiccAVLDesafios {
                 exito = insertarAux(nodo.getIzquierdo(), elem, dato, nodo);
             } else {
                 // Sino agrega el elemento
-                nodo.setIzquierdo(new NodoAVLDesafios(elem, dato,null, null));
+                nodo.setIzquierdo(new NodoAVLDicc(elem, dato,null, null));
             }
         } else {
             // Si el elemento entonces es mas grande
@@ -47,7 +46,7 @@ public class DiccAVLDesafios {
                 exito = insertarAux(nodo.getDerecho(), elem, dato, nodo);
             } else {
                 // Sino lo arego a la derecha
-                nodo.setDerecho(new NodoAVLDesafios(elem, dato,null, null));
+                nodo.setDerecho(new NodoAVLDicc(elem, dato,null, null));
             }
         }
 
@@ -113,8 +112,8 @@ public class DiccAVLDesafios {
         
         return exito;
     }
-    private NodoAVLDesafios rotarIzquierda(NodoAVLDesafios padre){
-        NodoAVLDesafios hijo, temp;
+    private NodoAVLDicc rotarIzquierda(NodoAVLDicc padre){
+        NodoAVLDicc hijo, temp;
         
         hijo = padre.getDerecho();
         temp = hijo.getIzquierdo();
@@ -126,8 +125,8 @@ public class DiccAVLDesafios {
 
         return hijo;
     }
-    private NodoAVLDesafios rotarDerecha(NodoAVLDesafios padre){
-        NodoAVLDesafios hijo, temp;
+    private NodoAVLDicc rotarDerecha(NodoAVLDicc padre){
+        NodoAVLDicc hijo, temp;
 
         hijo = padre.getIzquierdo();
         temp = hijo.getDerecho();
@@ -140,7 +139,7 @@ public class DiccAVLDesafios {
         return hijo;
     }
     
-    private int alturaNodo(NodoAVLDesafios nodo){
+    private int alturaNodo(NodoAVLDicc nodo){
         int alt;
         if(nodo == null){
             alt = -1;
@@ -158,7 +157,7 @@ public class DiccAVLDesafios {
         }
         return exito;
     }
-    private boolean perteneceAux(NodoAVLDesafios nodo, Comparable elem) {
+    private boolean perteneceAux(NodoAVLDicc nodo, Comparable elem) {
         boolean exito = false;
 
         // Si nodo no es nulo
@@ -186,7 +185,7 @@ public class DiccAVLDesafios {
         }
         return exito;
     }
-    private boolean eliminarAux(NodoAVLDesafios nodo, NodoAVLDesafios padre,Comparable elem){
+    private boolean eliminarAux(NodoAVLDicc nodo, NodoAVLDicc padre,Comparable elem){
         boolean exito = false;
 
         if (nodo != null) {
@@ -276,7 +275,7 @@ public class DiccAVLDesafios {
 
         return exito;
     }
-    private void eliminarCaso1(NodoAVLDesafios nodo, Comparable elem){
+    private void eliminarCaso1(NodoAVLDicc nodo, Comparable elem){
         // Si el elemento es la raiz entonces el nodo (padre) es nulo
         if(nodo == null){
             this.raiz = null;
@@ -289,9 +288,9 @@ public class DiccAVLDesafios {
             }
         }
     }
-    private void eliminarCaso2(NodoAVLDesafios nodo, NodoAVLDesafios padre, Comparable elem){
-        NodoAVLDesafios izq = nodo.getIzquierdo();
-        NodoAVLDesafios der = nodo.getDerecho();
+    private void eliminarCaso2(NodoAVLDicc nodo, NodoAVLDicc padre, Comparable elem){
+        NodoAVLDicc izq = nodo.getIzquierdo();
+        NodoAVLDicc der = nodo.getDerecho();
 
         // Si el elemento buscado es la raiz
         if( padre == null){
@@ -319,10 +318,10 @@ public class DiccAVLDesafios {
             }
         }
     }
-    private void eliminarCaso3(NodoAVLDesafios nodo){
+    private void eliminarCaso3(NodoAVLDicc nodo){
         // Candidato A: El mayor elemento del subárbol izquierdo de N
-        NodoAVLDesafios nodoCandidato = nodo.getIzquierdo(); 
-        NodoAVLDesafios padreCandidato = nodo;
+        NodoAVLDicc nodoCandidato = nodo.getIzquierdo(); 
+        NodoAVLDicc padreCandidato = nodo;
 
         // Busco el mayor elemento del subárbol izquierdo de N
         while (nodoCandidato.getDerecho() != null) {
@@ -362,7 +361,7 @@ public class DiccAVLDesafios {
 
         return lis;
     }
-    private void listarAux(NodoAVLDesafios aux, Lista lis) {
+    private void listarAux(NodoAVLDicc aux, Lista lis) {
         if (aux != null) {
             // Guardo en la lista el elemento
             lis.insertar(aux.getClave(), lis.longitud() + 1);
@@ -384,7 +383,7 @@ public class DiccAVLDesafios {
 
         return lis;
     }
-    private void listarRangoAux(NodoAVLDesafios nodo, Lista lis, Comparable min, Comparable max) {
+    private void listarRangoAux(NodoAVLDicc nodo, Lista lis, Comparable min, Comparable max) {
         // Mientras el nodo no sea nulo
         if (nodo != null) {
             Comparable elem = nodo.getClave();
@@ -412,7 +411,7 @@ public class DiccAVLDesafios {
         }
         return min;
     }
-    private Comparable minimoElemAux(NodoAVLDesafios aux) {
+    private Comparable minimoElemAux(NodoAVLDicc aux) {
         // Bajo por izquierda hasta que no haya mas nodos
         while (aux.getIzquierdo() != null) {
             aux = aux.getIzquierdo();
@@ -428,7 +427,7 @@ public class DiccAVLDesafios {
         }
         return min;
     }
-    private Comparable maximoElemAux(NodoAVLDesafios nodo) {
+    private Comparable maximoElemAux(NodoAVLDicc nodo) {
         // Bajo por derecha hasta que no haya mas nodos
         while (nodo.getDerecho() != null) {
             nodo = nodo.getDerecho();
@@ -447,8 +446,8 @@ public class DiccAVLDesafios {
     }
 
     // ---- Clone ----
-    public DiccAVLDesafios clone() {
-        DiccAVLDesafios clone = new DiccAVLDesafios();
+    public DiccionarioAVL clone() {
+        DiccionarioAVL clone = new DiccionarioAVL();
 
         if (this.raiz != null) {
             clone.raiz = cloneAux(this.raiz);
@@ -456,13 +455,13 @@ public class DiccAVLDesafios {
 
         return clone;
     }
-    private NodoAVLDesafios cloneAux(NodoAVLDesafios aux) {
-        NodoAVLDesafios clonado = null;
+    private NodoAVLDicc cloneAux(NodoAVLDicc aux) {
+        NodoAVLDicc clonado = null;
 
         // Si el aux no es nulo
         if (aux != null) {
             // Guardo en clonado un nuevo nodo con el elemento actual y sus hijos clonados recursivos
-            clonado = new NodoAVLDesafios(aux.getClave(), aux.getDato(), cloneAux(aux.getIzquierdo()), cloneAux(aux.getDerecho()));
+            clonado = new NodoAVLDicc(aux.getClave(), aux.getDato(), cloneAux(aux.getIzquierdo()), cloneAux(aux.getDerecho()));
         }
         
         return clonado;
@@ -478,7 +477,7 @@ public class DiccAVLDesafios {
 
         return enTexto;
     }
-    private String toStringAux(NodoAVLDesafios aux) {
+    private String toStringAux(NodoAVLDicc aux) {
         String enTexto = "";
         if (aux != null) {
             enTexto += aux.getClave().toString() + "  HI: ";
@@ -502,9 +501,9 @@ public class DiccAVLDesafios {
     }
 
     // ---- Recuperar Datos ----
-    public Desafio recuperarDatos(Comparable clave){
-        NodoAVLDesafios nodo = new NodoAVLDesafios(null, null, null, null);
-        Desafio aRetornar = null;
+    public Object recuperarDatos(Comparable clave){
+        NodoAVLDicc nodo = new NodoAVLDicc(null, null, null, null);
+        Object aRetornar = null;
         if (this.raiz != null && clave != null) {
             nodo = recuperarNodoAux(clave, this.raiz);
             if(nodo != null){
@@ -513,8 +512,8 @@ public class DiccAVLDesafios {
         }
         return aRetornar;
     }
-    private NodoAVLDesafios recuperarNodoAux(Comparable clave, NodoAVLDesafios nodo){
-        NodoAVLDesafios aRetornar = new NodoAVLDesafios(null, null, null, null);
+    private NodoAVLDicc recuperarNodoAux(Comparable clave, NodoAVLDicc nodo){
+        NodoAVLDicc aRetornar = new NodoAVLDicc(null, null, null, null);
         if (nodo != null) {
             // Si el nodo es el elemento que busco, la busqueda fue un exito
             if (clave.compareTo(nodo.getClave()) == 0) {
@@ -531,3 +530,4 @@ public class DiccAVLDesafios {
         return aRetornar;
     }
 }
+

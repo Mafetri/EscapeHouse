@@ -1,14 +1,12 @@
 package estructuras.hash;
 
-import estructuras.datos.Equipo;
-
-class NodoHashEquipos {
+class NodoHashDicc {
     private Object elem;
-    private Equipo dato;
-    private NodoHashEquipos enlace;
+    private Object dato;
+    private NodoHashDicc enlace;
     
     //---- Constructor ----
-    public NodoHashEquipos(Object elem, Equipo dato, NodoHashEquipos enlace){
+    public NodoHashDicc(Object elem, Object dato, NodoHashDicc enlace){
         this.elem = elem;
         this.dato = dato;
         this.enlace = enlace;
@@ -18,10 +16,10 @@ class NodoHashEquipos {
     public void setElem(Object elem){
         this.elem = elem;
     }
-    public void setDato(Equipo dato){
+    public void setDato(Object dato){
         this.elem = dato;
     }
-    public void setEnlace(NodoHashEquipos enlace){
+    public void setEnlace(NodoHashDicc enlace){
         this.enlace = enlace;
     }
     
@@ -29,10 +27,10 @@ class NodoHashEquipos {
     public Object getElem(){
         return elem;
     }
-    public Equipo getDato(){
+    public Object getDato(){
         return dato;
     }
-    public NodoHashEquipos getEnlace(){
+    public NodoHashDicc getEnlace(){
         return enlace;
     }
 }

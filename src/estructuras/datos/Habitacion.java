@@ -1,16 +1,21 @@
 package estructuras.datos;
 
 public class Habitacion {
+    private int codigo;
     private String nombre;
     private int planta;
     private int metrosCuadrados;
     private boolean salida;
 
-    public Habitacion(String nombre, int planta, int metrosCuadrados, boolean salida){
+    public Habitacion(int codigo, String nombre, int planta, int metrosCuadrados, boolean salida){
+        this.codigo = codigo;
         this.nombre = nombre;
         this.planta = planta;
         this.metrosCuadrados = metrosCuadrados;
         this.salida = salida;
+    }
+    public int getCodigo() {
+        return codigo;
     }
     public String getNombre(){
         return nombre;
@@ -23,6 +28,9 @@ public class Habitacion {
     }
     public boolean getSalida(){
         return salida;
+    }
+    public void setCodigo(int codigo){
+        this.codigo = codigo;
     }
     public void setNombre(String nombre){
         this.nombre = nombre;

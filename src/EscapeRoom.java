@@ -12,8 +12,9 @@ public class EscapeRoom {
 
         // Estructuras
         GrafoEtiq casa = new GrafoEtiq();
-        DiccAVLHabitaciones habitaciones = new DiccAVLHabitaciones(), desafios = new DiccAVLHabitaciones();
-        HashAbierto equipos = new HashAbierto(), desafiosCompletados = new HashAbierto();
+        DiccionarioAVL habitaciones = new DiccionarioAVL();
+        DiccionarioAVL desafios = new DiccionarioAVL();
+        DiccionarioHash equipos = new DiccionarioHash();
 
         // Carteles de inicio
         cartelInicio();
@@ -24,8 +25,8 @@ public class EscapeRoom {
 
         if(opcion != 0){
             switch (opcion) {
-                case 1: leectura("\\estructuras\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos, desafiosCompletados);break;
-                case 2: leectura("\\estructuras\\partidas\\PartidaGuardada.txt", casa, habitaciones, desafios, equipos, desafiosCompletados);
+                case 1: leectura("\\estructuras\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
+                case 2: leectura("\\estructuras\\partidas\\PartidaGuardada.txt", casa, habitaciones, desafios, equipos);
             }
 
 
@@ -50,8 +51,9 @@ public class EscapeRoom {
 
     }
 
-    public static void leectura(String ubicacion, GrafoEtiq casa, DiccAVLHabitaciones habitaciones, DiccAVLHabitaciones desafios, HashAbierto equipos, HashAbierto desafiosCompletados){
-        
+    public static void leectura(String ubicacion, GrafoEtiq casa, DiccionarioAVL habitaciones, DiccionarioAVL desafios, DiccionarioHash equipos){
+        Habitacion habitacion1 = new Habitacion(2, "Cocina", 0, 25, true);
+        habitaciones.insertar(2, habitacion1);
     }
     
     // =================================
@@ -64,7 +66,7 @@ public class EscapeRoom {
     // =========================
     //   Consulta Habitaciones
     // =========================
-    public static void consultaHabitaciones(DiccAVLHabitaciones habitaciones, GrafoEtiq casa){
+    public static void consultaHabitaciones(DiccionarioAVL habitaciones, GrafoEtiq casa){
         Scanner sc = new Scanner(System.in);
         int opcion;
         do{
@@ -102,7 +104,7 @@ public class EscapeRoom {
         System.out.print("| > Ingrese opcion: ");
     }
     // ---- Mostrar Habitaciones ----
-    public static void mostrarHabitacion(DiccAVLHabitaciones habitaciones){
+    public static void mostrarHabitacion(DiccionarioAVL habitaciones){
         // Pregunto que habitacion se quiere consultar
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese numero de habitacion: ");
@@ -110,11 +112,11 @@ public class EscapeRoom {
         System.out.println("|------------------------------------------------|");
 
         // Busco en el arbol de habitaciones los datos de la habitacion
-        Habitacion dato = habitaciones.recuperarDatos(numero);
+        Object dato = habitaciones.recuperarDatos(numero);
         
         // Si la habitacion existe, muestro sus datos
         if(dato != null){
-            System.out.println("| La habitacion con clave " + numero + " es el/la " + dato.toString());
+            System.out.println("| La habitacion con clave " + numero + " es el/la " + ((Habitacion)dato).toString());
         }else{
             System.out.println("| La habitacion con clave " + numero + " no existe.");
         }
