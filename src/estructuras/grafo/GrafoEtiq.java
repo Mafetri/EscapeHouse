@@ -10,7 +10,7 @@
 =================================================
 */
 
-package estructuras;
+package estructuras.grafo;
 
 public class GrafoEtiq {
     private NodoVert inicio = null;

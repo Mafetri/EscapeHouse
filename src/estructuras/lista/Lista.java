@@ -9,7 +9,7 @@
 =================================================
 */
 
-package estructuras;
+package estructuras.lista;
 
 public class Lista {
     private Nodo cabecera;

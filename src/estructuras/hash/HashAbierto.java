@@ -10,23 +10,24 @@
 =====================================
  */
 
-package estructuras;
-import estructuras.Lista;
+package estructuras.hash;
+import estructuras.lista.Lista;
+import estructuras.datos.Equipo;
 
 public class HashAbierto {
     private static final int TAMANIO = 20;
-    private Nodo[] tabla;
+    private NodoHashEquipos[] tabla;
     private int cant;
 
     public HashAbierto() {
-        this.tabla = new Nodo[TAMANIO - 1];
+        this.tabla = new NodoHashEquipos[TAMANIO - 1];
         cant = 0;
     }
 
     // ---- Insertar ----
-    public boolean insertar(Object elem) {
+    public boolean insertar(Object elem, Equipo dato) {
         int pos = elem.hashCode() % TAMANIO;
-        Nodo aux = this.tabla[pos];
+        NodoHashEquipos aux = this.tabla[pos];
         boolean encontrado = false;
 
         // Busco si existe en los nodos de la posicion hash de elem
@@ -38,7 +39,7 @@ public class HashAbierto {
         // Si no lo encontro, entonces crea un nuevo nodo con elem y el enlace al otro
         // nodo que esta en la posicion
         if (!encontrado) {
-            this.tabla[pos] = new Nodo(elem, this.tabla[pos]);
+            this.tabla[pos] = new NodoHashEquipos(elem, dato, this.tabla[pos]);
             this.cant++;
         }
 
@@ -49,7 +50,7 @@ public class HashAbierto {
     public boolean eliminar(Object elem) {
         int pos = elem.hashCode() % TAMANIO;
         int posNodo = 0;
-        Nodo aux = this.tabla[pos];
+        NodoHashEquipos aux = this.tabla[pos];
         boolean encontrado = false;
 
         // Busco el elem
@@ -92,7 +93,7 @@ public class HashAbierto {
     // ---- Pertenece ----
     public boolean pertenece(Object elem){
         int pos = elem.hashCode() % TAMANIO;
-        Nodo aux = this.tabla[pos];
+        NodoHashEquipos aux = this.tabla[pos];
         boolean encontrado = false;
 
         // Busco si existe en los nodos de la posicion hash de elem
@@ -112,7 +113,7 @@ public class HashAbierto {
     // ---- Listar ----
     public Lista listar(){
         Lista lis = new Lista();
-        Nodo aux;
+        NodoHashEquipos aux;
         int i = 1, cantRecorridos = 0;
 
         while(i < TAMANIO-1 && cantRecorridos < this.cant){

@@ -1,4 +1,7 @@
-import estructuras.*;
+import estructuras.arbol.*;
+import estructuras.datos.Habitacion;
+import estructuras.hash.*;
+import estructuras.grafo.*;
 import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
 
@@ -9,7 +12,7 @@ public class EscapeRoom {
 
         // Estructuras
         GrafoEtiq casa = new GrafoEtiq();
-        DiccionarioAVL habitaciones = new DiccionarioAVL(), desafios = new DiccionarioAVL();
+        DiccAVLHabitaciones habitaciones = new DiccAVLHabitaciones(), desafios = new DiccAVLHabitaciones();
         HashAbierto equipos = new HashAbierto(), desafiosCompletados = new HashAbierto();
 
         // Carteles de inicio
@@ -47,11 +50,8 @@ public class EscapeRoom {
 
     }
 
-    public static void leectura(String ubicacion, GrafoEtiq casa, DiccionarioAVL habitaciones, DiccionarioAVL desafios, HashAbierto equipos, HashAbierto desafiosCompletados){
-        habitaciones.insertar(1, "Cocina, 1era planta, 25m2, sin salida");
-        casa.insertarVertice(1);
-        casa.insertarVertice(2);
-        casa.insertarArco(1, 2, 35);
+    public static void leectura(String ubicacion, GrafoEtiq casa, DiccAVLHabitaciones habitaciones, DiccAVLHabitaciones desafios, HashAbierto equipos, HashAbierto desafiosCompletados){
+        
     }
     
     // =================================
@@ -64,7 +64,7 @@ public class EscapeRoom {
     // =========================
     //   Consulta Habitaciones
     // =========================
-    public static void consultaHabitaciones(DiccionarioAVL habitaciones, GrafoEtiq casa){
+    public static void consultaHabitaciones(DiccAVLHabitaciones habitaciones, GrafoEtiq casa){
         Scanner sc = new Scanner(System.in);
         int opcion;
         do{
@@ -102,7 +102,7 @@ public class EscapeRoom {
         System.out.print("| > Ingrese opcion: ");
     }
     // ---- Mostrar Habitaciones ----
-    public static void mostrarHabitacion(DiccionarioAVL habitaciones){
+    public static void mostrarHabitacion(DiccAVLHabitaciones habitaciones){
         // Pregunto que habitacion se quiere consultar
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese numero de habitacion: ");
@@ -110,7 +110,7 @@ public class EscapeRoom {
         System.out.println("|------------------------------------------------|");
 
         // Busco en el arbol de habitaciones los datos de la habitacion
-        Object dato = habitaciones.recuperarDatos(numero);
+        Habitacion dato = habitaciones.recuperarDatos(numero);
         
         // Si la habitacion existe, muestro sus datos
         if(dato != null){

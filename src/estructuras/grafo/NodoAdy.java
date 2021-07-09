@@ -1,4 +1,4 @@
-package estructuras;
+package estructuras.grafo;
 
 class NodoAdy {
     private NodoVert vertice;

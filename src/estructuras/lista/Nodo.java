@@ -1,5 +1,4 @@
-
-package estructuras;
+package estructuras.lista;
 
 class Nodo {
     private Object elem;

@@ -1,14 +1,16 @@
-package estructuras;
+package estructuras.arbol;
 
-public class NodoAVLDicc {
+import estructuras.datos.Desafio;
+
+public class NodoAVLDesafios{
     private Comparable clave;
-    private Object dato;
+    private Desafio dato;
     private int alt;
-    private NodoAVLDicc izquierdo;
-    private NodoAVLDicc derecho;
+    private NodoAVLDesafios izquierdo;
+    private NodoAVLDesafios derecho;
 
-    public NodoAVLDicc(Comparable elemento, Object dato,NodoAVLDicc izq, NodoAVLDicc der){
-        this.clave = elemento;
+    public NodoAVLDesafios(Comparable clave, Desafio dato,NodoAVLDesafios izq, NodoAVLDesafios der){
+        this.clave = clave;
         this.dato = dato;
         this.izquierdo = izq;
         this.derecho = der;
@@ -19,15 +21,15 @@ public class NodoAVLDicc {
         return this.clave;
     }
 
-    public Object getDato(){
+    public Desafio getDato(){
         return this.dato;
     }
     
-    public NodoAVLDicc getIzquierdo(){
+    public NodoAVLDesafios getIzquierdo(){
         return this.izquierdo;
     }
 
-    public NodoAVLDicc getDerecho(){
+    public NodoAVLDesafios getDerecho(){
         return this.derecho;
     }
 
@@ -54,15 +56,16 @@ public class NodoAVLDicc {
         this.clave = clave;
     }
 
-    public void setDato(Object dato){
+    public void setDato(Desafio dato){
         this.dato = dato;
     }
 
-    public void setIzquierdo(NodoAVLDicc izq){
+    public void setIzquierdo(NodoAVLDesafios izq){
         this.izquierdo = izq;
     }
 
-    public void setDerecho(NodoAVLDicc der){
+    public void setDerecho(NodoAVLDesafios der){
         this.derecho = der;
     }
 }
+
