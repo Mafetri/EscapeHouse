@@ -67,7 +67,8 @@ public class EscapeRoom {
                 // Segun la categoria lo mando a su respectivo modulo de llenado de la estructura correspondiente
                 switch(categoria){
                     case 'H': cargarHabitacion(habitaciones, linea); break;
-                    case 'E': cargarEquipo(equipos, linea);
+                    case 'E': cargarEquipo(equipos, linea); break;
+                    case 'D': cargarDesafio(desafios, linea);
                 }
             }
             archivo.close();
@@ -76,6 +77,7 @@ public class EscapeRoom {
         }
         System.out.println(habitaciones.toString());
         System.out.println(equipos.listar().toString());
+        System.out.println(desafios.toString());
     }
     // ---- Carga de Habitacion ---- 
     public static void cargarHabitacion(DiccionarioAVL habitaciones, String linea){
@@ -109,6 +111,7 @@ public class EscapeRoom {
         // Luego creo la habitacion con las variables llenadas con los tokens
         Habitacion nueva = new Habitacion(codigo, nombre, planta, metrosCuadrados,salida);
 
+        // Guardo en el el AVL de habitaciones la nueva habitacion con el codigo como clave y "nueva" como dato
         habitaciones.insertar(codigo, nueva);
     }
     // ---- Carga de Equipo ---- 
@@ -142,9 +145,43 @@ public class EscapeRoom {
         // Luego creo el equipo con las variables llenadas con los tokens
         Equipo nuevo = new Equipo(nombre, puntajeSalida, puntajeTotal, habitacionActual, puntajeActual);
 
+        // Guardo en el hash de equipos el nuevo equipo con el nombre como clave y "nuevo" como dato
         equipos.insertar(nombre, nuevo);
     }
+    // ---- Carga de Desafios ----
+    public static void cargarDesafio(DiccionarioAVL desafios, String linea){
+        // Variables de desafio
+        String nombre = "", tipo = "";
+        int puntaje = 0;
 
+        // Token guarda las cadenas de Strings entre los ;
+        StringTokenizer token = new StringTokenizer(linea, ";");
+
+        // cantTokens guarda la cantidad de tokens guardados
+        int cantTokens = token.countTokens();
+
+        // tokenAcutal guarda el token actual para analizar a que variable pertenece
+        String tokenActual;
+
+        // Desde 0 hasta la cantidad de tokens, analiza token por token y segun el valor de
+        // i (veces que ya guardo cosas) determina a que variable le corresponde el token
+        for(int i = 0; i < cantTokens; i++){
+            tokenActual = token.nextToken();
+            switch(i){
+                case 0: puntaje = Integer.parseInt(tokenActual); break;
+                case 1: nombre = tokenActual; break;
+                case 2: tipo = tokenActual; 
+            }
+        }
+
+        // Luego creo el desafio con las variables llenadas con los tokens
+        Desafio nuevo = new Desafio(puntaje, nombre, tipo);
+
+        // Guardo en el el AVL de desafios el nuevo desafio con el nombre como clave y "nuevo" como dato
+        desafios.insertar(puntaje, nuevo);
+    }
+    
+    
     // =================================
     //   Altas, bajas y modificaciones
     // =================================
