@@ -28,8 +28,8 @@ public class EscapeRoom {
 
         if(opcion != 0){
             switch (opcion) {
-                case 1: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
-                case 2: leectura("\\estructuras\\partidas\\PartidaGuardada.txt", casa, habitaciones, desafios, equipos);
+                case 1: leectura("src/partidas/PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
+                case 2: leectura("src/partidas/PartidaGuardada.txt", casa, habitaciones, desafios, equipos);
             }
 
             do{
