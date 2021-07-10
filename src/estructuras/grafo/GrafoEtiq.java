@@ -205,7 +205,7 @@ public class GrafoEtiq {
     // ---- Existe Camino ----
     // Devuelve una lista de caminos posibles desde el origen al destino sin pasar por "noPasar" y con
     // una suma de etiquetas no mayor a puntajeActual
-    public Lista existeCamino(Object origen, Object destino, Object noPasar, int puntajeActual){
+    public Lista caminosSinPasarPor(Object origen, Object destino, Object noPasar, int puntajeActual){
         Lista todosLosCaminos = new Lista();
 
         NodoVert auxOrigen = null;
@@ -224,12 +224,12 @@ public class GrafoEtiq {
 
         if(auxOrigen != null && auxDestino != null){
             Lista visitados = new Lista();
-            existeCaminoAux(auxOrigen, destino, noPasar, visitados, todosLosCaminos, 0, puntajeActual);
+            caminosSinPasarPor(auxOrigen, destino, noPasar, visitados, todosLosCaminos, 0, puntajeActual);
         }
 
         return todosLosCaminos;
     }
-    private void existeCaminoAux(NodoVert nodo, Object dest, Object noPasar, Lista vis, Lista todosLosCaminos, int puntajeNecesario, int puntajeActual){
+    private void caminosSinPasarPor(NodoVert nodo, Object dest, Object noPasar, Lista vis, Lista todosLosCaminos, int puntajeNecesario, int puntajeActual){
         if(nodo != null && !nodo.getElem().equals(noPasar) && puntajeNecesario <= puntajeActual){
             if(nodo.getElem().equals(dest)){
                 vis.insertar(nodo.getElem(), vis.longitud()+1);
@@ -239,7 +239,7 @@ public class GrafoEtiq {
                 NodoAdy ady = nodo.getPrimerAdy();
                 while(ady != null){
                     if(vis.localizar(ady.getVertice().getElem()) < 0){
-                        existeCaminoAux(ady.getVertice(), dest, noPasar, vis, todosLosCaminos, puntajeNecesario+ady.getEtiqueta(), puntajeActual);
+                        caminosSinPasarPor(ady.getVertice(), dest, noPasar, vis, todosLosCaminos, puntajeNecesario+ady.getEtiqueta(), puntajeActual);
                     }
                     ady = ady.getSigAdyacente();
                 }

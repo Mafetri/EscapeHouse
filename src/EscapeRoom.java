@@ -37,9 +37,9 @@ public class EscapeRoom {
                 opcion = sc.nextInt();
 
                 switch (opcion) {
-                    case 1: abm();break;
+                    case 1: abm(habitaciones, casa, desafios,equipos);break;
                     case 2: consultaHabitaciones(habitaciones, casa); break;
-                    case 3: consultaDesafios(); break;
+                    case 3: consultaDesafios(desafios); break;
                     case 4: consultaParticipantes(); break;
                     case 5: consultaGeneral();
                 }
@@ -116,6 +116,40 @@ public class EscapeRoom {
         // Luego creo la habitacion con las variables llenadas con los tokens
         Habitacion nueva = new Habitacion(codigo, nombre, planta, metrosCuadrados,salida);
 
+        // Guardo en el el AVL de habitaciones la nueva habitacion con el codigo como clave y "nueva" como dato
+        habitaciones.insertar(codigo, nueva);
+
+        // Agrego la habitacion a la casa
+        casa.insertarVertice(codigo);
+    }
+    public static void cargarHabitacionManual(DiccionarioAVL habitaciones, GrafoEtiq casa){
+        Scanner sc = new Scanner(System.in);
+        int codigo = 0, planta = 0, metrosCuadrados = 0;
+        String nombre = "";
+        char salida;
+        boolean tieneSalida = false;
+
+        System.out.println("| > Indique codigo de habitacion: ");
+        codigo = sc.nextInt();
+        System.out.println("| > Indique nombre de habitacion: ");
+        nombre = sc.nextLine();
+        System.out.println("| > Indique planta de habitacion: ");
+        planta = sc.nextInt();
+        System.out.println("| > Indique metros cuadrados: ");
+        metrosCuadrados = sc.nextInt();
+        System.out.println("| > Tiene salida? (s/n): ");
+        do{
+            salida = sc.next().charAt(0);
+            if(salida == 's' || salida == 'S'){
+                tieneSalida = true;
+            }else if(salida == 'n' && salida == 'N' ){
+                tieneSalida = false;
+            }
+        }while(salida != 's' && salida != 'S' && salida != 'n' && salida != 'N');
+        
+        // Luego creo la habitacion con las variables llenadas con los tokens
+        Habitacion nueva = new Habitacion(codigo, nombre, planta, metrosCuadrados, tieneSalida);
+        
         // Guardo en el el AVL de habitaciones la nueva habitacion con el codigo como clave y "nueva" como dato
         habitaciones.insertar(codigo, nueva);
 
@@ -220,9 +254,71 @@ public class EscapeRoom {
     // =================================
     //   Altas, bajas y modificaciones
     // =================================
-    public static void abm(){
+    public static void abm(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioAVL desafios, DiccionarioHash equipos){
+        Scanner sc = new Scanner(System.in);
+        int opcion;
+        do{
+            menuABM();
+            opcion = sc.nextInt();
 
+            switch(opcion){
+                case 1: menuTipoDeABM("|                   A L T A S                    |"); break;
+                case 2: menuTipoDeABM("|                   B A J A S                    |"); break;
+                case 3: menuTipoDeABM("|          M O D I F I C A C I O N E S           |"); break;
+            }
+
+            if(opcion != 0){
+                opcion = sc.nextInt();
+
+                switch(opcion){
+                    case 1: cargarHabitacionManual(habitaciones, casa); break;
+                }
+            }
+        }while(opcion != 0);
     }
+    public static void menuABM(){
+        System.out.println("==================================================");
+        System.out.println("|            ALTAS, BAJAS Y MODIFICACIONES       |");
+        System.out.println("==================================================");
+        System.out.println("| 1. Dar de alta                                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Dar de baja                                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Modificar                                   |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
+    }
+    public static void menuTipoDeABM(String titulo){
+        System.out.println("==================================================");
+        System.out.println(titulo);
+        System.out.println("==================================================");
+        System.out.println("| 1. Habitaciones                                |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Desafios                                    |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Equipos                                     |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Puertas                                     |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
+    }
+
     
     // =========================
     //   Consulta Habitaciones
@@ -238,26 +334,24 @@ public class EscapeRoom {
                 case 1: mostrarHabitacion(habitaciones); break;
                 case 2: habitacionesContiguas(casa); break;
                 case 3: esPosibleLlegar(casa); break;
-                case 4: break;
-                case 5: sinPasar(casa); break;
+                case 4: sinPasar(casa);
             }
         }while(opcion != 0);
-        
-
     }
     // ---- Menu ----
     public static void menuConsultaHabitaciones(){
+        System.out.println("==================================================");
+        System.out.println("|            H A B I T A C I O N E S             |");
+        System.out.println("==================================================");
         System.out.println("| 1. Mostrar habitacion                          |");
         sleepMilisegundos(150);
         System.out.println("| 2. Habitaciones contiguas                      |");
         sleepMilisegundos(150);
         System.out.println("| 3. Es posible llegar                           |");
         sleepMilisegundos(150);
-        System.out.println("| 4. Maximo puntaje                              |");
-        sleepMilisegundos(150);
         System.out.println("| 5. Sin pasar por                               |");
         sleepMilisegundos(150);
-        System.out.println("| 0. Finalizar                                   |");
+        System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
         for(int i = 0; i <48; i++){
             System.out.print("-");
@@ -330,7 +424,7 @@ public class EscapeRoom {
         System.out.println("|------------------------------------------------|");
 
         // Lista con los posibles caminos
-        Lista caminosPosibles = casa.existeCamino(hab1, hab2, hab3, puntaje);
+        Lista caminosPosibles = casa.caminosSinPasarPor(hab1, hab2, hab3, puntaje);
 
         // Muestra los caminos posibles
         if(caminosPosibles.longitud() > 0){
@@ -349,13 +443,90 @@ public class EscapeRoom {
     // =========================
     //     Consulta Desafios
     // =========================
-    public static void consultaDesafios(){}
+    public static void consultaDesafios(DiccionarioAVL desafios){
+        Scanner sc = new Scanner(System.in);
+        int opcion;
+        do{
+            menuConsultaDesafios();
+            opcion = sc.nextInt();
 
+            switch(opcion){
+                case 1: mostrarDesafio(desafios); break;
+            }
+        }while(opcion != 0);
+    }
+    // --- Menu ----
+    public static void menuConsultaDesafios(){
+        System.out.println("==================================================");
+        System.out.println("|              D E S A F I O S                   |");
+        System.out.println("==================================================");
+        System.out.println("| 1. Mostrar informacion de desafio              |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Mostrar desafios resueltos                  |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Verificar desafio resuelto                  |");
+        sleepMilisegundos(150);
+        System.out.println("| 5. Mostrar desafios tipo                       |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
+    }
+    // --- Mostrar desafio ----
+    public static void mostrarDesafio(DiccionarioAVL desafios){
+        // Pregunto que desafio se quiere consultar
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese numero de desafio: ");
+        int numero = sc.nextInt();
+        System.out.println("|------------------------------------------------|");
+
+        // Busco en el arbol de desafios los datos del desafio
+        Object dato = desafios.recuperarDatos(numero);
+        
+        // Si el desafio existe, muestro sus datos
+        if(dato != null){
+            System.out.println("| > El desafio con clave " + numero + " es el " + ((Desafio)dato).toString());
+        }else{
+            System.out.println("| > El desafio con clave " + numero + " no existe.");
+        }
+        
+        System.out.println("|------------------------------------------------|");
+    }
+    
     // =========================
     //  Consulta Participantes
     // =========================
     public static void consultaParticipantes(){}
-
+    // --- Menu ----
+    public static void menuConsultaParticipantes(){
+        System.out.println("==================================================");
+        System.out.println("|          P A R T I C I P A N T E S             |");
+        System.out.println("==================================================");
+        System.out.println("| 1. Mostrar informacion de equipo               |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Jugar desafio                               |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Pasar a habitacion                          |");
+        sleepMilisegundos(150);
+        System.out.println("| 4. Puede salir                                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
+    }
+    
     // =========================
     //      Consulta General
     // =========================
@@ -411,6 +582,9 @@ public class EscapeRoom {
         System.out.print("| > Ingrese opcion: ");
     }
     public static void cartelMenuPrincipal(){
+        System.out.println("==================================================");
+        System.out.println("|           M E N U   P R I N C I P A L          |");
+        System.out.println("==================================================");
         System.out.println("| 1. Altas, Bajas y Modificaciones               |");
         sleepMilisegundos(150);
         System.out.println("| 2. Consulta sobre habitaciones                 |");
