@@ -11,6 +11,7 @@
 */
 
 package estructuras.grafo;
+import estructuras.lista.Lista;
 
 public class GrafoEtiq {
     private NodoVert inicio = null;
@@ -200,6 +201,53 @@ public class GrafoEtiq {
         }
         return enTexto;
     }
+
+    // ---- Existe Camino ----
+    // Devuelve una lista de caminos posibles desde el origen al destino sin pasar por "noPasar" y con
+    // una suma de etiquetas no mayor a puntajeActual
+    public Lista existeCamino(Object origen, Object destino, Object noPasar, int puntajeActual){
+        Lista todosLosCaminos = new Lista();
+
+        NodoVert auxOrigen = null;
+        NodoVert auxDestino = null;
+        NodoVert aux = this.inicio;
+
+        while(((auxOrigen == null) || (auxDestino == null)) && (aux != null)){
+            if(aux.getElem().equals(origen)){
+                auxOrigen = aux;
+            }
+            if(aux.getElem().equals(destino)){
+                auxDestino = aux;
+            }
+            aux = aux.getSigVertice();
+        }
+
+        if(auxOrigen != null && auxDestino != null){
+            Lista visitados = new Lista();
+            existeCaminoAux(auxOrigen, destino, noPasar, visitados, todosLosCaminos, 0, puntajeActual);
+        }
+
+        return todosLosCaminos;
+    }
+    private void existeCaminoAux(NodoVert nodo, Object dest, Object noPasar, Lista vis, Lista todosLosCaminos, int puntajeNecesario, int puntajeActual){
+        if(nodo != null && !nodo.getElem().equals(noPasar) && puntajeNecesario <= puntajeActual){
+            if(nodo.getElem().equals(dest)){
+                vis.insertar(nodo.getElem(), vis.longitud()+1);
+                todosLosCaminos.insertar(vis.clone(), todosLosCaminos.longitud()+1);
+            }else{
+                vis.insertar(nodo.getElem(), vis.longitud()+1);
+                NodoAdy ady = nodo.getPrimerAdy();
+                while(ady != null){
+                    if(vis.localizar(ady.getVertice().getElem()) < 0){
+                        existeCaminoAux(ady.getVertice(), dest, noPasar, vis, todosLosCaminos, puntajeNecesario+ady.getEtiqueta(), puntajeActual);
+                    }
+                    ady = ady.getSigAdyacente();
+                }
+            }
+            vis.eliminar(vis.localizar(nodo.getElem()));
+        }
+    }
+    
 
     // ---- To String ----
     public String toString() {

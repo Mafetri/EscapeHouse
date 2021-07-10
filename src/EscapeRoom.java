@@ -2,6 +2,7 @@ import estructuras.arbol.*;
 import estructuras.datos.*;
 import estructuras.hash.*;
 import estructuras.grafo.*;
+import estructuras.lista.Lista;
 import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
 import java.io.*;
@@ -30,7 +31,6 @@ public class EscapeRoom {
                 case 1: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
                 case 2: leectura("\\estructuras\\partidas\\PartidaGuardada.txt", casa, habitaciones, desafios, equipos);
             }
-
 
             do{
                 cartelMenuPrincipal();
@@ -238,6 +238,8 @@ public class EscapeRoom {
                 case 1: mostrarHabitacion(habitaciones); break;
                 case 2: habitacionesContiguas(casa); break;
                 case 3: esPosibleLlegar(casa); break;
+                case 4: break;
+                case 5: sinPasar(casa); break;
             }
         }while(opcion != 0);
         
@@ -314,7 +316,35 @@ public class EscapeRoom {
         }   
     }
     // ---- Sin Pasar Por ----
+    public static void sinPasar(GrafoEtiq casa){
+        // Entrada de datos
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese numero de la primera habitacion: ");
+        int hab1 = sc.nextInt();
+        System.out.print("| > Ingrese numero de la segunda habitacion: ");
+        int hab2 = sc.nextInt();
+        System.out.print("| > Ingrese numero habitacion a saltear: ");
+        int hab3 = sc.nextInt();
+        System.out.print("| > Ingrese puntaje acumulado: ");
+        int puntaje = sc.nextInt();
+        System.out.println("|------------------------------------------------|");
 
+        // Lista con los posibles caminos
+        Lista caminosPosibles = casa.existeCamino(hab1, hab2, hab3, puntaje);
+
+        // Muestra los caminos posibles
+        if(caminosPosibles.longitud() > 0){
+            System.out.println("| > Los caminos posibles para ir de la habitacion " + hab1 + " a la " + hab2);
+            System.out.println("| salteando la habitacion " + hab3 + ", y con " + puntaje + " puntos son: ");
+            for(int i=1; i<=caminosPosibles.longitud();i++){
+                System.out.println("| --> " + caminosPosibles.recuperar(i).toString());
+            }
+        }else{
+            System.out.println("| > No hay caminos posibles para ir de la habitacion " + hab1 + " a la " + hab2);
+            System.out.println("| salteando la habitacion " + hab3 + ", y con " + puntaje + " puntos.");
+        }
+        System.out.println("|------------------------------------------------|"); 
+    }
 
     // =========================
     //     Consulta Desafios
