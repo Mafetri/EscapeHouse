@@ -163,16 +163,18 @@ public class GrafoEtiq {
     // ---- Etiqueta Arco ----
     public int etiquetaArco(Object origen, Object destino ){
         int etiq = -1;
-
         if(this.inicio != null && origen != null && destino != null){
-            NodoAdy adyOrigen = ubicarVertice(origen).getPrimerAdy();
-            while (adyOrigen != null) {
-                // Si el siguiente adyacente es el elemento origen lo borro
-                if (adyOrigen.getVertice().getElem().equals(destino)) {
-                    etiq = adyOrigen.getEtiqueta();
-                    adyOrigen = null;
-                } else {
-                    adyOrigen = adyOrigen.getSigAdyacente();
+            NodoVert nodoOrigen = ubicarVertice(origen);
+            if(nodoOrigen != null){
+                NodoAdy adyOrigen = nodoOrigen.getPrimerAdy();
+                while (adyOrigen != null) {
+                    // Si el siguiente adyacente es el elemento origen lo borro
+                    if (adyOrigen.getVertice().getElem().equals(destino)) {
+                        etiq = adyOrigen.getEtiqueta();
+                        adyOrigen = null;
+                    } else {
+                        adyOrigen = adyOrigen.getSigAdyacente();
+                    }
                 }
             }
         }

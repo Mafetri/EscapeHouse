@@ -28,8 +28,8 @@ public class EscapeRoom {
 
         if(opcion != 0){
             switch (opcion) {
-                case 1: leectura("src/partidas/PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
-                case 2: leectura("src/partidas/PartidaGuardada.txt", casa, habitaciones, desafios, equipos);
+                case 1: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
+                case 2: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);
             }
 
             do{
@@ -82,7 +82,7 @@ public class EscapeRoom {
     }
     
     // =================================
-    //     Carga/Baja/ Modificaion
+    //       Carga/Baja/Modificaion
     //           de Datos
     // =================================
     // ----  Habitacion ---- 
@@ -176,6 +176,51 @@ public class EscapeRoom {
         }else{
             System.out.println(" no se ha encontrado.");
         }
+    }
+    public static void modificarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa){
+        Scanner sc = new Scanner(System.in);
+        int codigo = 0, opcion = 0;
+        System.out.print("| > Ingrese codigo de habitacion a modificar: ");
+        codigo = sc.nextInt();
+        do{
+            menuModificaionHabitacion(codigo);
+            opcion = sc.nextInt();
+            switch(opcion){
+                case 1: modificarNombreHabitacion(habitaciones.recuperarDatos(codigo)); break;
+                case 2: habitacionesContiguas(casa); break;
+                case 3: esPosibleLlegar(casa); break;
+                case 4: sinPasar(casa);
+            }
+        }while(opcion != 0);
+
+    }
+    public static void menuModificaionHabitacion(int codigo){
+        System.out.println("==================================================");
+        System.out.println("|           MODIFICACION HABITACION " + codigo + "           |");
+        System.out.println("==================================================");
+        System.out.println("| 1. Modificar nombre                            |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Modificar planta                            |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Modificar metros cuadrados                  |");
+        sleepMilisegundos(150);
+        System.out.println("| 4. Modificar salida                            |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
+    }
+    public static void modificarNombreHabitacion(Object habitacion){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese nuevo nombre: "); 
+        String nombre = sc.nextLine(); 
+        ((Habitacion)habitacion).setNombre(nombre);
     }
     // ----  Equipo ---- 
     public static void cargarEquipo(DiccionarioHash equipos, String linea){
@@ -414,10 +459,13 @@ public class EscapeRoom {
                 opcion = sc.nextInt();
                 switch(opcion){
                     case 1: modificarHabitacion(habitaciones, casa); break;
-                    case 2: modificarDesafio(); break;
-                    case 3: modificarEquipo(); break;
-                    case 3: modificarPuertas(); break;
+                    
                 }
+                /*
+                case 2: modificarDesafio(); break;
+                    case 3: modificarEquipo(); break;
+                    case 3: modificarPuertas(); break; */
+                
             }
         }while(opcion != 0);
     }
@@ -494,7 +542,7 @@ public class EscapeRoom {
         sleepMilisegundos(150);
         System.out.println("| 3. Es posible llegar                           |");
         sleepMilisegundos(150);
-        System.out.println("| 5. Sin pasar por                               |");
+        System.out.println("| 4. Sin pasar por                               |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
@@ -627,7 +675,7 @@ public class EscapeRoom {
     public static void mostrarDesafio(DiccionarioAVL desafios){
         // Pregunto que desafio se quiere consultar
         Scanner sc = new Scanner(System.in);
-        System.out.print("| > Ingrese numero de desafio: ");
+        System.out.print("| > Ingrese puntaje del desafio: ");
         int numero = sc.nextInt();
         System.out.println("|------------------------------------------------|");
 

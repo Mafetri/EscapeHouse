@@ -191,6 +191,7 @@ public class DiccionarioAVL {
         if (nodo != null) {
     
             if (elem.compareTo(nodo.getClave()) == 0) {
+                exito = true;
                 // Caso 1: el elemento buscado no tiene hijos
                 if(nodo.getDerecho() == null && nodo.getIzquierdo() == null){
                     eliminarCaso1(padre, elem);
