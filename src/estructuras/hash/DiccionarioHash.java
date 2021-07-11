@@ -26,7 +26,12 @@ public class DiccionarioHash {
 
     // ---- Insertar ----
     public boolean insertar(Object elem, Equipo dato) {
-        int pos = (-1 * elem.hashCode()) % TAMANIO;
+        int pos = elem.hashCode();
+        if(pos < 0){
+            pos = (-1 * pos) % TAMANIO; 
+        } else{
+            pos = pos % TAMANIO;
+        }
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
@@ -48,7 +53,12 @@ public class DiccionarioHash {
 
     // ---- Eliminar ----
     public boolean eliminar(Object elem) {
-        int pos = elem.hashCode() % TAMANIO;
+        int pos = elem.hashCode();
+        if(pos < 0){
+            pos = (-1 * pos) % TAMANIO; 
+        } else{
+            pos = pos % TAMANIO;
+        }
         int posNodo = 0;
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
@@ -92,7 +102,12 @@ public class DiccionarioHash {
 
     // ---- Pertenece ----
     public boolean pertenece(Object elem){
-        int pos = elem.hashCode() % TAMANIO;
+        int pos = elem.hashCode();
+        if(pos < 0){
+            pos = (-1 * pos) % TAMANIO; 
+        } else{
+            pos = pos % TAMANIO;
+        }
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
@@ -132,14 +147,19 @@ public class DiccionarioHash {
     }
 
     // ---- Recuperar Datos ----
-    public NodoHashDicc recuperarDatos(Object clave){
-        int pos = clave.hashCode() % TAMANIO;
+    public NodoHashDicc recuperarDatos(Object elem){
+        int pos = elem.hashCode();
+        if(pos < 0){
+            pos = (-1 * pos) % TAMANIO; 
+        } else{
+            pos = pos % TAMANIO;
+        }
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
         // Busco si existe en los nodos de la posicion hash de elem
         while (!encontrado && aux != null) {
-            encontrado = aux.getElem().equals(clave);
+            encontrado = aux.getElem().equals(elem);
             if(!encontrado){
                 aux = aux.getEnlace();
             }
