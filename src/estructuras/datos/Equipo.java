@@ -45,6 +45,8 @@ public class Equipo {
     public void setPuntajeAcutal(int puntajeActual){
         this.puntajeActual = puntajeActual;
     }
-
+    public String toString(){
+        return nombre + " que se encuentra en la habitacion" + habitacionActual + ", con un puntaje actual " + puntajeActual + ", total de " + puntajeTotal + " y necesario para salir de " + puntajeSalida + " puntos";
+    }
     
 }
