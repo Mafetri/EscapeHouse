@@ -128,17 +128,22 @@ public class EscapeRoom {
         int codigo = 0, planta = 0, metrosCuadrados = 0;
         String nombre = "";
         char salida;
-        boolean tieneSalida = false;
-
-        System.out.println("| > Indique codigo de habitacion: ");
-        codigo = sc.nextInt();
-        System.out.println("| > Indique nombre de habitacion: ");
-        nombre = sc.nextLine();
-        System.out.println("| > Indique planta de habitacion: ");
+        boolean tieneSalida = false, existe;
+        do{
+            System.out.print("| > Indique codigo de habitacion: ");
+            codigo = sc.nextInt();
+            existe = habitaciones.pertenece(codigo);
+            if(existe){
+                System.out.println("| > La habitacion con codigo " + codigo + " ya existe.");
+            }
+        }while(existe);
+        System.out.print("| > Indique nombre de habitacion: ");
+        nombre = sc.next();
+        System.out.print("| > Indique planta de habitacion: ");
         planta = sc.nextInt();
-        System.out.println("| > Indique metros cuadrados: ");
+        System.out.print("| > Indique metros cuadrados: ");
         metrosCuadrados = sc.nextInt();
-        System.out.println("| > Tiene salida? (s/n): ");
+        System.out.print("| > Tiene salida? (s/n): ");
         do{
             salida = sc.next().toLowerCase().charAt(0);
             if(salida == 's'){
@@ -158,6 +163,8 @@ public class EscapeRoom {
 
         // Agrego la habitacion a la casa
         casa.insertarVertice(codigo);
+
+        System.out.println("| > La habitacion " + nueva.toString() + " ha sido dado de alta");
     }
     public static void eliminarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa){
         Scanner sc = new Scanner(System.in);
@@ -185,11 +192,31 @@ public class EscapeRoom {
         do{
             menuModificaionHabitacion(codigo);
             opcion = sc.nextInt();
-            switch(opcion){
-                case 1: modificarNombreHabitacion(habitaciones.recuperarDatos(codigo)); break;
-                case 2: habitacionesContiguas(casa); break;
-                case 3: esPosibleLlegar(casa); break;
-                case 4: sinPasar(casa);
+            if(opcion == 1){
+                System.out.print("| > Ingrese nuevo nombre: "); 
+                String nombre = sc.nextLine(); 
+                ((Habitacion)habitaciones.recuperarDatos(codigo)).setNombre(nombre);
+            } else if(opcion == 2){
+                System.out.print("| > Ingrese nueva planta: "); 
+                int planta = sc.nextInt(); 
+                ((Habitacion)habitaciones.recuperarDatos(codigo)).setPlanta(planta);
+            } else if(opcion == 3){
+                System.out.print("| > Ingrese metros cuadrados: "); 
+                int metros = sc.nextInt(); 
+                ((Habitacion)habitaciones.recuperarDatos(codigo)).setMetrosCuadrados(metros);
+            } else if(opcion == 4){
+                System.out.print("| > Indique si tiene salida: (s/n)");
+                char salida;
+                do{
+                    salida = sc.next().toLowerCase().charAt(0);
+                    if(salida == 's'){
+                        ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(true);
+                    }else if(salida == 'n'){
+                        ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(false);
+                    }else{
+                        System.out.println("| > Error, ingrese 'S' o 's' si tiene salida\n| o 'N' o 'n' si no tiene salida");
+                    }
+                }while(salida != 's' && salida != 'n');
             }
         }while(opcion != 0);
 
@@ -215,12 +242,6 @@ public class EscapeRoom {
         System.out.println("|");
         sleepMilisegundos(150);
         System.out.print("| > Ingrese opcion: ");
-    }
-    public static void modificarNombreHabitacion(Object habitacion){
-        Scanner sc = new Scanner(System.in);
-        System.out.print("| > Ingrese nuevo nombre: "); 
-        String nombre = sc.nextLine(); 
-        ((Habitacion)habitacion).setNombre(nombre);
     }
     // ----  Equipo ---- 
     public static void cargarEquipo(DiccionarioHash equipos, String linea){
@@ -261,16 +282,22 @@ public class EscapeRoom {
         // Variables de equipo
         String nombre = "";
         int puntajeSalida = 0, puntajeTotal = 0, puntajeActual = 0, habitacionActual = 0;
-
-        System.out.println("| > Ingrese nombre del equipo: ");
-        nombre = sc.nextLine();
-        System.out.println("| > Ingrese puntaje de salida: ");
+        boolean existe;
+        do{
+            System.out.print("| > Ingrese nombre del equipo: ");
+            nombre = sc.nextLine();
+            existe = equipos.pertenece(nombre);
+            if(existe){
+                System.out.println("| > El equipo " + nombre + " ya existe.");
+            }
+        }while(existe);
+        System.out.print("| > Ingrese puntaje de salida: ");
         puntajeSalida = sc.nextInt();
-        System.out.println("| > Ingrese puntaje total: ");
+        System.out.print("| > Ingrese puntaje total: ");
         puntajeTotal = sc.nextInt();
-        System.out.println("| > Ingrese puntaje actual: ");
+        System.out.print("| > Ingrese puntaje actual: ");
         puntajeActual = sc.nextInt();
-        System.out.println("| > Ingrese habitacion actual: ");
+        System.out.print("| > Ingrese habitacion actual: ");
         habitacionActual = sc.nextInt();
 
          // Luego creo el equipo con las variables llenadas con los tokens
@@ -278,6 +305,8 @@ public class EscapeRoom {
 
          // Guardo en el hash de equipos el nuevo equipo con el nombre como clave y "nuevo" como dato
          equipos.insertar(nombre, nuevo);
+
+         System.out.println("| > El equipo " + nuevo.toString() + " ha sido dado de alta");
     }
     public static void eliminarEquipo(DiccionarioHash equipos){
         Scanner sc = new Scanner(System.in);
@@ -333,19 +362,28 @@ public class EscapeRoom {
         // Variables de desafio
         String nombre = "", tipo = "";
         int puntaje = 0;
+        boolean existe;
 
-        System.out.println("| > Ingrese nombre del desafio: ");
+        System.out.print("| > Ingrese nombre del desafio: ");
         nombre = sc.nextLine();
-        System.out.println("| > Ingrese tipo: ");
+        System.out.print("| > Ingrese tipo: ");
         tipo = sc.nextLine();
-        System.out.println("| > Ingrese puntaje: ");
-        puntaje = sc.nextInt();
+        do{
+            System.out.print("| > Ingrese puntaje: ");
+            puntaje = sc.nextInt();
+            existe = desafios.pertenece(puntaje);
+            if(existe){
+                System.out.println("| > El desafio de " + puntaje + " puntos ya existe.");
+            }
+        }while(existe);
         
         // Luego creo el desafio con las variables llenadas con los tokens
         Desafio nuevo = new Desafio(puntaje, nombre, tipo);
 
         // Guardo en el el AVL de desafios el nuevo desafio con el nombre como clave y "nuevo" como dato
         desafios.insertar(puntaje, nuevo);
+
+        System.out.println("| > El desafio " + nuevo.toString() + " ha sido dado de alta");
     }
     public static void eliminarDesafio(DiccionarioAVL desafios){
         Scanner sc = new Scanner(System.in);
@@ -398,16 +436,38 @@ public class EscapeRoom {
         Scanner sc = new Scanner(System.in);
         // Variables de puerta
         int origen = 0, destino = 0, puntaje = 0;
-
-        System.out.println("| > Ingrese codigo de la habitacion de origen: ");
-        origen = sc.nextInt();
-        System.out.println("| > Ingrese el del destino: ");
-        destino = sc.nextInt();
-        System.out.println("| > Ingrese puntaje necesario: ");
+        boolean existe, existeHabitacion;
+        // Ingreso de datos, utiliza "mucho" tiempo de ejecucion, ya que recorre el grafo en orden n
+        // para buscar si los datos ingresados pueden ser utilizados, pero da una mejor experiencia al usuario
+        do{
+            do{
+                System.out.print("| > Ingrese codigo de la habitacion de origen: ");
+                origen = sc.nextInt();
+                existeHabitacion = casa.existeVertice(origen);
+                if(!existeHabitacion){
+                    System.out.println("| > No existe esa habitacion.                    |");
+                }
+            }while(!existeHabitacion);
+            do{
+                System.out.print("| > Ingrese el del destino: ");
+                destino = sc.nextInt();
+                existeHabitacion = casa.existeVertice(destino);
+                if(!existeHabitacion){
+                    System.out.println("| > No existe esa habitacion.                    |");
+                }
+            }while(!existeHabitacion);
+            existe = casa.existeArco(origen, destino);
+            if(existe){
+                System.out.println("| > La puerta de la habitacion " + origen + " a la\n| habitacion " + destino + " ya existe.");
+            }
+        }while(existe);
+        System.out.print("| > Ingrese puntaje necesario: ");
         puntaje = sc.nextInt();
-
+        
         // Inserto la conexion entre las habitaciones
         casa.insertarArco(origen, destino, puntaje);
+
+        System.out.println("| > La puerta de " + origen + " a " + destino + " ha sido dado de alta");
     }
     public static void eliminarPuerta(GrafoEtiq casa){
         Scanner sc = new Scanner(System.in);
@@ -499,7 +559,7 @@ public class EscapeRoom {
         sleepMilisegundos(150);
         System.out.println("| 3. Equipos                                     |");
         sleepMilisegundos(150);
-        System.out.println("| 3. Puertas                                     |");
+        System.out.println("| 4. Puertas                                     |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
