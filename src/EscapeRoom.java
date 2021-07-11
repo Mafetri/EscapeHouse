@@ -82,9 +82,10 @@ public class EscapeRoom {
     }
     
     // =================================
-    //          Carga de Datos
+    //     Carga/Baja/ Modificaion
+    //           de Datos
     // =================================
-    // ---- Carga de Habitacion ---- 
+    // ----  Habitacion ---- 
     public static void cargarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa,String linea){
         // Variables de habitacion
         int codigo = 0, planta = 0, metrosCuadrados = 0;
@@ -139,13 +140,15 @@ public class EscapeRoom {
         metrosCuadrados = sc.nextInt();
         System.out.println("| > Tiene salida? (s/n): ");
         do{
-            salida = sc.next().charAt(0);
-            if(salida == 's' || salida == 'S'){
+            salida = sc.next().toLowerCase().charAt(0);
+            if(salida == 's'){
                 tieneSalida = true;
-            }else if(salida == 'n' && salida == 'N' ){
+            }else if(salida == 'n'){
                 tieneSalida = false;
+            }else{
+                System.out.println("| > Error, ingrese 'S' o 's' si tiene salida\n| o 'N' o 'n' si no tiene salida");
             }
-        }while(salida != 's' && salida != 'S' && salida != 'n' && salida != 'N');
+        }while(salida != 's' && salida != 'n');
         
         // Luego creo la habitacion con las variables llenadas con los tokens
         Habitacion nueva = new Habitacion(codigo, nombre, planta, metrosCuadrados, tieneSalida);
@@ -156,7 +159,25 @@ public class EscapeRoom {
         // Agrego la habitacion a la casa
         casa.insertarVertice(codigo);
     }
-    // ---- Carga de Equipo ---- 
+    public static void eliminarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa){
+        Scanner sc = new Scanner(System.in);
+        int codigo = 0;
+        boolean exitoHab = false, exitoCasa = false;
+        System.out.println("| > Indique codigo de habitacion a eliminar: ");
+        codigo = sc.nextInt();
+
+        // Elimino la habitacion de las habitaciones y de la casa
+        exitoHab = habitaciones.eliminar(codigo);
+        exitoCasa = casa.eliminarVertice(codigo);
+
+        System.out.print("| > La habitacion con codigo " + codigo);
+        if(exitoHab && exitoCasa){
+            System.out.println(" ha sido eliminada.");
+        }else{
+            System.out.println(" no se ha encontrado.");
+        }
+    }
+    // ----  Equipo ---- 
     public static void cargarEquipo(DiccionarioHash equipos, String linea){
         // Variables de equipo
         String nombre = "";
@@ -190,7 +211,47 @@ public class EscapeRoom {
         // Guardo en el hash de equipos el nuevo equipo con el nombre como clave y "nuevo" como dato
         equipos.insertar(nombre, nuevo);
     }
-    // ---- Carga de Desafios ----
+    public static void cargarEquipoManual(DiccionarioHash equipos){
+        Scanner sc = new Scanner(System.in);
+        // Variables de equipo
+        String nombre = "";
+        int puntajeSalida = 0, puntajeTotal = 0, puntajeActual = 0, habitacionActual = 0;
+
+        System.out.println("| > Ingrese nombre del equipo: ");
+        nombre = sc.nextLine();
+        System.out.println("| > Ingrese puntaje de salida: ");
+        puntajeSalida = sc.nextInt();
+        System.out.println("| > Ingrese puntaje total: ");
+        puntajeTotal = sc.nextInt();
+        System.out.println("| > Ingrese puntaje actual: ");
+        puntajeActual = sc.nextInt();
+        System.out.println("| > Ingrese habitacion actual: ");
+        habitacionActual = sc.nextInt();
+
+         // Luego creo el equipo con las variables llenadas con los tokens
+         Equipo nuevo = new Equipo(nombre, puntajeSalida, puntajeTotal, habitacionActual, puntajeActual);
+
+         // Guardo en el hash de equipos el nuevo equipo con el nombre como clave y "nuevo" como dato
+         equipos.insertar(nombre, nuevo);
+    }
+    public static void eliminarEquipo(DiccionarioHash equipos){
+        Scanner sc = new Scanner(System.in);
+        String nombre = "";
+        boolean exito = false;
+
+        System.out.println("| > Ingrese nombre del equipo a eliminar: ");
+        nombre = sc.nextLine();
+
+        exito = equipos.eliminar(nombre);
+
+        System.out.print("| > El equipo " + nombre);
+        if(exito){
+            System.out.println(" ha sido eliminado.");
+        }else{
+            System.out.println(" no se ha encontrado.");
+        }
+    }
+    // ----  Desafios ----
     public static void cargarDesafio(DiccionarioAVL desafios, String linea){
         // Variables de desafio
         String nombre = "", tipo = "";
@@ -222,7 +283,45 @@ public class EscapeRoom {
         // Guardo en el el AVL de desafios el nuevo desafio con el nombre como clave y "nuevo" como dato
         desafios.insertar(puntaje, nuevo);
     }
-    // ---- Carga de Puertas ----
+    public static void cargarDesafioManual(DiccionarioAVL desafios){
+        Scanner sc = new Scanner(System.in);
+        // Variables de desafio
+        String nombre = "", tipo = "";
+        int puntaje = 0;
+
+        System.out.println("| > Ingrese nombre del desafio: ");
+        nombre = sc.nextLine();
+        System.out.println("| > Ingrese tipo: ");
+        tipo = sc.nextLine();
+        System.out.println("| > Ingrese puntaje: ");
+        puntaje = sc.nextInt();
+        
+        // Luego creo el desafio con las variables llenadas con los tokens
+        Desafio nuevo = new Desafio(puntaje, nombre, tipo);
+
+        // Guardo en el el AVL de desafios el nuevo desafio con el nombre como clave y "nuevo" como dato
+        desafios.insertar(puntaje, nuevo);
+    }
+    public static void eliminarDesafio(DiccionarioAVL desafios){
+        Scanner sc = new Scanner(System.in);
+        int puntaje = 0;
+        boolean exito = false;
+
+        System.out.println("| > Ingrese puntaje del desafio a eliminar: ");
+        puntaje = sc.nextInt();
+
+        exito = desafios.eliminar(puntaje);
+
+        System.out.print("| > El desafio con un puntaje de " + puntaje);
+
+        if(exito){
+            System.out.println(" ha sido eliminado.");
+        }else{
+            System.out.println(" no se ha encontrado.");
+        }
+        
+    }
+    // ----  Puertas ----
     public static void cargarPuerta(GrafoEtiq casa, String linea){
         // Variables de puerta
         int origen = 0, destino = 0, puntaje = 0;
@@ -250,7 +349,38 @@ public class EscapeRoom {
         // Inserto la conexion entre las habitaciones
         casa.insertarArco(origen, destino, puntaje);
     }
-    
+    public static void cargarPuertasManual(GrafoEtiq casa){
+        Scanner sc = new Scanner(System.in);
+        // Variables de puerta
+        int origen = 0, destino = 0, puntaje = 0;
+
+        System.out.println("| > Ingrese codigo de la habitacion de origen: ");
+        origen = sc.nextInt();
+        System.out.println("| > Ingrese el del destino: ");
+        destino = sc.nextInt();
+        System.out.println("| > Ingrese puntaje necesario: ");
+        puntaje = sc.nextInt();
+
+        // Inserto la conexion entre las habitaciones
+        casa.insertarArco(origen, destino, puntaje);
+    }
+    public static void eliminarPuerta(GrafoEtiq casa){
+        Scanner sc = new Scanner(System.in);
+        int habOrigen = 0, habDestino = 0;
+        boolean exito = false;
+
+        exito = casa.eliminarArco(habOrigen, habDestino);
+
+        System.out.print("| > La puerta de la habitacion " + habOrigen + " a\n | la habitacion " + habDestino);
+        
+        if(exito){
+            System.out.println(" se ha eliminado. ");
+        }else{
+            System.out.println(" no se ha encontrado.");
+        }
+        
+    }
+
     // =================================
     //   Altas, bajas y modificaciones
     // =================================
@@ -261,17 +391,32 @@ public class EscapeRoom {
             menuABM();
             opcion = sc.nextInt();
 
-            switch(opcion){
-                case 1: menuTipoDeABM("|                   A L T A S                    |"); break;
-                case 2: menuTipoDeABM("|                   B A J A S                    |"); break;
-                case 3: menuTipoDeABM("|          M O D I F I C A C I O N E S           |"); break;
-            }
-
-            if(opcion != 0){
+            if(opcion == 1){
+                menuTipoDeABM("|                   A L T A S                    |");
                 opcion = sc.nextInt();
-
                 switch(opcion){
                     case 1: cargarHabitacionManual(habitaciones, casa); break;
+                    case 2: cargarDesafioManual(desafios); break;
+                    case 3: cargarEquipoManual(equipos); break;
+                    case 4: cargarPuertasManual(casa); break;
+                }
+            } else if(opcion == 2){
+                menuTipoDeABM("|                   B A J A S                    |");
+                opcion = sc.nextInt();
+                switch(opcion){
+                    case 1: eliminarHabitacion(habitaciones, casa); break;
+                    case 2: eliminarDesafio(desafios); break;
+                    case 3: eliminarEquipo(equipos); break;
+                    case 4: eliminarPuerta(casa); break;
+                }
+            } else if(opcion == 3){
+                menuTipoDeABM("|          M O D I F I C A C I O N E S           |");
+                opcion = sc.nextInt();
+                switch(opcion){
+                    case 1: modificarHabitacion(habitaciones, casa); break;
+                    case 2: modificarDesafio(); break;
+                    case 3: modificarEquipo(); break;
+                    case 3: modificarPuertas(); break;
                 }
             }
         }while(opcion != 0);
