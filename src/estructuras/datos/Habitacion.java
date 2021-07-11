@@ -47,9 +47,9 @@ public class Habitacion {
     public String toString(){
         String enTexto = "";
         if(this.salida){
-            enTexto = nombre + ", en la planta " + planta + ", con " + metrosCuadrados + "m2" + ", con salida.";
+            enTexto = nombre + ", en la planta " + planta + ", con " + metrosCuadrados + "m2" + ", con salida";
         } else{
-            enTexto = nombre + ", en la planta " + planta + ", con " + metrosCuadrados + "m2" + ", sin salida.";
+            enTexto = nombre + ", en la planta " + planta + ", con " + metrosCuadrados + "m2" + ", sin salida";
         }
         return enTexto;
     }
