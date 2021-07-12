@@ -40,7 +40,7 @@ public class EscapeRoom {
                     case 2: consultaHabitaciones(habitaciones, casa); break;
                     case 3: consultaDesafios(desafios); break;
                     case 4: consultaParticipantes(); break;
-                    case 5: consultaGeneral();
+                    case 5: consultaGeneral(habitaciones, casa, desafios,equipos);
                 }
             }while(opcion != 0);
         }
@@ -599,23 +599,34 @@ public class EscapeRoom {
                 System.out.print("| > La puerta de la habitacion " + origen + " a la " + destino + " no existe.");
             }
         }while(!existe);
-        do{
-            menuModificacionPuerta(origen, destino);
-            opcion = sc.nextInt();
-            if(opcion == 1){
-                System.out.print("| > Ingrese nuevo origen de la puerta: ");
-                int nuevoOrigen = sc.nextInt();
-                casa.cambiarVertice(origen, nuevoOrigen);
-            }else if(opcion == 2){
-                System.out.print("| > Ingrese nuevo destino de la puerta: ");
-                int nuevoDestino = sc.nextInt();
-                casa.cambiarVertice(destino, nuevoDestino);
-            }else if(opcion == 3){
-                System.out.print("| > Ingrese nuevo puntaje de la puerta: ");
-                int nuevoPuntaje = sc.nextInt();
-                casa.cambiarEtiqueta(origen, destino, nuevoPuntaje);
+        
+        menuModificacionPuerta(origen, destino);
+        opcion = sc.nextInt();
+        if(opcion == 1){
+            System.out.print("| > Ingrese nuevo origen de la puerta: ");
+            int nuevoOrigen = sc.nextInt();
+            if(casa.existeVertice(nuevoOrigen)){
+                int etiqueta = casa.etiquetaArco(origen, destino);
+                casa.eliminarArco(origen, destino);
+                casa.insertarArco(nuevoOrigen, destino, etiqueta);
+            }else{
+                System.out.println("| > La nueva habitacion de origen no existe en la casa.");
             }
-        }while(opcion > 0);
+        }else if(opcion == 2){
+            System.out.print("| > Ingrese nuevo destino de la puerta: ");
+            int nuevoDestino = sc.nextInt();
+            if(casa.existeVertice(nuevoDestino)){
+                int etiqueta = casa.etiquetaArco(origen, destino);
+                casa.eliminarArco(origen, destino);
+                casa.insertarArco(origen, nuevoDestino, etiqueta);
+            }else{
+                System.out.println("| > La nueva habitacion de destino no existe en la casa.");
+            }
+        }else if(opcion == 3){
+            System.out.print("| > Ingrese nuevo puntaje de la puerta: ");
+            int nuevoPuntaje = sc.nextInt();
+            casa.cambiarEtiqueta(origen, destino, nuevoPuntaje);
+        }
 
     }
     public static void menuModificacionPuerta(int origen, int destino){
@@ -934,7 +945,22 @@ public class EscapeRoom {
     // =========================
     //      Consulta General
     // =========================
-    public static void consultaGeneral(){}
+    public static void consultaGeneral(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioAVL desafios, DiccionarioHash equipos){
+        System.out.println("==================================================");
+        System.out.println("|        E S T A D O  D E L  S I S T E M A       |");        
+        System.out.println("==================================================");
+        System.out.println("|             H A B I T A C I O N E S            |");
+        System.out.println("|------------------------------------------------|");
+        System.out.println(habitaciones.toString());
+        System.out.println("|------------------------------------------------|");
+        System.out.println("|                    C A S A                     |");
+        System.out.println("|------------------------------------------------|");
+        System.out.println(casa.toString());
+        System.out.println("|------------------------------------------------|");
+        System.out.println("|             D E S A F I O S                    |");
+        System.out.println("|------------------------------------------------|");
+        System.out.println(desafios.toString());
+    }
 
 
     // =========================
