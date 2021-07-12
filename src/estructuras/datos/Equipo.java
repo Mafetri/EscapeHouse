@@ -42,7 +42,7 @@ public class Equipo {
     public void setHabitacion(int habitacionActual){
         this.habitacionActual = habitacionActual;
     }
-    public void setPuntajeAcutal(int puntajeActual){
+    public void setPuntajeActual(int puntajeActual){
         this.puntajeActual = puntajeActual;
     }
     public String toString(){

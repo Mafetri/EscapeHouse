@@ -189,37 +189,41 @@ public class EscapeRoom {
         int codigo = 0, opcion = 0;
         System.out.print("| > Ingrese codigo de habitacion a modificar: ");
         codigo = sc.nextInt();
-        do{
-            menuModificaionHabitacion(codigo);
-            opcion = sc.nextInt();
-            if(opcion == 1){
-                System.out.print("| > Ingrese nuevo nombre: "); 
-                String nombre = sc.nextLine(); 
-                ((Habitacion)habitaciones.recuperarDatos(codigo)).setNombre(nombre);
-            } else if(opcion == 2){
-                System.out.print("| > Ingrese nueva planta: "); 
-                int planta = sc.nextInt(); 
-                ((Habitacion)habitaciones.recuperarDatos(codigo)).setPlanta(planta);
-            } else if(opcion == 3){
-                System.out.print("| > Ingrese metros cuadrados: "); 
-                int metros = sc.nextInt(); 
-                ((Habitacion)habitaciones.recuperarDatos(codigo)).setMetrosCuadrados(metros);
-            } else if(opcion == 4){
-                System.out.print("| > Indique si tiene salida: (s/n)");
-                char salida;
-                do{
-                    salida = sc.next().toLowerCase().charAt(0);
-                    if(salida == 's'){
-                        ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(true);
-                    }else if(salida == 'n'){
-                        ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(false);
-                    }else{
-                        System.out.println("| > Error, ingrese 'S' o 's' si tiene salida\n| o 'N' o 'n' si no tiene salida");
-                    }
-                }while(salida != 's' && salida != 'n');
-            }
-        }while(opcion != 0);
-
+        if(habitaciones.pertenece(codigo)){
+            do{
+                menuModificaionHabitacion(codigo);
+                opcion = sc.nextInt();
+                if(opcion == 1){
+                    System.out.print("| > Ingrese nuevo nombre: "); 
+                    String nombre = sc.nextLine(); 
+                    ((Habitacion)habitaciones.recuperarDatos(codigo)).setNombre(nombre);
+                } else if(opcion == 2){
+                    System.out.print("| > Ingrese nueva planta: "); 
+                    int planta = sc.nextInt(); 
+                    ((Habitacion)habitaciones.recuperarDatos(codigo)).setPlanta(planta);
+                } else if(opcion == 3){
+                    System.out.print("| > Ingrese metros cuadrados: "); 
+                    int metros = sc.nextInt(); 
+                    ((Habitacion)habitaciones.recuperarDatos(codigo)).setMetrosCuadrados(metros);
+                } else if(opcion == 4){
+                    System.out.print("| > Indique si tiene salida: (s/n)");
+                    char salida;
+                    do{
+                        salida = sc.next().toLowerCase().charAt(0);
+                        if(salida == 's'){
+                            ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(true);
+                        }else if(salida == 'n'){
+                            ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(false);
+                        }else{
+                            System.out.println("| > Error, ingrese 'S' o 's' si tiene salida\n| o 'N' o 'n' si no tiene salida");
+                        }
+                    }while(salida != 's' && salida != 'n');
+                }
+            }while(opcion != 0);
+        }else{
+            System.out.println("| > No existe la habitacion ingresada.");
+        }
+        
     }
     public static void menuModificaionHabitacion(int codigo){
         System.out.println("==================================================");
@@ -325,6 +329,66 @@ public class EscapeRoom {
             System.out.println(" no se ha encontrado.");
         }
     }
+    public static void modificarEquipo(DiccionarioHash equipos, DiccionarioAVL habitaciones){
+        Scanner sc = new Scanner(System.in);
+        int opcion = 0, habitacionActual;
+        boolean existe;
+        System.out.print("| > Ingrese nombre de equipo a modificar: ");
+        String nombre = sc.nextLine();
+        if(equipos.pertenece(nombre)){
+            do{
+                menuModificaionEquipo(nombre);
+                opcion = sc.nextInt();
+                if(opcion == 1){
+                    System.out.print("| > Ingrese puntaje de salida: "); 
+                    int puntajeSalida = sc.nextInt(); 
+                    ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeSalida(puntajeSalida);
+                } else if(opcion == 2){
+                    System.out.print("| > Ingrese puntaje total: "); 
+                    int puntajeTotal = sc.nextInt(); 
+                    ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeTotal(puntajeTotal);
+                } else if(opcion == 3){
+                    System.out.print("| > Ingrese puntaje actual: "); 
+                    int puntajeActual = sc.nextInt(); 
+                    ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeActual(puntajeActual);
+                } else if(opcion == 4){
+                    do{
+                        System.out.print("| > Ingrese habitacion actual: ");
+                        habitacionActual = sc.nextInt();
+                        existe = habitaciones.pertenece(habitacionActual);
+                        if(!existe){
+                            System.out.println("| > La habitacion ingresada no existe.");
+                        }
+                    }while(!existe);
+                    ((Equipo)equipos.recuperarDatos(nombre)).setHabitacion(habitacionActual);
+                }
+            }while(opcion != 0);
+        }else{
+            System.out.println("| > No existe el equipo ingresado.");
+        }
+    }
+    public static void menuModificaionEquipo(String nombre){
+        System.out.println("==================================================");
+        System.out.println("|           MODIFICACION EQUIPO " + nombre);
+        System.out.println("==================================================");
+        System.out.println("| 1. Modificar puntaje de salida                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Modificar puntaje total                     |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Modificar puntaje actual                    |");
+        sleepMilisegundos(150);
+        System.out.println("| 4. Modificar habitacion actual                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
+    }
     // ----  Desafios ----
     public static void cargarDesafio(DiccionarioAVL desafios, String linea){
         // Variables de desafio
@@ -403,6 +467,48 @@ public class EscapeRoom {
             System.out.println(" no se ha encontrado.");
         }
         
+    }
+    public static void modificarDesafio(DiccionarioAVL desafios){
+        Scanner sc = new Scanner(System.in);
+        int opcion = 0;
+        System.out.print("| > Ingrese puntaje del desafio: ");
+        int puntaje = sc.nextInt();
+        
+        if(desafios.pertenece(puntaje)){
+            do{
+                menuModificacionDesafio(puntaje);
+                opcion = sc.nextInt();
+                if(opcion == 1){
+                    System.out.print("| > Ingrese nombre: "); 
+                    String nombre = sc.nextLine(); 
+                    ((Desafio)desafios.recuperarDatos(puntaje)).setNombre(nombre);
+                } else if(opcion == 2){
+                    System.out.print("| > Ingrese tipo: "); 
+                    String tipo = sc.nextLine(); 
+                    ((Desafio)desafios.recuperarDatos(puntaje)).setNombre(tipo);
+                } 
+            }while(opcion != 0);
+        }else{
+            System.out.println("| > No existe el desafio ingresado.");
+        }
+    }
+    public static void menuModificacionDesafio(int puntaje){
+        System.out.println("==================================================");
+        System.out.println("|           MODIFICACION DESAFIO " + puntaje);
+        System.out.println("==================================================");
+        System.out.println("| 1. Modificar nombre                            |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Modificar tipo                              |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
     }
     // ----  Puertas ----
     public static void cargarPuerta(GrafoEtiq casa, String linea){
@@ -485,6 +591,7 @@ public class EscapeRoom {
         }
         
     }
+    
 
     // =================================
     //   Altas, bajas y modificaciones

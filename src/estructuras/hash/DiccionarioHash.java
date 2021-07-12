@@ -147,7 +147,7 @@ public class DiccionarioHash {
     }
 
     // ---- Recuperar Datos ----
-    public NodoHashDicc recuperarDatos(Object elem){
+    public Object recuperarDatos(Object elem){
         int pos = elem.hashCode();
         if(pos < 0){
             pos = (-1 * pos) % TAMANIO; 
@@ -165,6 +165,6 @@ public class DiccionarioHash {
             }
         }
 
-        return aux;
+        return aux.getDato();
     }
 }
