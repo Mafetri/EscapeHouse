@@ -18,6 +18,7 @@ public class EscapeRoom {
         DiccionarioAVL habitaciones = new DiccionarioAVL();
         DiccionarioAVL desafios = new DiccionarioAVL();
         DiccionarioHash equipos = new DiccionarioHash();
+        MapeoAMuchos desafiosResueltos = new MapeoAMuchos();
 
         // Carteles de inicio
         cartelInicio();
@@ -36,11 +37,11 @@ public class EscapeRoom {
                 opcion = sc.nextInt();
 
                 switch (opcion) {
-                    case 1: abm(habitaciones, casa, desafios,equipos);break;
+                    case 1: abm(habitaciones, casa, desafios, equipos);break;
                     case 2: consultaHabitaciones(habitaciones, casa); break;
-                    case 3: consultaDesafios(desafios); break;
+                    case 3: consultaDesafios(desafios, desafiosResueltos, equipos); break;
                     case 4: consultaParticipantes(); break;
-                    case 5: consultaGeneral(habitaciones, casa, desafios,equipos);
+                    case 5: consultaGeneral(habitaciones, casa, desafios, equipos);
                 }
             }while(opcion != 0);
         }
@@ -858,7 +859,7 @@ public class EscapeRoom {
     // =========================
     //     Consulta Desafios
     // =========================
-    public static void consultaDesafios(DiccionarioAVL desafios){
+    public static void consultaDesafios(DiccionarioAVL desafios, MapeoAMuchos desafiosResueltos, DiccionarioHash equipos){
         Scanner sc = new Scanner(System.in);
         int opcion;
         do{
@@ -867,6 +868,7 @@ public class EscapeRoom {
 
             switch(opcion){
                 case 1: mostrarDesafio(desafios); break;
+                case 2: mostrarDesafiosResueltos(equipos, desafiosResueltos);
             }
         }while(opcion != 0);
     }
@@ -913,7 +915,23 @@ public class EscapeRoom {
         
         System.out.println("|------------------------------------------------|");
     }
-    
+    // ---- Mostrar Desafios Resueltos ---- 
+    public static void mostrarDesafiosResueltos(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
+        Scanner sc = new Scanner(System.in);
+        String nombre;
+        boolean existe = false;
+        do{
+            System.out.print("| > Ingrese nombre del equipo: ");
+            nombre = sc.nextLine();
+            existe = equipos.pertenece(nombre);
+            if(!existe){
+                System.out.println("| > El equipo no existe. ");
+            }
+        }while(!existe);
+
+        System.out.println("| > Los desafios resueltos por el equipo " + nombre + " son: " + desafiosResueltos.obtenerValores(nombre).toString());
+    }
+
     // =========================
     //  Consulta Participantes
     // =========================

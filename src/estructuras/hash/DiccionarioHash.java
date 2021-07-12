@@ -12,7 +12,6 @@
 
 package estructuras.hash;
 import estructuras.lista.Lista;
-import estructuras.datos.Equipo;
 
 public class DiccionarioHash {
     private static final int TAMANIO = 20;
@@ -25,13 +24,8 @@ public class DiccionarioHash {
     }
 
     // ---- Insertar ----
-    public boolean insertar(Object elem, Equipo dato) {
-        int pos = elem.hashCode();
-        if(pos < 0){
-            pos = (-1 * pos) % TAMANIO; 
-        } else{
-            pos = pos % TAMANIO;
-        }
+    public boolean insertar(Object elem, Object dato) {
+        int pos = funcionHash(elem);
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
@@ -53,12 +47,7 @@ public class DiccionarioHash {
 
     // ---- Eliminar ----
     public boolean eliminar(Object elem) {
-        int pos = elem.hashCode();
-        if(pos < 0){
-            pos = (-1 * pos) % TAMANIO; 
-        } else{
-            pos = pos % TAMANIO;
-        }
+        int pos = funcionHash(elem);
         int posNodo = 0;
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
@@ -102,12 +91,7 @@ public class DiccionarioHash {
 
     // ---- Pertenece ----
     public boolean pertenece(Object elem){
-        int pos = elem.hashCode();
-        if(pos < 0){
-            pos = (-1 * pos) % TAMANIO; 
-        } else{
-            pos = pos % TAMANIO;
-        }
+        int pos = funcionHash(elem);
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
@@ -148,12 +132,7 @@ public class DiccionarioHash {
 
     // ---- Recuperar Datos ----
     public Object recuperarDatos(Object elem){
-        int pos = elem.hashCode();
-        if(pos < 0){
-            pos = (-1 * pos) % TAMANIO; 
-        } else{
-            pos = pos % TAMANIO;
-        }
+        int pos = funcionHash(elem);
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
 
@@ -166,5 +145,16 @@ public class DiccionarioHash {
         }
 
         return aux.getDato();
+    }
+
+    // ---- Funcion Hash ----
+    private int funcionHash(Object elem){
+        int pos = elem.hashCode();
+        if(pos < 0){
+            pos = (-1 * pos) % TAMANIO; 
+        } else{
+            pos = pos % TAMANIO;
+        }
+        return pos;
     }
 }
