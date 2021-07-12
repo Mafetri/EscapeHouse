@@ -31,7 +31,6 @@ public class EscapeRoom {
                 case 1: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
                 case 2: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);
             }
-
             do{
                 cartelMenuPrincipal();
                 opcion = sc.nextInt();
@@ -44,14 +43,9 @@ public class EscapeRoom {
                     case 5: consultaGeneral();
                 }
             }while(opcion != 0);
-
-
         }
         sc.close();
         cartelFinal();
-        
-
-
     }
 
     // =================================
@@ -591,8 +585,60 @@ public class EscapeRoom {
         }
         
     }
-    
+    public static void modificarPuerta(GrafoEtiq casa){
+        Scanner sc = new Scanner(System.in);
+        boolean existe;
+        int opcion = 0, origen, destino;
+        do{
+            System.out.print("| > Ingrese origen de la puerta: ");
+            origen = sc.nextInt();
+            System.out.print("| > Ingrese destino de la puerta: ");
+            destino = sc.nextInt();
+            existe = casa.existeArco(origen, destino);
+            if(!existe){
+                System.out.print("| > La puerta de la habitacion " + origen + " a la " + destino + " no existe.");
+            }
+        }while(!existe);
+        do{
+            menuModificacionPuerta(origen, destino);
+            opcion = sc.nextInt();
+            if(opcion == 1){
+                System.out.print("| > Ingrese nuevo origen de la puerta: ");
+                int nuevoOrigen = sc.nextInt();
+                casa.cambiarVertice(origen, nuevoOrigen);
+            }else if(opcion == 2){
+                System.out.print("| > Ingrese nuevo destino de la puerta: ");
+                int nuevoDestino = sc.nextInt();
+                casa.cambiarVertice(destino, nuevoDestino);
+            }else if(opcion == 3){
+                System.out.print("| > Ingrese nuevo puntaje de la puerta: ");
+                int nuevoPuntaje = sc.nextInt();
+                casa.cambiarEtiqueta(origen, destino, nuevoPuntaje);
+            }
+        }while(opcion > 0);
 
+    }
+    public static void menuModificacionPuerta(int origen, int destino){
+        System.out.println("==================================================");
+        System.out.println("|           MODIFICACION PUERTA " + origen + "/" + destino);
+        System.out.println("==================================================");
+        System.out.println("| 1. Modificar origen                            |");
+        sleepMilisegundos(150);
+        System.out.println("| 2. Modificar destino                           |");
+        sleepMilisegundos(150);
+        System.out.println("| 3. Modificar puntaje necesario                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 0. <-- Volver <--                              |");
+        System.out.print("|");
+        for(int i = 0; i <48; i++){
+            System.out.print("-");
+            sleepMilisegundos(15);
+        }
+        System.out.println("|");
+        sleepMilisegundos(150);
+        System.out.print("| > Ingrese opcion: ");
+    }
+    
     // =================================
     //   Altas, bajas y modificaciones
     // =================================
@@ -610,7 +656,7 @@ public class EscapeRoom {
                     case 1: cargarHabitacionManual(habitaciones, casa); break;
                     case 2: cargarDesafioManual(desafios); break;
                     case 3: cargarEquipoManual(equipos); break;
-                    case 4: cargarPuertasManual(casa); break;
+                    case 4: cargarPuertasManual(casa);
                 }
             } else if(opcion == 2){
                 menuTipoDeABM("|                   B A J A S                    |");
@@ -619,19 +665,17 @@ public class EscapeRoom {
                     case 1: eliminarHabitacion(habitaciones, casa); break;
                     case 2: eliminarDesafio(desafios); break;
                     case 3: eliminarEquipo(equipos); break;
-                    case 4: eliminarPuerta(casa); break;
+                    case 4: eliminarPuerta(casa);
                 }
             } else if(opcion == 3){
                 menuTipoDeABM("|          M O D I F I C A C I O N E S           |");
                 opcion = sc.nextInt();
                 switch(opcion){
                     case 1: modificarHabitacion(habitaciones, casa); break;
-                    
+                    case 2: modificarDesafio(desafios); break;
+                    case 3: modificarEquipo(equipos, habitaciones); break;
+                    case 4: modificarPuerta(casa);
                 }
-                /*
-                case 2: modificarDesafio(); break;
-                    case 3: modificarEquipo(); break;
-                    case 3: modificarPuertas(); break; */
                 
             }
         }while(opcion != 0);

@@ -163,22 +163,22 @@ public class GrafoEtiq {
     // ---- Etiqueta Arco ----
     public int etiquetaArco(Object origen, Object destino ){
         int etiq = -1;
+        boolean encontrado = false;
         if(this.inicio != null && origen != null && destino != null){
             NodoVert nodoOrigen = ubicarVertice(origen);
             if(nodoOrigen != null){
                 NodoAdy adyOrigen = nodoOrigen.getPrimerAdy();
-                while (adyOrigen != null) {
+                while (adyOrigen != null && !encontrado) {
                     // Si el siguiente adyacente es el elemento origen lo borro
                     if (adyOrigen.getVertice().getElem().equals(destino)) {
                         etiq = adyOrigen.getEtiqueta();
-                        adyOrigen = null;
+                        encontrado = true;
                     } else {
                         adyOrigen = adyOrigen.getSigAdyacente();
                     }
                 }
             }
         }
-
         return etiq;
     }
 
@@ -226,12 +226,12 @@ public class GrafoEtiq {
 
         if(auxOrigen != null && auxDestino != null){
             Lista visitados = new Lista();
-            caminosSinPasarPor(auxOrigen, destino, noPasar, visitados, todosLosCaminos, 0, puntajeActual);
+            caminosSinPasarPorAux(auxOrigen, destino, noPasar, visitados, todosLosCaminos, 0, puntajeActual);
         }
 
         return todosLosCaminos;
     }
-    private void caminosSinPasarPor(NodoVert nodo, Object dest, Object noPasar, Lista vis, Lista todosLosCaminos, int puntajeNecesario, int puntajeActual){
+    private void caminosSinPasarPorAux(NodoVert nodo, Object dest, Object noPasar, Lista vis, Lista todosLosCaminos, int puntajeNecesario, int puntajeActual){
         if(nodo != null && !nodo.getElem().equals(noPasar) && puntajeNecesario <= puntajeActual){
             if(nodo.getElem().equals(dest)){
                 vis.insertar(nodo.getElem(), vis.longitud()+1);
@@ -241,7 +241,7 @@ public class GrafoEtiq {
                 NodoAdy ady = nodo.getPrimerAdy();
                 while(ady != null){
                     if(vis.localizar(ady.getVertice().getElem()) < 0){
-                        caminosSinPasarPor(ady.getVertice(), dest, noPasar, vis, todosLosCaminos, puntajeNecesario+ady.getEtiqueta(), puntajeActual);
+                        caminosSinPasarPorAux(ady.getVertice(), dest, noPasar, vis, todosLosCaminos, puntajeNecesario+ady.getEtiqueta(), puntajeActual);
                     }
                     ady = ady.getSigAdyacente();
                 }
@@ -249,7 +249,6 @@ public class GrafoEtiq {
             vis.eliminar(vis.localizar(nodo.getElem()));
         }
     }
-    
 
     // ---- To String ----
     public String toString() {
@@ -273,5 +272,37 @@ public class GrafoEtiq {
             vertice = vertice.getSigVertice();
         }
         return enTexto;
+    }
+
+    // ---- Cambiar Vertice ----
+    public boolean cambiarVertice(Object clave, Object nuevaClave){
+        boolean exito = false;
+        NodoVert aux = ubicarVertice(clave);
+        if(aux != null){
+            aux.setElem(nuevaClave);
+            exito = true;
+        }
+        return exito;
+    }
+
+    // ---- Cambiar Etiquieta ----
+    public boolean cambiarEtiqueta(Object origen, Object destino, int etiqueta){
+        boolean exito = false;
+        if(this.inicio != null && origen != null && destino != null){
+            NodoVert nodoOrigen = ubicarVertice(origen);
+            if(nodoOrigen != null){
+                NodoAdy adyOrigen = nodoOrigen.getPrimerAdy();
+                while (adyOrigen != null && !exito) {
+                    // Si el siguiente adyacente es el elemento origen lo borro
+                    if (adyOrigen.getVertice().getElem().equals(destino)) {
+                        adyOrigen.setEtiqueta(etiqueta);
+                        exito = true;
+                    } else {
+                        adyOrigen = adyOrigen.getSigAdyacente();
+                    }
+                }
+            }
+        }
+        return exito;
     }
 }
