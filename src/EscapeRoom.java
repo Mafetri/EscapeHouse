@@ -868,7 +868,8 @@ public class EscapeRoom {
 
             switch(opcion){
                 case 1: mostrarDesafio(desafios); break;
-                case 2: mostrarDesafiosResueltos(equipos, desafiosResueltos);
+                case 2: mostrarDesafiosResueltos(equipos, desafiosResueltos); break;
+                case 3: mostrarDesafiosTipo(desafios);
             }
         }while(opcion != 0);
     }
@@ -881,9 +882,7 @@ public class EscapeRoom {
         sleepMilisegundos(150);
         System.out.println("| 2. Mostrar desafios resueltos                  |");
         sleepMilisegundos(150);
-        System.out.println("| 3. Verificar desafio resuelto                  |");
-        sleepMilisegundos(150);
-        System.out.println("| 5. Mostrar desafios tipo                       |");
+        System.out.println("| 3. Mostrar desafios tipo                       |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
@@ -930,6 +929,31 @@ public class EscapeRoom {
         }while(!existe);
 
         System.out.println("| > Los desafios resueltos por el equipo " + nombre + " son: " + desafiosResueltos.obtenerValores(nombre).toString());
+    }
+    // ---- Mostrar Desafios Tipo ----
+    public static void mostrarDesafiosTipo(DiccionarioAVL desafios){
+        Scanner sc = new Scanner(System.in);
+        int puntaje1, puntaje2;
+        String tipo;
+        System.out.print("| > Ingrese puntaje minimo: ");
+        puntaje1 = sc.nextInt();
+        System.out.print("| > Ingrese puntaje maximo: ");
+        puntaje2 = sc.nextInt();
+        System.out.print("| > Ingrese tipo: ");
+        tipo = sc.next();
+
+        // Guardo en la lista desafiosRango los datos de los desafios con el puntaje entre puntaje1 y puntaje2
+        Lista desafiosRango = desafios.listarRangoDatos(puntaje1, puntaje2);
+
+        System.out.println("| > Los desafios con un puntaje entre " + puntaje1 + " y el puntaje " + puntaje2 + " son: ");
+
+        // Recorro la lista y pregunto si el tipo de cada dato de la lista es igual con el solicitado, si es asi, imprime todos los datos por pantalla
+        for(int i = 1; i <= desafiosRango.longitud(); i++){
+            Desafio desafioActual = ((Desafio)desafiosRango.recuperar(i));
+            if(desafioActual != null && desafioActual.getTipo().equals(tipo)){
+                System.out.println("| --> " + desafioActual.toString() + " con un puntaje de " + desafioActual.getPuntaje() + ". ");
+            }
+        }
     }
 
     // =========================

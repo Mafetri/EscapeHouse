@@ -13,8 +13,8 @@ E;Francisco;400;120;1;0
 E;Ignacio;400;115;3;0
 E;Leonel;400;30;4;0
 E;Colorido;400;25;5;0
-D;30;Acertijo;Lógico
-D;50;Sudoku;Matemático
+D;30;Acertijo;Logico
+D;50;Sudoku;Matematico
 D;65;Trabado;Ingenio
 D;100;Rosco;Letras
 D;68;Llave;Busqueda

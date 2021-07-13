@@ -1,6 +1,6 @@
 package estructuras.arbol;
 import estructuras.lista.Lista;
-
+import estructuras.datos.Desafio;
 public class DiccionarioAVL {
     private NodoAVLDicc raiz;
 
@@ -402,6 +402,37 @@ public class DiccionarioAVL {
                 listarRangoAux(nodo.getIzquierdo(), lis, min, max);
             }
         }
+    }
+
+    // ---- Listar Rango Datos ----
+    public Lista listarRangoDatos(Comparable min, Comparable max) {
+        Lista lis = new Lista();
+        
+        if (min != null && max != null && this.raiz != null) {
+            listarRangoDatosAux(this.raiz, lis, min, max);
+        }
+
+        return lis;
+    }
+    private void listarRangoDatosAux(NodoAVLDicc nodo, Lista lis, Comparable min, Comparable max) {
+        // Mientras el nodo no sea nulo
+        if (nodo != null) {
+            Comparable elem = nodo.getClave();
+            
+            // Si el elemento es mas chico que max hago la llamada recursiva por derecha
+            if (elem.compareTo(max) < 0) {
+                listarRangoDatosAux(nodo.getDerecho(), lis, min, max);
+            }
+            // Si esta entre min y max entonces guardo en la lista los datos
+            if (elem.compareTo(min) >= 0 && elem.compareTo(max) <= 0) {
+                lis.insertar(nodo.getDato(), 1);
+            }
+            // Si es mas grande que min, entonces hago la llamada recursiva por izquierda
+            if (elem.compareTo(min) > 0) {
+                listarRangoDatosAux(nodo.getIzquierdo(), lis, min, max);
+            }
+        }
+        
     }
 
     // ---- Elemento Minimo ----

@@ -16,7 +16,7 @@ public class Desafio {
     public String getNombre(){
         return nombre;
     }
-    public String getPlanta(){
+    public String getTipo(){
         return tipo;
     }
     public void setPuntaje(int puntaje){
