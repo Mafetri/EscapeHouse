@@ -40,7 +40,7 @@ public class EscapeRoom {
                     case 1: abm(habitaciones, casa, desafios, equipos);break;
                     case 2: consultaHabitaciones(habitaciones, casa); break;
                     case 3: consultaDesafios(desafios, desafiosResueltos, equipos); break;
-                    case 4: consultaParticipantes(); break;
+                    case 4: consultaParticipantes(equipos, desafiosResueltos); break;
                     case 5: consultaGeneral(habitaciones, casa, desafios, equipos);
                 }
             }while(opcion != 0);
@@ -76,6 +76,7 @@ public class EscapeRoom {
         }
     }
     
+
     // =================================
     //       Carga/Baja/Modificaion
     //           de Datos
@@ -590,67 +591,23 @@ public class EscapeRoom {
         Scanner sc = new Scanner(System.in);
         boolean existe;
         int opcion = 0, origen, destino;
-        do{
-            System.out.print("| > Ingrese origen de la puerta: ");
-            origen = sc.nextInt();
-            System.out.print("| > Ingrese destino de la puerta: ");
-            destino = sc.nextInt();
-            existe = casa.existeArco(origen, destino);
-            if(!existe){
-                System.out.print("| > La puerta de la habitacion " + origen + " a la " + destino + " no existe.");
-            }
-        }while(!existe);
         
-        menuModificacionPuerta(origen, destino);
-        opcion = sc.nextInt();
-        if(opcion == 1){
-            System.out.print("| > Ingrese nuevo origen de la puerta: ");
-            int nuevoOrigen = sc.nextInt();
-            if(casa.existeVertice(nuevoOrigen)){
-                int etiqueta = casa.etiquetaArco(origen, destino);
-                casa.eliminarArco(origen, destino);
-                casa.insertarArco(nuevoOrigen, destino, etiqueta);
-            }else{
-                System.out.println("| > La nueva habitacion de origen no existe en la casa.");
-            }
-        }else if(opcion == 2){
-            System.out.print("| > Ingrese nuevo destino de la puerta: ");
-            int nuevoDestino = sc.nextInt();
-            if(casa.existeVertice(nuevoDestino)){
-                int etiqueta = casa.etiquetaArco(origen, destino);
-                casa.eliminarArco(origen, destino);
-                casa.insertarArco(origen, nuevoDestino, etiqueta);
-            }else{
-                System.out.println("| > La nueva habitacion de destino no existe en la casa.");
-            }
-        }else if(opcion == 3){
+        System.out.print("| > Ingrese origen de la puerta: ");
+        origen = sc.nextInt();
+        System.out.print("| > Ingrese destino de la puerta: ");
+        destino = sc.nextInt();
+        existe = casa.existeArco(origen, destino);
+        if(!existe){
+            System.out.print("| > La puerta de la habitacion " + origen + " a la " + destino + " no existe.");
+        }else{
             System.out.print("| > Ingrese nuevo puntaje de la puerta: ");
             int nuevoPuntaje = sc.nextInt();
             casa.cambiarEtiqueta(origen, destino, nuevoPuntaje);
+            System.out.print("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje);
         }
-
-    }
-    public static void menuModificacionPuerta(int origen, int destino){
-        System.out.println("==================================================");
-        System.out.println("|           MODIFICACION PUERTA " + origen + "/" + destino);
-        System.out.println("==================================================");
-        System.out.println("| 1. Modificar origen                            |");
-        sleepMilisegundos(150);
-        System.out.println("| 2. Modificar destino                           |");
-        sleepMilisegundos(150);
-        System.out.println("| 3. Modificar puntaje necesario                 |");
-        sleepMilisegundos(150);
-        System.out.println("| 0. <-- Volver <--                              |");
-        System.out.print("|");
-        for(int i = 0; i <48; i++){
-            System.out.print("-");
-            sleepMilisegundos(15);
-        }
-        System.out.println("|");
-        sleepMilisegundos(150);
-        System.out.print("| > Ingrese opcion: ");
     }
     
+
     // =================================
     //   Altas, bajas y modificaciones
     // =================================
@@ -856,6 +813,7 @@ public class EscapeRoom {
         System.out.println("|------------------------------------------------|"); 
     }
 
+
     // =========================
     //     Consulta Desafios
     // =========================
@@ -956,10 +914,23 @@ public class EscapeRoom {
         }
     }
 
+
     // =========================
     //  Consulta Participantes
     // =========================
-    public static void consultaParticipantes(){}
+    public static void consultaParticipantes(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
+        Scanner sc = new Scanner(System.in);
+        int opcion;
+        do{
+            menuConsultaDesafios();
+            opcion = sc.nextInt();
+
+            switch(opcion){
+                case 1: mostrarEquipo(equipos, desafiosResueltos); break;
+                case 2: ; break;
+            }
+        }while(opcion != 0);
+    }
     // --- Menu ----
     public static void menuConsultaParticipantes(){
         System.out.println("==================================================");
@@ -983,7 +954,23 @@ public class EscapeRoom {
         sleepMilisegundos(150);
         System.out.print("| > Ingrese opcion: ");
     }
-    
+    // ---- Mostrar equipo ----
+    public static void mostrarEquipo(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
+        // Pregunto que desafio se quiere consultar
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese nombre del equipo: ");
+        String nombre = sc.nextLine();
+        System.out.println("|------------------------------------------------|");
+
+        Equipo equipoIngresado = (Equipo)equipos.recuperarDatos(nombre);
+        if(equipoIngresado != null){
+            System.out.println("| > " + equipoIngresado.toString() + "/n | y ha completado los desafios " + desafiosResueltos.obtenerValores(nombre).toString());
+        }else{
+            System.out.println("| > El equipo no existe.");
+        }
+    } 
+
+
     // =========================
     //      Consulta General
     // =========================

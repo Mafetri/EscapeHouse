@@ -135,6 +135,7 @@ public class DiccionarioHash {
         int pos = funcionHash(elem);
         NodoHashDicc aux = this.tabla[pos];
         boolean encontrado = false;
+        Object aRetornar = null;
 
         // Busco si existe en los nodos de la posicion hash de elem
         while (!encontrado && aux != null) {
@@ -143,8 +144,10 @@ public class DiccionarioHash {
                 aux = aux.getEnlace();
             }
         }
-
-        return aux.getDato();
+        if(aux != null){
+            aRetornar = aux.getDato();
+        }
+        return aRetornar;
     }
 
     // ---- Funcion Hash ----

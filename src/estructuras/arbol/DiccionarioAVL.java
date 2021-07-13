@@ -331,6 +331,7 @@ public class DiccionarioAVL {
         }
 
         nodo.setClave(nodoCandidato.getClave());
+        nodo.setDato(nodoCandidato.getDato());
 
         // Si el hijo izquierdo del nodo actual es igual al candidato
         if (nodo.getIzquierdo() == nodoCandidato) {
