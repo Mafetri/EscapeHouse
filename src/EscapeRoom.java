@@ -40,7 +40,7 @@ public class EscapeRoom {
                     case 1: abm(habitaciones, casa, desafios, equipos);break;
                     case 2: consultaHabitaciones(habitaciones, casa); break;
                     case 3: consultaDesafios(desafios, desafiosResueltos, equipos); break;
-                    case 4: consultaParticipantes(equipos, desafiosResueltos, desafios); break;
+                    case 4: consultaParticipantes(equipos, desafiosResueltos, desafios, habitaciones, casa); break;
                     case 5: consultaGeneral(habitaciones, casa, desafios, equipos);
                 }
             }while(opcion != 0);
@@ -912,7 +912,7 @@ public class EscapeRoom {
     // =========================
     //  Consulta Participantes
     // =========================
-    public static void consultaParticipantes(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos, DiccionarioAVL desafios){
+    public static void consultaParticipantes(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos, DiccionarioAVL desafios, DiccionarioAVL habitaciones, GrafoEtiq casa){
         Scanner sc = new Scanner(System.in);
         int opcion;
         do{
@@ -922,6 +922,7 @@ public class EscapeRoom {
             switch(opcion){
                 case 1: mostrarEquipo(equipos, desafiosResueltos); break;
                 case 2: jugarDesafio(equipos, desafiosResueltos, desafios); break;
+                case 3: pasarHabitacion(equipos, habitaciones, casa);
             }
         }while(opcion != 0);
     }
@@ -979,9 +980,13 @@ public class EscapeRoom {
             if(desafios.pertenece(puntaje)){
                 System.out.println("|------------------------------------------------|");
                 // Si el desafio no esta en la lista de desafios resueltos por el equipo
-                if(desafiosResueltos.obtenerValores(nombre).localizar(nombre) == -1){
+                if(desafiosResueltos.obtenerValores(nombre).localizar(puntaje) == -1){
                     // Asocio el nuevo desafio al equipo
                     desafiosResueltos.asociar(nombre, puntaje);
+                    // Le agrego al equipo el puntaje de este desafio al puntaje acutal del equipo
+                    Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
+                    equipo.setPuntajeActual(equipo.getPuntajeActual() + puntaje);
+
                     System.out.println("| > El equipo " + nombre + " acaba de resolver el desafio " + ((Desafio)desafios.recuperarDatos(puntaje)).toString());
                 }else{
                     System.out.println("| > El equipo " + nombre + " ya ha resuelto el desafio " + ((Desafio)desafios.recuperarDatos(puntaje)).toString());
@@ -994,6 +999,42 @@ public class EscapeRoom {
         }
 
     }
+    // ---- Pasar Habitacion ----
+    public static void pasarHabitacion(DiccionarioHash equipos, DiccionarioAVL habitaciones, GrafoEtiq casa){
+        // Pregunto que equipo quiere pasar de habitacion
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese nombre del equipo: ");
+        String nombre = sc.nextLine();
+        if(equipos.pertenece(nombre)){
+            System.out.print("| > Ingrese la habitacion a la cual el equipo quiere ir: ");
+            int hab = sc.nextInt();
+            if(habitaciones.pertenece(hab)){
+                Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
+                // Si la habitacion actual del equipo tiene puerta a la habitacion a la cual se quiere ir
+                int habActual = equipo.getHabitacionActual();
+                if(casa.existeArco(habActual, hab)){
+                    if(equipo.getPuntajeActual() >= casa.etiquetaArco(habActual, hab)){
+                        // El equipo pasa de habitacion
+                        equipo.setHabitacion(hab);
+                        // Sumo el puntaje actual al total y reinicio el actual
+                        equipo.setPuntajeTotal(equipo.getPuntajeTotal() + equipo.getPuntajeActual());
+                        equipo.setPuntajeActual(0);
+                        System.out.println("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + "!!");
+                    }else{
+                        System.out.println("| > El equipo tiene " + equipo.getPuntajeActual() + " puntos actuales de " + casa.etiquetaArco(habActual, hab) + " puntos necesarios.");
+                    }
+                }else{
+                    System.out.println("| > La habitacion actual " + habActual + " no tiene puerta a " + hab);
+                }
+            }else{
+                System.out.println("| > La habitacion " + hab + " no existe.");
+            }
+        }else{
+            System.out.println("| > El equipo " + nombre + " no existe.");
+        }
+
+    }
+    // ---- 
 
     // =========================
     //      Consulta General
