@@ -922,7 +922,8 @@ public class EscapeRoom {
             switch(opcion){
                 case 1: mostrarEquipo(equipos, desafiosResueltos); break;
                 case 2: jugarDesafio(equipos, desafiosResueltos, desafios); break;
-                case 3: pasarHabitacion(equipos, habitaciones, casa);
+                case 3: pasarHabitacion(equipos, habitaciones, casa); break;
+                case 4: puedeSalir(equipos, habitaciones);
             }
         }while(opcion != 0);
     }
@@ -1013,7 +1014,7 @@ public class EscapeRoom {
                 // Si la habitacion actual del equipo tiene puerta a la habitacion a la cual se quiere ir
                 int habActual = equipo.getHabitacionActual();
                 if(casa.existeArco(habActual, hab)){
-                    if(equipo.getPuntajeActual() >= casa.etiquetaArco(habActual, hab)){
+                    if(equipo.getPuntajeActual() + equipo.getPuntajeTotal() >= casa.etiquetaArco(habActual, hab)){
                         // El equipo pasa de habitacion
                         equipo.setHabitacion(hab);
                         // Sumo el puntaje actual al total y reinicio el actual
@@ -1034,7 +1035,32 @@ public class EscapeRoom {
         }
 
     }
-    // ---- 
+    // ---- Puede Salir ----
+    public static boolean puedeSalir(DiccionarioHash equipos, DiccionarioAVL habitaciones){
+        // Pregunto que equipo quiere pasar de habitacion
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese nombre del equipo: ");
+        System.out.print("|------------------------------------------------|");
+        String nombre = sc.nextLine();
+        boolean exito = false;
+
+        if(equipos.pertenece(nombre)){
+            Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
+            if(((Habitacion)habitaciones.recuperarDatos(equipo.getHabitacionActual())).getSalida()){
+                if(equipo.getPuntajeTotal() + equipo.getPuntajeActual() > equipo.getPuntajeSalida()){
+                    exito = true;
+                }else{
+                    System.out.print("| > El equipo " + nombre + " tiene " + equipo.getPuntajeTotal() + " puntos\n| de " + equipo.getPuntajeSalida() + " puntos necesarios para salir.");
+                }
+            }else{
+                System.out.print("| > El equipo " + nombre + " se encuentra en la habitacion " + equipo.getHabitacionActual() + " la cual no tiene salida.");
+            }
+        }else{
+            System.out.print("| > El equipo no existe.");
+        }
+        
+        return exito;
+    }
 
     // =========================
     //      Consulta General
