@@ -40,7 +40,7 @@ public class EscapeRoom {
                     case 1: abm(habitaciones, casa, desafios, equipos);break;
                     case 2: consultaHabitaciones(habitaciones, casa); break;
                     case 3: consultaDesafios(desafios, desafiosResueltos, equipos); break;
-                    case 4: consultaParticipantes(equipos, desafiosResueltos); break;
+                    case 4: consultaParticipantes(equipos, desafiosResueltos, desafios); break;
                     case 5: consultaGeneral(habitaciones, casa, desafios, equipos);
                 }
             }while(opcion != 0);
@@ -912,16 +912,16 @@ public class EscapeRoom {
     // =========================
     //  Consulta Participantes
     // =========================
-    public static void consultaParticipantes(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
+    public static void consultaParticipantes(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos, DiccionarioAVL desafios){
         Scanner sc = new Scanner(System.in);
         int opcion;
         do{
-            menuConsultaDesafios();
+            menuConsultaParticipantes();
             opcion = sc.nextInt();
 
             switch(opcion){
                 case 1: mostrarEquipo(equipos, desafiosResueltos); break;
-                case 2: ; break;
+                case 2: jugarDesafio(equipos, desafiosResueltos, desafios); break;
             }
         }while(opcion != 0);
     }
@@ -950,7 +950,7 @@ public class EscapeRoom {
     }
     // ---- Mostrar equipo ----
     public static void mostrarEquipo(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
-        // Pregunto que desafio se quiere consultar
+        // Pregunto que equipo se quiere consultar
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese nombre del equipo: ");
         String nombre = sc.nextLine();
@@ -958,12 +958,42 @@ public class EscapeRoom {
 
         Equipo equipoIngresado = (Equipo)equipos.recuperarDatos(nombre);
         if(equipoIngresado != null){
-            System.out.println("| > " + equipoIngresado.toString() + "/n | y ha completado los desafios " + desafiosResueltos.obtenerValores(nombre).toString());
+            if(desafiosResueltos.obtenerValores(nombre).esVacia()){
+                System.out.println("| > " + equipoIngresado.toString() + "\n| no ha completado ningun desafio. ");
+            }else{
+                System.out.println("| > " + equipoIngresado.toString() + "\n| y ha completado los desafios " + desafiosResueltos.obtenerValores(nombre).toString());
+            }
         }else{
             System.out.println("| > El equipo no existe.");
         }
     } 
+    // ---- Jugar Desafio ----
+    public static void jugarDesafio(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos, DiccionarioAVL desafios){
+        // Pregunto que equipo se quiere consultar
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese nombre del equipo: ");
+        String nombre = sc.nextLine();
+        if(equipos.pertenece(nombre)){
+            System.out.print("| > Ingrese putnaje del desafio: ");
+            int puntaje = sc.nextInt();
+            if(desafios.pertenece(puntaje)){
+                System.out.println("|------------------------------------------------|");
+                // Si el desafio no esta en la lista de desafios resueltos por el equipo
+                if(desafiosResueltos.obtenerValores(nombre).localizar(nombre) == -1){
+                    // Asocio el nuevo desafio al equipo
+                    desafiosResueltos.asociar(nombre, puntaje);
+                    System.out.println("| > El equipo " + nombre + " acaba de resolver el desafio " + ((Desafio)desafios.recuperarDatos(puntaje)).toString());
+                }else{
+                    System.out.println("| > El equipo " + nombre + " ya ha resuelto el desafio " + ((Desafio)desafios.recuperarDatos(puntaje)).toString());
+                }
+            }else{
+                System.out.println("| > No existe el desafio ingresado.");
+            }
+        }else{
+            System.out.println("| > No existe el equipo ingresado.");
+        }
 
+    }
 
     // =========================
     //      Consulta General
