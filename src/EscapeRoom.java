@@ -1014,7 +1014,7 @@ public class EscapeRoom {
                 // Si la habitacion actual del equipo tiene puerta a la habitacion a la cual se quiere ir
                 int habActual = equipo.getHabitacionActual();
                 if(casa.existeArco(habActual, hab)){
-                    if(equipo.getPuntajeActual() + equipo.getPuntajeTotal() >= casa.etiquetaArco(habActual, hab)){
+                    if(equipo.getPuntajeActual() >= casa.etiquetaArco(habActual, hab)){
                         // El equipo pasa de habitacion
                         equipo.setHabitacion(hab);
                         // Sumo el puntaje actual al total y reinicio el actual
@@ -1047,7 +1047,7 @@ public class EscapeRoom {
         if(equipos.pertenece(nombre)){
             Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
             if(((Habitacion)habitaciones.recuperarDatos(equipo.getHabitacionActual())).getSalida()){
-                if(equipo.getPuntajeTotal() + equipo.getPuntajeActual() > equipo.getPuntajeSalida()){
+                if(equipo.getPuntajeTotal() >= equipo.getPuntajeSalida()){
                     exito = true;
                 }else{
                     System.out.print("| > El equipo " + nombre + " tiene " + equipo.getPuntajeTotal() + " puntos\n| de " + equipo.getPuntajeSalida() + " puntos necesarios para salir.");

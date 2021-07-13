@@ -333,23 +333,13 @@ public class DiccionarioAVL {
         nodo.setClave(nodoCandidato.getClave());
         nodo.setDato(nodoCandidato.getDato());
 
-        // Si el hijo izquierdo del nodo actual es igual al candidato
+        // Si el hijo izquierdo del nodo actual es igual al candidato (osea que el candidato no tiene hijos derechos)
         if (nodo.getIzquierdo() == nodoCandidato) {
-            if(nodoCandidato.getDerecho() != null){
-                // Si el derecho existe, seteo el enlace al hijo izquierdo el hijo derecho del nodo candidato
-                nodo.setIzquierdo(nodoCandidato.getDerecho());
-            } else {
-                // Si el derecho no existe, seteo el enlace al hijo izquierdo el hijo izquierdo del nodo candidato
-                nodo.setIzquierdo(nodoCandidato.getIzquierdo());
-            }
+            // Seteo a la izquierda del nodo, lo que tenga el candidato a la izquierda
+            nodo.setIzquierdo(nodoCandidato.getIzquierdo());
         } else {
-            if(padreCandidato.getDerecho() != null){
-                // Si el derecho existe, entonces seteo en enlace al padre del nodo (para saltear el nodo)
-                nodo.setIzquierdo(padreCandidato.getDerecho());
-            } else {
-                // Si el no derecho existe, entonces seteo en enlace al padre del nodo izquierdo (para saltear el nodo)
-                nodo.setIzquierdo(padreCandidato.getIzquierdo());
-            }
+            // Sino, seteo al padre la rama izquierda a la derecha (ya que candidato no va a tener hijo derecho)
+            padreCandidato.setDerecho(nodoCandidato.getIzquierdo());
         }
     }
 
