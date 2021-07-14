@@ -355,32 +355,33 @@ public class EscapeRoom {
             System.out.println(" no se ha encontrado.");
         }
     }
-    public static void modificarEquipo(DiccionarioHash equipos, DiccionarioAVL habitaciones){
+    public static void modificarEquipo(DiccionarioHash equipos, DiccionarioAVL habitaciones, MapeoAMuchos desafiosResueltos){
         Scanner sc = new Scanner(System.in);
         int opcion = 0, habitacionActual;
         boolean existe;
         System.out.print("| > Ingrese nombre de equipo a modificar: ");
         String nombre = sc.nextLine();
         if(equipos.pertenece(nombre)){
+            Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
             do{
                 menuModificaionEquipo(nombre);
                 opcion = sc.nextInt();
                 if(opcion == 1){
                     System.out.print("| > Ingrese puntaje de salida: "); 
                     int puntajeSalida = sc.nextInt(); 
-                    ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeSalida(puntajeSalida);
+                    equipo.setPuntajeSalida(puntajeSalida);
                     System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje de salida de " + puntajeSalida + " puntos.");
                     escritura("| > El equipo " + nombre + " ahora tiene un puntaje de salida de " + puntajeSalida + " puntos.", true);
                 } else if(opcion == 2){
                     System.out.print("| > Ingrese puntaje total: "); 
                     int puntajeTotal = sc.nextInt(); 
-                    ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeTotal(puntajeTotal);
+                    equipo.setPuntajeTotal(puntajeTotal);
                     System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje total de " + puntajeTotal + " puntos.");
                     escritura("| > El equipo " + nombre + " ahora tiene un puntaje total de " + puntajeTotal + " puntos.", true);
                 } else if(opcion == 3){
                     System.out.print("| > Ingrese puntaje actual: "); 
                     int puntajeActual = sc.nextInt(); 
-                    ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeActual(puntajeActual);
+                    equipo.setPuntajeActual(puntajeActual);
                     System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje actual de " + puntajeActual + " puntos.");
                     escritura("| > El equipo " + nombre + " ahora tiene un puntaje actual de " + puntajeActual + " puntos.", true);
                 } else if(opcion == 4){
@@ -390,9 +391,20 @@ public class EscapeRoom {
                     if(!existe){
                         System.out.println("| > La habitacion ingresada no existe.");
                     }else{
-                        ((Equipo)equipos.recuperarDatos(nombre)).setHabitacion(habitacionActual);
+                        equipo.setHabitacion(habitacionActual);
                         System.out.println("| > El equipo " + nombre + " ahora se encuentra en la habitacion " + habitacionActual);
                         escritura("| > El equipo " + nombre + " ahora se encuentra en la habitacion " + habitacionActual, true);
+                    }
+                } else if(opcion == 5){
+                    System.out.print("| > Ingrese puntaje de desafio a quitar: ");
+                    int puntaje = sc.nextInt();
+                    boolean jugoDesafio = desafiosResueltos.desasociar(nombre, puntaje);
+                    if(jugoDesafio){
+                        equipo.setPuntajeTotal(equipo.getPuntajeTotal() - puntaje);
+                        System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje total de " + equipo.getPuntajeTotal() + " y ha resuelto los desafios "  + desafiosResueltos.obtenerValores(nombre).toString());
+                        escritura("| > El equipo " + nombre + " se le ha quitado el desafio " + puntaje + " quedando con un total de " + equipo.getPuntajeTotal(), true);
+                    }else{
+                        System.out.println("| > El equipo " + nombre + " no ha jugado al desafio con puntaje " + puntaje);
                     }
                 }
             }while(opcion != 0);
@@ -402,7 +414,7 @@ public class EscapeRoom {
     }
     public static void menuModificaionEquipo(String nombre){
         System.out.println("==================================================");
-        System.out.println("|           MODIFICACION EQUIPO " + nombre);
+        System.out.println("|           MODIFICACION EQUIPO " + nombre.toUpperCase());
         System.out.println("==================================================");
         System.out.println("| 1. Modificar puntaje de salida                 |");
         sleepMilisegundos(150);
@@ -411,6 +423,8 @@ public class EscapeRoom {
         System.out.println("| 3. Modificar puntaje actual                    |");
         sleepMilisegundos(150);
         System.out.println("| 4. Modificar habitacion actual                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 5. Quitar desafio resuelto                     |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
@@ -730,7 +744,7 @@ public class EscapeRoom {
                     switch(opcion){
                         case 1: modificarHabitacion(habitaciones, casa); break;
                         case 2: modificarDesafio(desafios); break;
-                        case 3: modificarEquipo(equipos, habitaciones); break;
+                        case 3: modificarEquipo(equipos, habitaciones, desafiosResueltos); break;
                         case 4: modificarPuerta(casa);
                     }
                 }while(opcion != 0);
