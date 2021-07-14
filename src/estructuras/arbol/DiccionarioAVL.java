@@ -1,6 +1,8 @@
 package estructuras.arbol;
+
 import estructuras.lista.Lista;
 import estructuras.datos.Desafio;
+
 public class DiccionarioAVL {
     private NodoAVLDicc raiz;
 
@@ -14,14 +16,15 @@ public class DiccionarioAVL {
 
         // Si el arbol esta vacio coloco clave en su raiz
         if (this.raiz == null) {
-            this.raiz = new NodoAVLDicc(clave, dato,null, null);
+            this.raiz = new NodoAVLDicc(clave, dato, null, null);
         } else {
             // Sino lo agrego en la posicion correspondiente
             exito = insertarAux(this.raiz, clave, dato, null);
         }
-        
+
         return exito;
     }
+
     private boolean insertarAux(NodoAVLDicc nodo, Comparable elem, Object dato, NodoAVLDicc padre) {
         boolean exito = true;
 
@@ -36,7 +39,7 @@ public class DiccionarioAVL {
                 exito = insertarAux(nodo.getIzquierdo(), elem, dato, nodo);
             } else {
                 // Sino agrega el elemento
-                nodo.setIzquierdo(new NodoAVLDicc(elem, dato,null, null));
+                nodo.setIzquierdo(new NodoAVLDicc(elem, dato, null, null));
             }
         } else {
             // Si el elemento entonces es mas grande
@@ -46,7 +49,7 @@ public class DiccionarioAVL {
                 exito = insertarAux(nodo.getDerecho(), elem, dato, nodo);
             } else {
                 // Sino lo arego a la derecha
-                nodo.setDerecho(new NodoAVLDicc(elem, dato,null, null));
+                nodo.setDerecho(new NodoAVLDicc(elem, dato, null, null));
             }
         }
 
@@ -60,61 +63,62 @@ public class DiccionarioAVL {
         balance = alturaNodo(nodo.getIzquierdo()) - alturaNodo(nodo.getDerecho());
 
         // Balance del hijo izquierdo
-        if(nodo.getIzquierdo() != null){
+        if (nodo.getIzquierdo() != null) {
             balanceIzq = alturaNodo(nodo.getIzquierdo().getIzquierdo()) - alturaNodo(nodo.getIzquierdo().getDerecho());
         } else {
             balanceIzq = 0;
         }
         // Balance del hijo derecho
-        if(nodo.getDerecho() != null){
+        if (nodo.getDerecho() != null) {
             balanceDer = alturaNodo(nodo.getDerecho().getIzquierdo()) - alturaNodo(nodo.getDerecho().getDerecho());
         } else {
             balanceDer = 0;
         }
 
         // Rotacion simple izquierda
-        if(balance > 1 && balanceIzq >= 0){
-            if(padre != null){
-                padre.setIzquierdo(rotarDerecha(nodo));    
-            }else{
+        if (balance > 1 && balanceIzq >= 0) {
+            if (padre != null) {
+                padre.setIzquierdo(rotarDerecha(nodo));
+            } else {
                 this.raiz = rotarDerecha(nodo);
             }
         }
 
         // Rotacion izquierda-derecha
-        if(balance > 1 && balanceIzq < 0){
+        if (balance > 1 && balanceIzq < 0) {
             nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
-            if(padre != null){
-                padre.setIzquierdo(rotarDerecha(nodo));    
-            }else{
+            if (padre != null) {
+                padre.setIzquierdo(rotarDerecha(nodo));
+            } else {
                 this.raiz = rotarDerecha(nodo);
             }
         }
-        
+
         // Rotacion simple derecha
-        if(balance < -1 && balanceDer <= 0){
-            if(padre != null){
-                padre.setDerecho(rotarIzquierda(nodo));    
-            }else{
+        if (balance < -1 && balanceDer <= 0) {
+            if (padre != null) {
+                padre.setDerecho(rotarIzquierda(nodo));
+            } else {
                 this.raiz = rotarIzquierda(nodo);
             }
         }
 
         // Rotacion derecha-izquierda
-        if(balance < -1 && balanceDer > 0){
+        if (balance < -1 && balanceDer > 0) {
             nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
-            if(padre != null){
-                padre.setDerecho(rotarIzquierda(nodo));    
-            }else{
+            if (padre != null) {
+                padre.setDerecho(rotarIzquierda(nodo));
+            } else {
                 this.raiz = rotarIzquierda(nodo);
             }
         }
-        
+
         return exito;
     }
-    private NodoAVLDicc rotarIzquierda(NodoAVLDicc padre){
+
+    private NodoAVLDicc rotarIzquierda(NodoAVLDicc padre) {
         NodoAVLDicc hijo, temp;
-        
+
         hijo = padre.getDerecho();
         temp = hijo.getIzquierdo();
         hijo.setIzquierdo(padre);
@@ -125,7 +129,8 @@ public class DiccionarioAVL {
 
         return hijo;
     }
-    private NodoAVLDicc rotarDerecha(NodoAVLDicc padre){
+
+    private NodoAVLDicc rotarDerecha(NodoAVLDicc padre) {
         NodoAVLDicc hijo, temp;
 
         hijo = padre.getIzquierdo();
@@ -138,10 +143,10 @@ public class DiccionarioAVL {
 
         return hijo;
     }
-    
-    private int alturaNodo(NodoAVLDicc nodo){
+
+    private int alturaNodo(NodoAVLDicc nodo) {
         int alt;
-        if(nodo == null){
+        if (nodo == null) {
             alt = -1;
         } else {
             alt = nodo.getAltura();
@@ -157,6 +162,7 @@ public class DiccionarioAVL {
         }
         return exito;
     }
+
     private boolean perteneceAux(NodoAVLDicc nodo, Comparable elem) {
         boolean exito = false;
 
@@ -178,26 +184,27 @@ public class DiccionarioAVL {
     }
 
     // ---- Eliminar ----
-    public boolean eliminar(Comparable elem){
+    public boolean eliminar(Comparable elem) {
         boolean exito = false;
-        if(this.raiz != null && elem != null){
+        if (this.raiz != null && elem != null) {
             exito = eliminarAux(this.raiz, null, elem);
         }
         return exito;
     }
-    private boolean eliminarAux(NodoAVLDicc nodo, NodoAVLDicc padre,Comparable elem){
+
+    private boolean eliminarAux(NodoAVLDicc nodo, NodoAVLDicc padre, Comparable elem) {
         boolean exito = false;
 
         if (nodo != null) {
-    
+
             if (elem.compareTo(nodo.getClave()) == 0) {
                 exito = true;
                 // Caso 1: el elemento buscado no tiene hijos
-                if(nodo.getDerecho() == null && nodo.getIzquierdo() == null){
+                if (nodo.getDerecho() == null && nodo.getIzquierdo() == null) {
                     eliminarCaso1(padre, elem);
                 } else {
                     // Caso 2: el elemento buscado tiene al menos un hijo
-                    if(nodo.getDerecho() == null || nodo.getIzquierdo() == null){
+                    if (nodo.getDerecho() == null || nodo.getIzquierdo() == null) {
                         eliminarCaso2(nodo, padre, elem);
                     } else {
                         // Caso 3: el elemento buscado tiene ambos hijos
@@ -214,87 +221,92 @@ public class DiccionarioAVL {
             }
         }
 
-        // Recalculo la altura del nodo
-        nodo.recalcularAltura();
+        if (exito) {
+            // Recalculo la altura del nodo
+            nodo.recalcularAltura();
 
-        int balance;
-        int balanceIzq;
-        int balanceDer;
+            int balance;
+            int balanceIzq;
+            int balanceDer;
 
-        balance = alturaNodo(nodo.getIzquierdo()) - alturaNodo(nodo.getDerecho());
+            balance = alturaNodo(nodo.getIzquierdo()) - alturaNodo(nodo.getDerecho());
 
-        // Balance del hijo izquierdo
-        if(nodo.getIzquierdo() != null){
-            balanceIzq = alturaNodo(nodo.getIzquierdo().getIzquierdo()) - alturaNodo(nodo.getIzquierdo().getDerecho());
-        } else {
-            balanceIzq = 0;
-        }
-        // Balance del hijo derecho
-        if(nodo.getDerecho() != null){
-            balanceDer = alturaNodo(nodo.getDerecho().getIzquierdo()) - alturaNodo(nodo.getDerecho().getDerecho());
-        } else {
-            balanceDer = 0;
-        }
-
-        // Rotacion simple izquierda
-        if(balance > 1 && balanceIzq >= 0){
-            if(padre != null){
-                padre.setIzquierdo(rotarDerecha(nodo));    
-            }else{
-                this.raiz = rotarDerecha(nodo);
+            // Balance del hijo izquierdo
+            if (nodo.getIzquierdo() != null) {
+                balanceIzq = alturaNodo(nodo.getIzquierdo().getIzquierdo())
+                        - alturaNodo(nodo.getIzquierdo().getDerecho());
+            } else {
+                balanceIzq = 0;
             }
-        }
-
-        // Rotacion izquierda-derecha
-        if(balance > 1 && balanceIzq < 0){
-            nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
-            if(padre != null){
-                padre.setIzquierdo(rotarDerecha(nodo));    
-            }else{
-                this.raiz = rotarDerecha(nodo);
+            // Balance del hijo derecho
+            if (nodo.getDerecho() != null) {
+                balanceDer = alturaNodo(nodo.getDerecho().getIzquierdo()) - alturaNodo(nodo.getDerecho().getDerecho());
+            } else {
+                balanceDer = 0;
             }
-        }
-        
-        // Rotacion simple derecha
-        if(balance < -1 && balanceDer <= 0){
-            if(padre != null){
-                padre.setDerecho(rotarIzquierda(nodo));    
-            }else{
-                this.raiz = rotarIzquierda(nodo);
-            }
-        }
 
-        // Rotacion derecha-izquierda
-        if(balance < -1 && balanceDer > 0){
-            nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
-            if(padre != null){
-                padre.setDerecho(rotarIzquierda(nodo));    
-            }else{
-                this.raiz = rotarIzquierda(nodo);
+            // Rotacion simple izquierda
+            if (balance > 1 && balanceIzq >= 0) {
+                if (padre != null) {
+                    padre.setIzquierdo(rotarDerecha(nodo));
+                } else {
+                    this.raiz = rotarDerecha(nodo);
+                }
+            }
+
+            // Rotacion izquierda-derecha
+            if (balance > 1 && balanceIzq < 0) {
+                nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
+                if (padre != null) {
+                    padre.setIzquierdo(rotarDerecha(nodo));
+                } else {
+                    this.raiz = rotarDerecha(nodo);
+                }
+            }
+
+            // Rotacion simple derecha
+            if (balance < -1 && balanceDer <= 0) {
+                if (padre != null) {
+                    padre.setDerecho(rotarIzquierda(nodo));
+                } else {
+                    this.raiz = rotarIzquierda(nodo);
+                }
+            }
+
+            // Rotacion derecha-izquierda
+            if (balance < -1 && balanceDer > 0) {
+                nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
+                if (padre != null) {
+                    padre.setDerecho(rotarIzquierda(nodo));
+                } else {
+                    this.raiz = rotarIzquierda(nodo);
+                }
             }
         }
 
         return exito;
     }
-    private void eliminarCaso1(NodoAVLDicc nodo, Comparable elem){
+
+    private void eliminarCaso1(NodoAVLDicc nodo, Comparable elem) {
         // Si el elemento es la raiz entonces el nodo (padre) es nulo
-        if(nodo == null){
+        if (nodo == null) {
             this.raiz = null;
-        }else{
+        } else {
             // Sino elimino a ese hijo si es que esta a la izquierda o a la derecha
-            if(elem.compareTo(nodo.getClave()) < 0){
+            if (elem.compareTo(nodo.getClave()) < 0) {
                 nodo.setIzquierdo(null);
-            }else{
+            } else {
                 nodo.setDerecho(null);
             }
         }
     }
-    private void eliminarCaso2(NodoAVLDicc nodo, NodoAVLDicc padre, Comparable elem){
+
+    private void eliminarCaso2(NodoAVLDicc nodo, NodoAVLDicc padre, Comparable elem) {
         NodoAVLDicc izq = nodo.getIzquierdo();
         NodoAVLDicc der = nodo.getDerecho();
 
         // Si el elemento buscado es la raiz
-        if( padre == null){
+        if (padre == null) {
             // Pregunto cual de los dos hijos tiene y el que no sea nulo lo hago raiz
             if (izq != null) {
                 this.raiz = izq;
@@ -319,9 +331,10 @@ public class DiccionarioAVL {
             }
         }
     }
-    private void eliminarCaso3(NodoAVLDicc nodo){
+
+    private void eliminarCaso3(NodoAVLDicc nodo) {
         // Candidato A: El mayor elemento del subárbol izquierdo de N
-        NodoAVLDicc nodoCandidato = nodo.getIzquierdo(); 
+        NodoAVLDicc nodoCandidato = nodo.getIzquierdo();
         NodoAVLDicc padreCandidato = nodo;
 
         // Busco el mayor elemento del subárbol izquierdo de N
@@ -333,12 +346,14 @@ public class DiccionarioAVL {
         nodo.setClave(nodoCandidato.getClave());
         nodo.setDato(nodoCandidato.getDato());
 
-        // Si el hijo izquierdo del nodo actual es igual al candidato (osea que el candidato no tiene hijos derechos)
+        // Si el hijo izquierdo del nodo actual es igual al candidato (osea que el
+        // candidato no tiene hijos derechos)
         if (nodo.getIzquierdo() == nodoCandidato) {
             // Seteo a la izquierda del nodo, lo que tenga el candidato a la izquierda
             nodo.setIzquierdo(nodoCandidato.getIzquierdo());
         } else {
-            // Sino, seteo al padre la rama izquierda a la derecha (ya que candidato no va a tener hijo derecho)
+            // Sino, seteo al padre la rama izquierda a la derecha (ya que candidato no va a
+            // tener hijo derecho)
             padreCandidato.setDerecho(nodoCandidato.getIzquierdo());
         }
     }
@@ -347,12 +362,13 @@ public class DiccionarioAVL {
     public Lista listar() {
         Lista lis = new Lista();
 
-        if( this.raiz != null){
+        if (this.raiz != null) {
             listarAux(this.raiz, lis);
         }
 
         return lis;
     }
+
     private void listarAux(NodoAVLDicc aux, Lista lis) {
         if (aux != null) {
             // Guardo en la lista el elemento
@@ -368,18 +384,19 @@ public class DiccionarioAVL {
     // ---- Listar Rango ----
     public Lista listarRango(Comparable min, Comparable max) {
         Lista lis = new Lista();
-        
+
         if (min != null && max != null) {
             listarRangoAux(this.raiz, lis, min, max);
         }
 
         return lis;
     }
+
     private void listarRangoAux(NodoAVLDicc nodo, Lista lis, Comparable min, Comparable max) {
         // Mientras el nodo no sea nulo
         if (nodo != null) {
             Comparable elem = nodo.getClave();
-            
+
             // Si el elemento es mas chico que max hago la llamada recursiva por derecha
             if (elem.compareTo(max) < 0) {
                 listarRangoAux(nodo.getDerecho(), lis, min, max);
@@ -398,18 +415,19 @@ public class DiccionarioAVL {
     // ---- Listar Rango Datos ----
     public Lista listarRangoDatos(Comparable min, Comparable max) {
         Lista lis = new Lista();
-        
+
         if (min != null && max != null && this.raiz != null) {
             listarRangoDatosAux(this.raiz, lis, min, max);
         }
 
         return lis;
     }
+
     private void listarRangoDatosAux(NodoAVLDicc nodo, Lista lis, Comparable min, Comparable max) {
         // Mientras el nodo no sea nulo
         if (nodo != null) {
             Comparable elem = nodo.getClave();
-            
+
             // Si el elemento es mas chico que max hago la llamada recursiva por derecha
             if (elem.compareTo(max) < 0) {
                 listarRangoDatosAux(nodo.getDerecho(), lis, min, max);
@@ -423,7 +441,7 @@ public class DiccionarioAVL {
                 listarRangoDatosAux(nodo.getIzquierdo(), lis, min, max);
             }
         }
-        
+
     }
 
     // ---- Elemento Minimo ----
@@ -434,6 +452,7 @@ public class DiccionarioAVL {
         }
         return min;
     }
+
     private Comparable minimoElemAux(NodoAVLDicc aux) {
         // Bajo por izquierda hasta que no haya mas nodos
         while (aux.getIzquierdo() != null) {
@@ -450,6 +469,7 @@ public class DiccionarioAVL {
         }
         return min;
     }
+
     private Comparable maximoElemAux(NodoAVLDicc nodo) {
         // Bajo por derecha hasta que no haya mas nodos
         while (nodo.getDerecho() != null) {
@@ -459,12 +479,12 @@ public class DiccionarioAVL {
     }
 
     // ---- Es Vacio ----
-    public boolean vacio(){
+    public boolean vacio() {
         return this.raiz == null;
     }
 
     // ---- Vaciar ----
-    public void vaciar(){
+    public void vaciar() {
         this.raiz = null;
     }
 
@@ -478,15 +498,18 @@ public class DiccionarioAVL {
 
         return clone;
     }
+
     private NodoAVLDicc cloneAux(NodoAVLDicc aux) {
         NodoAVLDicc clonado = null;
 
         // Si el aux no es nulo
         if (aux != null) {
-            // Guardo en clonado un nuevo nodo con el elemento actual y sus hijos clonados recursivos
-            clonado = new NodoAVLDicc(aux.getClave(), aux.getDato(), cloneAux(aux.getIzquierdo()), cloneAux(aux.getDerecho()));
+            // Guardo en clonado un nuevo nodo con el elemento actual y sus hijos clonados
+            // recursivos
+            clonado = new NodoAVLDicc(aux.getClave(), aux.getDato(), cloneAux(aux.getIzquierdo()),
+                    cloneAux(aux.getDerecho()));
         }
-        
+
         return clonado;
     }
 
@@ -500,6 +523,7 @@ public class DiccionarioAVL {
 
         return enTexto;
     }
+
     private String toStringAux(NodoAVLDicc aux) {
         String enTexto = "";
         if (aux != null) {
@@ -524,18 +548,19 @@ public class DiccionarioAVL {
     }
 
     // ---- Recuperar Datos ----
-    public Object recuperarDatos(Comparable clave){
+    public Object recuperarDatos(Comparable clave) {
         NodoAVLDicc nodo = new NodoAVLDicc(null, null, null, null);
         Object aRetornar = null;
         if (this.raiz != null && clave != null) {
             nodo = recuperarNodoAux(clave, this.raiz);
-            if(nodo != null){
+            if (nodo != null) {
                 aRetornar = nodo.getDato();
             }
         }
         return aRetornar;
     }
-    private NodoAVLDicc recuperarNodoAux(Comparable clave, NodoAVLDicc nodo){
+
+    private NodoAVLDicc recuperarNodoAux(Comparable clave, NodoAVLDicc nodo) {
         NodoAVLDicc aRetornar = new NodoAVLDicc(null, null, null, null);
         if (nodo != null) {
             // Si el nodo es el elemento que busco, la busqueda fue un exito
@@ -553,4 +578,3 @@ public class DiccionarioAVL {
         return aRetornar;
     }
 }
-
