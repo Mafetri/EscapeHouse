@@ -7,7 +7,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
 import java.io.*;
 import java.util.StringTokenizer;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 public class EscapeRoom {
     public static void main(String[] args) {
         // Escaner de ingreso
@@ -28,6 +29,10 @@ public class EscapeRoom {
         int opcion = sc.nextInt();
 
         if(opcion != 0){
+            Date fecha = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            escritura("================================ " + formatter.format(fecha) + " ================================", false);
+            
             switch (opcion) {
                 case 1: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
                 case 2: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);
@@ -47,10 +52,12 @@ public class EscapeRoom {
         }
         sc.close();
         cartelFinal();
+        escritura("================================== FIN DE EJECUCION =================================", true);
     }
 
     // =================================
-    //        Leectura de .txt
+    //        Leectura y escritura
+    //              de .txt
     // =================================
     public static void leectura(String ubicacion, GrafoEtiq casa, DiccionarioAVL habitaciones, DiccionarioAVL desafios, DiccionarioHash equipos){
         try{
@@ -72,10 +79,19 @@ public class EscapeRoom {
             }
             archivo.close();
         }catch(IOException e){
-            System.out.println("| > Error " + e);
+            System.out.println("| > Error: " + e);
         }
     }
-    
+    public static void escritura(String frase, boolean seguir){
+        try{
+            BufferedWriter archivo = new BufferedWriter(new FileWriter("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\log.txt", seguir));
+            archivo.write(frase);
+            archivo.newLine();
+            archivo.close();
+        }catch(IOException e){
+            System.out.println("| > Error: " + e);
+        }
+    }
 
     // =================================
     //       Carga/Baja/Modificaion
@@ -159,6 +175,8 @@ public class EscapeRoom {
             // Agrego la habitacion a la casa
             casa.insertarVertice(codigo);
     
+            // Mensaje de confirmacion y escritura en el log
+            escritura("| > La habitacion " + nueva.toString() + " ha sido dado de alta.", true);
             System.out.println("| > La habitacion " + nueva.toString() + " ha sido dado de alta");
         }
     }
@@ -166,7 +184,7 @@ public class EscapeRoom {
         Scanner sc = new Scanner(System.in);
         int codigo = 0;
         boolean exitoHab = false, exitoCasa = false;
-        System.out.println("| > Indique codigo de habitacion a eliminar: ");
+        System.out.print("| > Indique codigo de habitacion a eliminar: ");
         codigo = sc.nextInt();
 
         // Elimino la habitacion de las habitaciones y de la casa
@@ -176,6 +194,7 @@ public class EscapeRoom {
         System.out.print("| > La habitacion con codigo " + codigo);
         if(exitoHab && exitoCasa){
             System.out.println(" ha sido eliminada.");
+            escritura("| > La habitacion con codigo " + codigo + " ha sido eliminada.", true);
         }else{
             System.out.println(" no se ha encontrado.");
         }
@@ -193,14 +212,20 @@ public class EscapeRoom {
                     System.out.print("| > Ingrese nuevo nombre: "); 
                     String nombre = sc.nextLine(); 
                     ((Habitacion)habitaciones.recuperarDatos(codigo)).setNombre(nombre);
+                    System.out.println("| > La habitacion " + codigo + " cambio su nombre a " + nombre + ".");
+                    escritura("| > La habitacion " + codigo + " cambio su nombre a " + nombre + ".", true);
                 } else if(opcion == 2){
-                    System.out.print("| > Ingrese nueva planta: "); 
+                    System.out.println("| > Ingrese nueva planta: "); 
                     int planta = sc.nextInt(); 
                     ((Habitacion)habitaciones.recuperarDatos(codigo)).setPlanta(planta);
+                    System.out.println("| > La habitacion " + codigo + " cambio de planta a " + planta + ".");
+                    escritura("| > La habitacion " + codigo + " cambio de planta a " + planta + ".", true);
                 } else if(opcion == 3){
                     System.out.print("| > Ingrese metros cuadrados: "); 
                     int metros = sc.nextInt(); 
                     ((Habitacion)habitaciones.recuperarDatos(codigo)).setMetrosCuadrados(metros);
+                    System.out.println("| > La habitacion " + codigo + " paso a tener " + metros + " metros cuadrados.");
+                    escritura("| > La habitacion " + codigo + " paso a tener " + metros + " metros cuadrados.", true);
                 } else if(opcion == 4){
                     System.out.print("| > Indique si tiene salida: (s/n)");
                     char salida;
@@ -208,8 +233,12 @@ public class EscapeRoom {
                         salida = sc.next().toLowerCase().charAt(0);
                         if(salida == 's'){
                             ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(true);
+                            System.out.println("| > La habitacion " + codigo + " ahora tiene salida");
+                            escritura("| > La habitacion " + codigo + " ahora tiene salida", true);
                         }else if(salida == 'n'){
                             ((Habitacion)habitaciones.recuperarDatos(codigo)).setSalida(false);
+                            System.out.println("| > La habitacion " + codigo + " ahora no tiene salida");
+                            escritura("| > La habitacion " + codigo + " ahora no tiene salida", true);
                         }else{
                             System.out.println("| > Error, ingrese 'S' o 's' si tiene salida\n| o 'N' o 'n' si no tiene salida");
                         }
@@ -305,6 +334,7 @@ public class EscapeRoom {
             equipos.insertar(nombre, nuevo);
 
             System.out.println("| > El equipo " + nuevo.toString() + " ha sido dado de alta");
+            escritura("| > El equipo " + nuevo.toString() + " ha sido dado de alta.", true);
         }
     }
     public static void eliminarEquipo(DiccionarioHash equipos){
@@ -320,6 +350,7 @@ public class EscapeRoom {
         System.out.print("| > El equipo " + nombre);
         if(exito){
             System.out.println(" ha sido eliminado.");
+            escritura("| > El equipo " + nombre + " ha sido eliminado.", true);
         }else{
             System.out.println(" no se ha encontrado.");
         }
@@ -338,24 +369,31 @@ public class EscapeRoom {
                     System.out.print("| > Ingrese puntaje de salida: "); 
                     int puntajeSalida = sc.nextInt(); 
                     ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeSalida(puntajeSalida);
+                    System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje de salida de " + puntajeSalida + " puntos.");
+                    escritura("| > El equipo " + nombre + " ahora tiene un puntaje de salida de " + puntajeSalida + " puntos.", true);
                 } else if(opcion == 2){
                     System.out.print("| > Ingrese puntaje total: "); 
                     int puntajeTotal = sc.nextInt(); 
                     ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeTotal(puntajeTotal);
+                    System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje total de " + puntajeTotal + " puntos.");
+                    escritura("| > El equipo " + nombre + " ahora tiene un puntaje total de " + puntajeTotal + " puntos.", true);
                 } else if(opcion == 3){
                     System.out.print("| > Ingrese puntaje actual: "); 
                     int puntajeActual = sc.nextInt(); 
                     ((Equipo)equipos.recuperarDatos(nombre)).setPuntajeActual(puntajeActual);
+                    System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje actual de " + puntajeActual + " puntos.");
+                    escritura("| > El equipo " + nombre + " ahora tiene un puntaje actual de " + puntajeActual + " puntos.", true);
                 } else if(opcion == 4){
-                    do{
-                        System.out.print("| > Ingrese habitacion actual: ");
-                        habitacionActual = sc.nextInt();
-                        existe = habitaciones.pertenece(habitacionActual);
-                        if(!existe){
-                            System.out.println("| > La habitacion ingresada no existe.");
-                        }
-                    }while(!existe);
-                    ((Equipo)equipos.recuperarDatos(nombre)).setHabitacion(habitacionActual);
+                    System.out.print("| > Ingrese habitacion actual: ");
+                    habitacionActual = sc.nextInt();
+                    existe = habitaciones.pertenece(habitacionActual);
+                    if(!existe){
+                        System.out.println("| > La habitacion ingresada no existe.");
+                    }else{
+                        ((Equipo)equipos.recuperarDatos(nombre)).setHabitacion(habitacionActual);
+                        System.out.println("| > El equipo " + nombre + " ahora se encuentra en la habitacion " + habitacionActual);
+                        escritura("| > El equipo " + nombre + " ahora se encuentra en la habitacion " + habitacionActual, true);
+                    }
                 }
             }while(opcion != 0);
         }else{
@@ -440,6 +478,7 @@ public class EscapeRoom {
             desafios.insertar(puntaje, nuevo);
 
             System.out.println("| > El desafio " + nuevo.toString() + " ha sido dado de alta");
+            escritura("| > El desafio " + nuevo.toString() + " ha sido dado de alta", true);
         }
     }
     public static void eliminarDesafio(DiccionarioAVL desafios){
@@ -456,6 +495,7 @@ public class EscapeRoom {
 
         if(exito){
             System.out.println(" ha sido eliminado.");
+            escritura("| > El desafio con un puntaje de " + puntaje + " ha sido eliminado.", true);
         }else{
             System.out.println(" no se ha encontrado.");
         }
@@ -475,10 +515,14 @@ public class EscapeRoom {
                     System.out.print("| > Ingrese nombre: "); 
                     String nombre = sc.nextLine(); 
                     ((Desafio)desafios.recuperarDatos(puntaje)).setNombre(nombre);
+                    System.out.println("| > El desafio de " + puntaje + " puntos ahora se llama " + nombre + ".");
+                    escritura("| > El desafio de " + puntaje + " puntos ahora se llama " + nombre + ".", true);
                 } else if(opcion == 2){
                     System.out.print("| > Ingrese tipo: "); 
-                    String tipo = sc.nextLine(); 
+                    String tipo = sc.next(); 
                     ((Desafio)desafios.recuperarDatos(puntaje)).setNombre(tipo);
+                    System.out.println("| > El desafio de " + puntaje + " puntos ahora es de tipo " + tipo + ".");
+                    escritura("| > El desafio de " + puntaje + " puntos ahora es de tipo " + tipo + ".", true);
                 } 
             }while(opcion != 0);
         }else{
@@ -558,9 +602,10 @@ public class EscapeRoom {
                     puntaje = sc.nextInt();
                     
                     // Inserto la conexion entre las habitaciones
-                    casa.insertarArco(origen, destino, puntaje);
-            
-                    System.out.println("| > La puerta de " + origen + " a " + destino + " ha sido dado de alta");
+                    casa.insertarArco(origen, destino, puntaje); 
+
+                    System.out.println("| > La puerta de " + origen + " a " + destino + " con un puntaje de " + puntaje + " puntos ha sido dada de alta.");
+                    escritura("| > La puerta de " + origen + " a " + destino + " con un puntaje de " + puntaje + " puntos ha sido dada de alta.", true);
                 }
             }   
         }
@@ -572,10 +617,11 @@ public class EscapeRoom {
 
         exito = casa.eliminarArco(habOrigen, habDestino);
 
-        System.out.print("| > La puerta de la habitacion " + habOrigen + " a\n | la habitacion " + habDestino);
+        System.out.print("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino);
         
         if(exito){
             System.out.println(" se ha eliminado. ");
+            escritura("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino + " ha sido eliminada.", true);
         }else{
             System.out.println(" no se ha encontrado.");
         }
@@ -597,7 +643,8 @@ public class EscapeRoom {
             System.out.print("| > Ingrese nuevo puntaje de la puerta: ");
             int nuevoPuntaje = sc.nextInt();
             casa.cambiarEtiqueta(origen, destino, nuevoPuntaje);
-            System.out.print("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje);
+            System.out.print("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje + ".");
+            escritura("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje + ".", true);
         }
     }
     
@@ -613,33 +660,39 @@ public class EscapeRoom {
             opcion = sc.nextInt();
 
             if(opcion == 1){
-                menuTipoDeABM("|                   A L T A S                    |");
-                opcion = sc.nextInt();
-                switch(opcion){
-                    case 1: cargarHabitacionManual(habitaciones, casa); break;
-                    case 2: cargarDesafioManual(desafios); break;
-                    case 3: cargarEquipoManual(equipos); break;
-                    case 4: cargarPuertasManual(casa, habitaciones);
-                }
-            } else if(opcion == 2){
-                menuTipoDeABM("|                   B A J A S                    |");
-                opcion = sc.nextInt();
-                switch(opcion){
-                    case 1: eliminarHabitacion(habitaciones, casa); break;
-                    case 2: eliminarDesafio(desafios); break;
-                    case 3: eliminarEquipo(equipos); break;
-                    case 4: eliminarPuerta(casa);
-                }
-            } else if(opcion == 3){
-                menuTipoDeABM("|          M O D I F I C A C I O N E S           |");
-                opcion = sc.nextInt();
-                switch(opcion){
-                    case 1: modificarHabitacion(habitaciones, casa); break;
-                    case 2: modificarDesafio(desafios); break;
-                    case 3: modificarEquipo(equipos, habitaciones); break;
-                    case 4: modificarPuerta(casa);
-                }
+                do{
+                    menuTipoDeABM("|                   A L T A S                    |");
+                    opcion = sc.nextInt();
+                    switch(opcion){
+                        case 1: cargarHabitacionManual(habitaciones, casa); break;
+                        case 2: cargarDesafioManual(desafios); break;
+                        case 3: cargarEquipoManual(equipos); break;
+                        case 4: cargarPuertasManual(casa, habitaciones);
+                    }
+                }while(opcion != 0);
                 
+            } else if(opcion == 2){
+                do{
+                    menuTipoDeABM("|                   B A J A S                    |");
+                    opcion = sc.nextInt();
+                    switch(opcion){
+                        case 1: eliminarHabitacion(habitaciones, casa); break;
+                        case 2: eliminarDesafio(desafios); break;
+                        case 3: eliminarEquipo(equipos); break;
+                        case 4: eliminarPuerta(casa);
+                    }
+                }while(opcion != 0);
+            } else if(opcion == 3){
+                do{
+                    menuTipoDeABM("|          M O D I F I C A C I O N E S           |");
+                    opcion = sc.nextInt();
+                    switch(opcion){
+                        case 1: modificarHabitacion(habitaciones, casa); break;
+                        case 2: modificarDesafio(desafios); break;
+                        case 3: modificarEquipo(equipos, habitaciones); break;
+                        case 4: modificarPuerta(casa);
+                    }
+                }while(opcion != 0);
             }
         }while(opcion != 0);
     }
@@ -989,6 +1042,7 @@ public class EscapeRoom {
                     equipo.setPuntajeActual(equipo.getPuntajeActual() + puntaje);
 
                     System.out.println("| > El equipo " + nombre + " acaba de resolver el desafio " + ((Desafio)desafios.recuperarDatos(puntaje)).toString());
+                    escritura("| > El equipo " + nombre + " acaba de resolver el desafio de " + puntaje + " puntos." , true);
                 }else{
                     System.out.println("| > El equipo " + nombre + " ya ha resuelto el desafio " + ((Desafio)desafios.recuperarDatos(puntaje)).toString());
                 }
@@ -1020,7 +1074,8 @@ public class EscapeRoom {
                         // Sumo el puntaje actual al total y reinicio el actual
                         equipo.setPuntajeTotal(equipo.getPuntajeTotal() + equipo.getPuntajeActual());
                         equipo.setPuntajeActual(0);
-                        System.out.println("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + "!!");
+                        System.out.println("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + ". ");
+                        escritura("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + ". ", true);
                     }else{
                         System.out.println("| > El equipo tiene " + equipo.getPuntajeActual() + " puntos actuales de " + casa.etiquetaArco(habActual, hab) + " puntos necesarios.");
                     }
