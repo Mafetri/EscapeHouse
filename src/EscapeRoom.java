@@ -11,9 +11,6 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 public class EscapeRoom {
     public static void main(String[] args) {
-        // Escaner de ingreso
-        Scanner sc = new Scanner(System.in);
-
         // Estructuras
         GrafoEtiq casa = new GrafoEtiq();
         DiccionarioAVL habitaciones = new DiccionarioAVL();
@@ -21,35 +18,34 @@ public class EscapeRoom {
         DiccionarioHash equipos = new DiccionarioHash();
         MapeoAMuchos desafiosResueltos = new MapeoAMuchos();
 
+        // Inicio del log
+        Date fecha = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        escritura("================================ " + formatter.format(fecha) + " ================================", false);
+        
+        // Leectura de txt
+        leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos, desafiosResueltos);
+        
         // Carteles de inicio
         cartelInicio();
-        cartelOpcionesInicio();
 
-        // Leectura de opcion inicio
-        int opcion = sc.nextInt();
+        // Escaner de ingreso
+        Scanner sc = new Scanner(System.in);
+        int opcion;
 
-        if(opcion != 0){
-            Date fecha = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            escritura("================================ " + formatter.format(fecha) + " ================================", false);
-            
+        do{
+            cartelMenuPrincipal();
+            opcion = sc.nextInt();
+
             switch (opcion) {
-                case 1: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);break;
-                case 2: leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos);
+                case 1: abm(habitaciones, casa, desafios, equipos, desafiosResueltos); break;
+                case 2: consultaHabitaciones(habitaciones, casa); break;
+                case 3: consultaDesafios(desafios, desafiosResueltos, equipos); break;
+                case 4: consultaParticipantes(equipos, desafiosResueltos, desafios, habitaciones, casa); break;
+                case 5: consultaGeneral(habitaciones, casa, desafios, equipos);
             }
-            do{
-                cartelMenuPrincipal();
-                opcion = sc.nextInt();
-
-                switch (opcion) {
-                    case 1: abm(habitaciones, casa, desafios, equipos);break;
-                    case 2: consultaHabitaciones(habitaciones, casa); break;
-                    case 3: consultaDesafios(desafios, desafiosResueltos, equipos); break;
-                    case 4: consultaParticipantes(equipos, desafiosResueltos, desafios, habitaciones, casa); break;
-                    case 5: consultaGeneral(habitaciones, casa, desafios, equipos);
-                }
-            }while(opcion != 0);
-        }
+        }while(opcion != 0);
+        
         sc.close();
         cartelFinal();
         escritura("================================== FIN DE EJECUCION =================================", true);
@@ -59,7 +55,7 @@ public class EscapeRoom {
     //        Leectura y escritura
     //              de .txt
     // =================================
-    public static void leectura(String ubicacion, GrafoEtiq casa, DiccionarioAVL habitaciones, DiccionarioAVL desafios, DiccionarioHash equipos){
+    public static void leectura(String ubicacion, GrafoEtiq casa, DiccionarioAVL habitaciones, DiccionarioAVL desafios, DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
         try{
             BufferedReader archivo = new BufferedReader(new FileReader(ubicacion));
             String linea;
@@ -74,7 +70,8 @@ public class EscapeRoom {
                     case 'H': cargarHabitacion(habitaciones, casa,linea); break;
                     case 'E': cargarEquipo(equipos, linea); break;
                     case 'D': cargarDesafio(desafios, linea); break;
-                    case 'P': cargarPuerta(casa, linea);
+                    case 'P': cargarPuerta(casa, linea); break;
+                    case 'C': cargarDesafiosResueltos(desafiosResueltos, linea);
                 }
             }
             archivo.close();
@@ -92,6 +89,7 @@ public class EscapeRoom {
             System.out.println("| > Error: " + e);
         }
     }
+
 
     // =================================
     //       Carga/Baja/Modificaion
@@ -337,15 +335,17 @@ public class EscapeRoom {
             escritura("| > El equipo " + nuevo.toString() + " ha sido dado de alta.", true);
         }
     }
-    public static void eliminarEquipo(DiccionarioHash equipos){
+    public static void eliminarEquipo(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
         Scanner sc = new Scanner(System.in);
         String nombre = "";
         boolean exito = false;
 
-        System.out.println("| > Ingrese nombre del equipo a eliminar: ");
+        System.out.print("| > Ingrese nombre del equipo a eliminar: ");
         nombre = sc.nextLine();
 
+        // Elimino al equipo del diccionario de equipos y lo elimino del mapeo de desafios resueltos
         exito = equipos.eliminar(nombre);
+        desafiosResueltos.eliminar(nombre);
 
         System.out.print("| > El equipo " + nombre);
         if(exito){
@@ -384,7 +384,7 @@ public class EscapeRoom {
                     System.out.println("| > El equipo " + nombre + " ahora tiene un puntaje actual de " + puntajeActual + " puntos.");
                     escritura("| > El equipo " + nombre + " ahora tiene un puntaje actual de " + puntajeActual + " puntos.", true);
                 } else if(opcion == 4){
-                    System.out.print("| > Ingrese habitacion actual: ");
+                    System.out.print("| > Ingrese habitacion: ");
                     habitacionActual = sc.nextInt();
                     existe = habitaciones.pertenece(habitacionActual);
                     if(!existe){
@@ -486,7 +486,7 @@ public class EscapeRoom {
         int puntaje = 0;
         boolean exito = false;
 
-        System.out.println("| > Ingrese puntaje del desafio a eliminar: ");
+        System.out.print("| > Ingrese puntaje del desafio a eliminar: ");
         puntaje = sc.nextInt();
 
         exito = desafios.eliminar(puntaje);
@@ -610,22 +610,34 @@ public class EscapeRoom {
             }   
         }
     }
-    public static void eliminarPuerta(GrafoEtiq casa){
+    public static void eliminarPuerta(GrafoEtiq casa, DiccionarioAVL habitaciones){
         Scanner sc = new Scanner(System.in);
         int habOrigen = 0, habDestino = 0;
         boolean exito = false;
 
-        exito = casa.eliminarArco(habOrigen, habDestino);
-
-        System.out.print("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino);
-        
-        if(exito){
-            System.out.println(" se ha eliminado. ");
-            escritura("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino + " ha sido eliminada.", true);
+        System.out.print("| > Ingrese origen de la puerta: ");
+        habOrigen = sc.nextInt();
+        if(habitaciones.pertenece(habOrigen)){
+            System.out.print("| > Ingrese destino de la puerta: ");
+            habDestino = sc.nextInt();
+            
+            if(habitaciones.pertenece(habDestino)){
+                exito = casa.eliminarArco(habOrigen, habDestino);
+    
+                System.out.print("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino);
+                
+                if(exito){
+                    System.out.println(" se ha eliminado. ");
+                    escritura("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino + " ha sido eliminada.", true);
+                }else{
+                    System.out.println(" no se ha encontrado.");
+                }
+            }else{
+                System.out.println("| > La habitacion de destino " + habDestino + " no existe.");
+            }
         }else{
-            System.out.println(" no se ha encontrado.");
+            System.out.println("| > La habitacion de origen " + habOrigen + " no existe.");
         }
-        
     }
     public static void modificarPuerta(GrafoEtiq casa){
         Scanner sc = new Scanner(System.in);
@@ -647,19 +659,48 @@ public class EscapeRoom {
             escritura("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje + ".", true);
         }
     }
-    
+    // ---- Desafios Resueltos ----
+    public static void cargarDesafiosResueltos(MapeoAMuchos desafiosResueltos, String linea){
+        // Variables de mapeo
+        String nombre = "";
+        Lista rango = new Lista();
+
+        // Token guarda las cadenas de Strings entre los ;
+        StringTokenizer token = new StringTokenizer(linea, ";");
+
+        // cantTokens guarda la cantidad de tokens guardados
+        int cantTokens = token.countTokens();
+
+        // tokenAcutal guarda el token actual para analizar a que variable pertenece
+        String tokenActual;
+
+        // Desde 0 hasta la cantidad de tokens, analiza token por token y segun el valor de
+        // i (veces que ya guardo cosas) determina a que variable le corresponde el token
+        for(int i = 0; i < cantTokens; i++){
+            tokenActual = token.nextToken();
+            if(i == 0){
+                nombre = tokenActual;
+            }else{
+                rango.insertar(Integer.parseInt(tokenActual), 1);
+            }
+        }
+
+        // Inserto la conexion entre las habitaciones
+        desafiosResueltos.asociarLista(nombre, rango);
+    }
+
 
     // =================================
     //   Altas, bajas y modificaciones
     // =================================
-    public static void abm(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioAVL desafios, DiccionarioHash equipos){
+    public static void abm(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioAVL desafios, DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
         Scanner sc = new Scanner(System.in);
-        int opcion;
+        int opcion, opcionPrincipal;
         do{
             menuABM();
-            opcion = sc.nextInt();
+            opcionPrincipal = sc.nextInt();
 
-            if(opcion == 1){
+            if(opcionPrincipal == 1){
                 do{
                     menuTipoDeABM("|                   A L T A S                    |");
                     opcion = sc.nextInt();
@@ -671,18 +712,18 @@ public class EscapeRoom {
                     }
                 }while(opcion != 0);
                 
-            } else if(opcion == 2){
+            } else if(opcionPrincipal == 2){
                 do{
                     menuTipoDeABM("|                   B A J A S                    |");
                     opcion = sc.nextInt();
                     switch(opcion){
                         case 1: eliminarHabitacion(habitaciones, casa); break;
                         case 2: eliminarDesafio(desafios); break;
-                        case 3: eliminarEquipo(equipos); break;
-                        case 4: eliminarPuerta(casa);
+                        case 3: eliminarEquipo(equipos, desafiosResueltos); break;
+                        case 4: eliminarPuerta(casa, habitaciones);
                     }
                 }while(opcion != 0);
-            } else if(opcion == 3){
+            } else if(opcionPrincipal == 3){
                 do{
                     menuTipoDeABM("|          M O D I F I C A C I O N E S           |");
                     opcion = sc.nextInt();
@@ -694,11 +735,11 @@ public class EscapeRoom {
                     }
                 }while(opcion != 0);
             }
-        }while(opcion != 0);
+        }while(opcionPrincipal != 0);
     }
     public static void menuABM(){
         System.out.println("==================================================");
-        System.out.println("|            ALTAS, BAJAS Y MODIFICACIONES       |");
+        System.out.println("|          ALTAS, BAJAS Y MODIFICACIONES         |");
         System.out.println("==================================================");
         System.out.println("| 1. Dar de alta                                 |");
         sleepMilisegundos(150);
@@ -1029,7 +1070,7 @@ public class EscapeRoom {
         System.out.print("| > Ingrese nombre del equipo: ");
         String nombre = sc.nextLine();
         if(equipos.pertenece(nombre)){
-            System.out.print("| > Ingrese putnaje del desafio: ");
+            System.out.print("| > Ingrese puntaje del desafio: ");
             int puntaje = sc.nextInt();
             if(desafios.pertenece(puntaje)){
                 System.out.println("|------------------------------------------------|");
@@ -1095,23 +1136,24 @@ public class EscapeRoom {
         // Pregunto que equipo quiere pasar de habitacion
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese nombre del equipo: ");
-        System.out.print("|------------------------------------------------|");
         String nombre = sc.nextLine();
+        System.out.println("|------------------------------------------------|");
         boolean exito = false;
 
         if(equipos.pertenece(nombre)){
             Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
             if(((Habitacion)habitaciones.recuperarDatos(equipo.getHabitacionActual())).getSalida()){
                 if(equipo.getPuntajeTotal() >= equipo.getPuntajeSalida()){
+                    System.out.println("| > El equipo " + nombre + " puede salir de la casa!");
                     exito = true;
                 }else{
-                    System.out.print("| > El equipo " + nombre + " tiene " + equipo.getPuntajeTotal() + " puntos\n| de " + equipo.getPuntajeSalida() + " puntos necesarios para salir.");
+                    System.out.println("| > El equipo " + nombre + " tiene " + equipo.getPuntajeTotal() + " puntos\n| de " + equipo.getPuntajeSalida() + " puntos necesarios para salir.");
                 }
             }else{
-                System.out.print("| > El equipo " + nombre + " se encuentra en la habitacion " + equipo.getHabitacionActual() + " la cual no tiene salida.");
+                System.out.println("| > El equipo " + nombre + " se encuentra en la habitacion " + equipo.getHabitacionActual() + " la cual no tiene salida.");
             }
         }else{
-            System.out.print("| > El equipo no existe.");
+            System.out.println("| > El equipo no existe.");
         }
         
         return exito;

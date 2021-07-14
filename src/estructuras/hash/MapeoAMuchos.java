@@ -39,6 +39,30 @@ public class MapeoAMuchos {
         return encontrado;
     }
 
+    // ---- Asociar Lista ----
+    public boolean asociarLista(Object elem, Lista lis) {
+        int pos = funcionHash(elem);
+        NodoHashMapeoM aux = this.tabla[pos];
+        boolean encontrado = false;
+
+        // Busco si existe en los nodos de la posicion hash de elem
+        while (!encontrado && aux != null) {
+            encontrado = aux.getDominio().equals(elem);
+            aux = aux.getEnlace();
+        }
+
+        // Si no existe el elem en la tabla, lo agrego con el nuevo rango
+        if (!encontrado) {
+            this.tabla[pos] = new NodoHashMapeoM(elem, lis, this.tabla[pos]);
+            this.cant++;
+        }else{
+            // Si existe le agrego el nuevo elemento del rango al elem
+            this.tabla[pos].setRango(lis);
+        }
+
+        return encontrado;
+    }
+
     // ---- Desasociar ----
     public boolean desasociar(Object elem, Object rango) {
         int pos = funcionHash(elem);
@@ -86,6 +110,49 @@ public class MapeoAMuchos {
                 this.cant--;
             }
             
+        }
+
+        return encontrado;
+    }
+
+    // ---- Eliminar ----
+    public boolean eliminar(Object elem) {
+        int pos = funcionHash(elem);
+        int posNodo = 0;
+        NodoHashMapeoM aux = this.tabla[pos];
+        boolean encontrado = false;
+
+        // Busco el elem
+        while (!encontrado && aux != null) {
+            encontrado = aux.getDominio().equals(elem);
+            aux = aux.getEnlace();
+            posNodo++;
+        }
+        
+        // Si fue encontrado entonces lo elimino
+        if (encontrado) {
+            // Si el elemento esta en el primer nodo de la posicion de la tabla
+            if (posNodo == 1) {
+                // Y no tiene nodos anidados
+                if (this.tabla[pos].getEnlace() == null) {
+                    this.tabla[pos] = null;
+                } else {
+                    this.tabla[pos] = this.tabla[pos].getEnlace();
+                }
+            } else {
+                aux = this.tabla[pos];
+                for(int i = 1; i < posNodo; i++){
+                    // Si el siguiente nodo es el nodo del elemento a eliminar
+                    if(i+1 == posNodo){
+                        // Entonces seteo el enlace del nodo alctual al enlace del elemento a eliminar
+                        aux.setEnlace(aux.getEnlace().getEnlace());
+                    }else{
+                        // Si no lo es, avanzo a aux
+                        aux = aux.getEnlace();
+                    }
+                }
+            }
+            this.cant--;
         }
 
         return encontrado;

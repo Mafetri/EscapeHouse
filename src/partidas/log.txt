@@ -1,1 +1,12 @@
-================================ 14-07-2021 15:43:30 ================================
+================================ 14-07-2021 18:32:52 ================================
+| > El equipo Manuel acaba de resolver el desafio de 300 puntos.
+| > El equipo Manuel ha pasado a la habitacion 3. 
+| > La puerta de la habitacion 3 a
+| la habitacion 2 ha sido eliminada.
+| > El equipo Manuel ha sido eliminado.
+| > El equipo Manuel que se encuentra en la habitacion 2, con un puntaje actual 15, total de 0 y necesario para salir de 15 puntos ha sido dado de alta.
+| > El equipo Manuel acaba de resolver el desafio de 30 puntos.
+| > El equipo Manuel ha pasado a la habitacion 1. 
+| > El equipo Manuel ahora se encuentra en la habitacion 3
+| > El equipo Manuel ahora tiene un puntaje de salida de 0 puntos.
+================================== FIN DE EJECUCION =================================

@@ -99,9 +99,12 @@ public class GrafoEtiq {
             NodoVert verticeOrigen = ubicarVertice(origen);
             NodoVert verticeDestino = ubicarVertice(destino);
 
-            if (verticeOrigen != null && destino != null) {
-                eliminarAdyacente(verticeOrigen, destino);
-                eliminarAdyacente(verticeDestino, origen);
+            if (verticeOrigen != null && verticeDestino != null) {
+                if(eliminarAdyacente(verticeOrigen, destino)){
+                    if(eliminarAdyacente(verticeDestino, origen)){
+                        exito = true;
+                    }
+                }
             }
         }
 
@@ -111,7 +114,8 @@ public class GrafoEtiq {
     // ---- Eliminar Adyacente ----
     // Busca dentro de los nodos adyacentes a nodo, el vertice que tenga como elemento a elem
     // y lo elimina de la lista de adyacencia del nodo
-    private void eliminarAdyacente(NodoVert nodo, Object elem) {
+    private boolean eliminarAdyacente(NodoVert nodo, Object elem) {
+        boolean exito = false;
         NodoAdy adyOrigen = nodo.getPrimerAdy();
         if (adyOrigen != null) {
             // Caso especial adyecente en primer lugar
@@ -126,13 +130,14 @@ public class GrafoEtiq {
                         nodo = adyOrigen.getSigAdyacente().getVertice();
                         adyOrigen.setSigAdyacente(adyOrigen.getSigAdyacente().getSigAdyacente());
                         adyOrigen = null;
+                        exito = true;
                     } else {
                         adyOrigen = adyOrigen.getSigAdyacente();
                     }
                 }
             }
         }
-
+        return exito;
     }
 
     // ---- Existe Vertice ----
