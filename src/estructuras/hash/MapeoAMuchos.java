@@ -236,4 +236,27 @@ public class MapeoAMuchos {
         }
         return pos;
     }
+
+    // ---- To string ----
+    public String toString() {
+        String aRetornar = "";
+        NodoHashMapeoM aux;
+        for(int i= 0; i < TAMANIO-1; i++){
+            if(this.tabla[i] != null){
+                aRetornar += this.tabla[i].getDominio().toString() + " " + this.tabla[i].getRango().toString();
+                aux = this.tabla[i].getEnlace();
+                if(aux == null){
+                    aRetornar += "\n";
+                }else{
+                    while(aux != null){
+                        aRetornar += " - " + this.tabla[i].getDominio().toString() + this.tabla[i].getRango().toString();
+                        aux = aux.getEnlace();
+                    }
+                    aRetornar += "\n";
+                }
+                
+            }
+        }
+        return aRetornar;
+    }
 }

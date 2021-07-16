@@ -42,7 +42,7 @@ public class EscapeRoom {
                 case 2: consultaHabitaciones(habitaciones, casa); break;
                 case 3: consultaDesafios(desafios, desafiosResueltos, equipos); break;
                 case 4: consultaParticipantes(equipos, desafiosResueltos, desafios, habitaciones, casa); break;
-                case 5: consultaGeneral(habitaciones, casa, desafios, equipos);
+                case 5: consultaGeneral(habitaciones, casa, desafios, equipos, desafiosResueltos);
             }
         }while(opcion != 0);
         
@@ -1176,7 +1176,7 @@ public class EscapeRoom {
     // =========================
     //      Consulta General
     // =========================
-    public static void consultaGeneral(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioAVL desafios, DiccionarioHash equipos){
+    public static void consultaGeneral(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioAVL desafios, DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
         System.out.println("==================================================");
         System.out.println("|        E S T A D O  D E L  S I S T E M A       |");        
         System.out.println("==================================================");
@@ -1191,6 +1191,14 @@ public class EscapeRoom {
         System.out.println("|             D E S A F I O S                    |");
         System.out.println("|------------------------------------------------|");
         System.out.println(desafios.toString());
+        System.out.println("|------------------------------------------------|");
+        System.out.println("|                E Q U I P O S                   |");
+        System.out.println("|------------------------------------------------|");
+        System.out.println(equipos.toString());
+        System.out.println("|------------------------------------------------|");
+        System.out.println("|      D E S A F I O S   R E S U E L T O S       |");
+        System.out.println("|------------------------------------------------|");
+        System.out.println(desafiosResueltos.toString());
     }
 
 

@@ -160,4 +160,27 @@ public class DiccionarioHash {
         }
         return pos;
     }
+
+    // ---- To string ----
+    public String toString() {
+        String aRetornar = "";
+        NodoHashDicc aux;
+        for(int i= 0; i < TAMANIO-1; i++){
+            if(this.tabla[i] != null){
+                aRetornar += this.tabla[i].getElem().toString();
+                aux = this.tabla[i].getEnlace();
+                if(aux == null){
+                    aRetornar += "\n";
+                }else{
+                    while(aux != null){
+                        aRetornar += " - " + aux.getElem().toString();
+                        aux = aux.getEnlace();
+                    }
+                    aRetornar += "\n";
+                }
+                
+            }
+        }
+        return aRetornar;
+    }
 }
