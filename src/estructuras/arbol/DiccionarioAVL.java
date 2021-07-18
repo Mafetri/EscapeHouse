@@ -56,88 +56,98 @@ public class DiccionarioAVL {
         // Recalculo la altura del nodo
         nodo.recalcularAltura();
 
-        int balance;
-        int balanceIzq;
-        int balanceDer;
+        // Hago las rotaciones necesarias
+        rotar(nodo, padre);
+
+        return exito;
+    }
+
+    private void rotar(NodoAVLDicc nodo, NodoAVLDicc padre) {
+        int balance, balanceIzq, balanceDer;
 
         balance = alturaNodo(nodo.getIzquierdo()) - alturaNodo(nodo.getDerecho());
 
-        // Balance del hijo izquierdo
-        if (nodo.getIzquierdo() != null) {
-            balanceIzq = alturaNodo(nodo.getIzquierdo().getIzquierdo()) - alturaNodo(nodo.getIzquierdo().getDerecho());
-        } else {
-            balanceIzq = 0;
-        }
-        // Balance del hijo derecho
-        if (nodo.getDerecho() != null) {
-            balanceDer = alturaNodo(nodo.getDerecho().getIzquierdo()) - alturaNodo(nodo.getDerecho().getDerecho());
-        } else {
-            balanceDer = 0;
-        }
-
-        // Rotacion simple derecha (si esta caido a la izquierda y su hijo izquierdo tiene el mismo signo)
-        if (balance > 1 && balanceIzq >= 0) {
-            if (padre != null) {
-                // Si el nodo a rotar es el hijo izquierdo del padre
-                if(padre.getIzquierdo().equals(nodo)){
-                    padre.setIzquierdo(rotarDerecha(nodo));
-                }else{
-                    // Si el nodo a rotar es el hijo derecho del padre
-                    padre.setDerecho(rotarDerecha(nodo));
-                }
+        // Si el nodo esta desbalanceado
+        if (balance > 1 || balance < -1) {
+            // Balance del hijo izquierdo
+            if (nodo.getIzquierdo() != null) {
+                balanceIzq = alturaNodo(nodo.getIzquierdo().getIzquierdo()) - alturaNodo(nodo.getIzquierdo().getDerecho());
             } else {
-                this.raiz = rotarDerecha(nodo);
+                balanceIzq = 0;
+            }
+            // Balance del hijo derecho
+            if (nodo.getDerecho() != null) {
+                balanceDer = alturaNodo(nodo.getDerecho().getIzquierdo()) - alturaNodo(nodo.getDerecho().getDerecho());
+            } else {
+                balanceDer = 0;
+            }
+
+            // Rotacion simple derecha (si esta caido a la izquierda y su hijo izquierdo
+            // tiene el mismo signo)
+            if (balance > 1 && balanceIzq >= 0) {
+                if (padre != null) {
+                    // Si el nodo a rotar es el hijo izquierdo del padre
+                    if (padre.getIzquierdo().equals(nodo)) {
+                        padre.setIzquierdo(rotarDerecha(nodo));
+                    } else {
+                        // Si el nodo a rotar es el hijo derecho del padre
+                        padre.setDerecho(rotarDerecha(nodo));
+                    }
+                } else {
+                    this.raiz = rotarDerecha(nodo);
+                }
+            }
+
+            // Rotacion simple izquierda (si esta caido a la derecha y su hijo derecho tiene
+            // el mismo signo)
+            if (balance < -1 && balanceDer <= 0) {
+                if (padre != null) {
+                    // Si el nodo a rotar es el hijo izquierdo del padre
+                    if (padre.getIzquierdo().equals(nodo)) {
+                        padre.setIzquierdo(rotarIzquierda(nodo));
+                    } else {
+                        // Si el nodo a rotar es el hijo derecho del padre
+                        padre.setDerecho(rotarIzquierda(nodo));
+                    }
+                } else {
+                    this.raiz = rotarIzquierda(nodo);
+                }
+            }
+
+            // Rotacion izquierda-derecha (si esta caido a la izquierda y su hijo izquiedo
+            // tiene distinto signo)
+            if (balance > 1 && balanceIzq < 0) {
+                nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
+                if (padre != null) {
+                    // Si el nodo a rotar es el hijo izquierdo del padre
+                    if (padre.getIzquierdo().equals(nodo)) {
+                        padre.setIzquierdo(rotarDerecha(nodo));
+                    } else {
+                        // Si el nodo a rotar es el hijo derecho del padre
+                        padre.setDerecho(rotarDerecha(nodo));
+                    }
+                } else {
+                    this.raiz = rotarDerecha(nodo);
+                }
+            }
+
+            // Rotacion derecha-izquierda (si esta caido a la derecha y su hijo derecho
+            // tiene distinto signo)
+            if (balance < -1 && balanceDer > 0) {
+                nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
+                if (padre != null) {
+                    // Si el nodo a rotar es el hijo izquierdo del padre
+                    if (padre.getIzquierdo().equals(nodo)) {
+                        padre.setIzquierdo(rotarIzquierda(nodo));
+                    } else {
+                        // Si el nodo a rotar es el hijo derecho del padre
+                        padre.setDerecho(rotarIzquierda(nodo));
+                    }
+                } else {
+                    this.raiz = rotarIzquierda(nodo);
+                }
             }
         }
-
-        // Rotacion simple izquierda (si esta caido a la derecha y su hijo derecho tiene el mismo signo)
-        if (balance < -1 && balanceDer <= 0) {
-            if (padre != null) {
-                // Si el nodo a rotar es el hijo izquierdo del padre
-                if(padre.getIzquierdo().equals(nodo)){
-                    padre.setIzquierdo(rotarIzquierda(nodo));
-                }else{
-                    // Si el nodo a rotar es el hijo derecho del padre
-                    padre.setDerecho(rotarIzquierda(nodo));
-                }
-            } else {
-                this.raiz = rotarIzquierda(nodo);
-            }
-        }
-
-        // Rotacion izquierda-derecha (si esta caido a la izquierda y su hijo izquiedo tiene distinto signo)
-        if(balance > 1 && balanceIzq < 0){
-            nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
-            if (padre != null) {
-                // Si el nodo a rotar es el hijo izquierdo del padre
-                if(padre.getIzquierdo().equals(nodo)){
-                    padre.setIzquierdo(rotarDerecha(nodo));
-                }else{
-                    // Si el nodo a rotar es el hijo derecho del padre
-                    padre.setDerecho(rotarDerecha(nodo));
-                }
-            } else {
-                this.raiz = rotarDerecha(nodo);
-            }
-        }
-
-        // Rotacion derecha-izquierda (si esta caido a la derecha y su hijo derecho tiene distinto signo)
-        if(balance < -1 && balanceDer > 0){
-            nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
-            if (padre != null) {
-                // Si el nodo a rotar es el hijo izquierdo del padre
-                if(padre.getIzquierdo().equals(nodo)){
-                    padre.setIzquierdo(rotarIzquierda(nodo));
-                }else{
-                    // Si el nodo a rotar es el hijo derecho del padre
-                    padre.setDerecho(rotarIzquierda(nodo));
-                }
-            } else {
-                this.raiz = rotarIzquierda(nodo);
-            }
-        }
-
-        return exito;
     }
 
     private NodoAVLDicc rotarIzquierda(NodoAVLDicc padre) {
@@ -249,63 +259,8 @@ public class DiccionarioAVL {
             // Recalculo la altura del nodo
             nodo.recalcularAltura();
 
-            int balance;
-            int balanceIzq;
-            int balanceDer;
-
-            balance = alturaNodo(nodo.getIzquierdo()) - alturaNodo(nodo.getDerecho());
-
-            // Balance del hijo izquierdo
-            if (nodo.getIzquierdo() != null) {
-                balanceIzq = alturaNodo(nodo.getIzquierdo().getIzquierdo())
-                        - alturaNodo(nodo.getIzquierdo().getDerecho());
-            } else {
-                balanceIzq = 0;
-            }
-            // Balance del hijo derecho
-            if (nodo.getDerecho() != null) {
-                balanceDer = alturaNodo(nodo.getDerecho().getIzquierdo()) - alturaNodo(nodo.getDerecho().getDerecho());
-            } else {
-                balanceDer = 0;
-            }
-
-            // Rotacion simple izquierda
-            if (balance > 1 && balanceIzq >= 0) {
-                if (padre != null) {
-                    padre.setIzquierdo(rotarDerecha(nodo));
-                } else {
-                    this.raiz = rotarDerecha(nodo);
-                }
-            }
-
-            // Rotacion izquierda-derecha
-            if (balance > 1 && balanceIzq < 0) {
-                nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
-                if (padre != null) {
-                    padre.setIzquierdo(rotarDerecha(nodo));
-                } else {
-                    this.raiz = rotarDerecha(nodo);
-                }
-            }
-
-            // Rotacion simple derecha
-            if (balance < -1 && balanceDer <= 0) {
-                if (padre != null) {
-                    padre.setDerecho(rotarIzquierda(nodo));
-                } else {
-                    this.raiz = rotarIzquierda(nodo);
-                }
-            }
-
-            // Rotacion derecha-izquierda
-            if (balance < -1 && balanceDer > 0) {
-                nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
-                if (padre != null) {
-                    padre.setDerecho(rotarIzquierda(nodo));
-                } else {
-                    this.raiz = rotarIzquierda(nodo);
-                }
-            }
+            // Hago las rotaciones necesarias
+            rotar(nodo, padre);
         }
 
         return exito;
