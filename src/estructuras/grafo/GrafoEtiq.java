@@ -209,7 +209,51 @@ public class GrafoEtiq {
         return enTexto;
     }
 
-    // ---- Existe Camino ----
+    // ---- Existe Camino Etiquetado ----
+    public boolean existeCaminoEtiquetado(Object origen, Object destino, int puntaje){
+        boolean exito = false;
+
+        NodoVert auxOrigen = null;
+        NodoVert auxDestino = null;
+        NodoVert aux = this.inicio;
+
+        while(((auxOrigen == null) || (auxDestino == null)) && (aux != null)){
+            if(aux.getElem().equals(origen)){
+                auxOrigen = aux;
+            }
+            if(aux.getElem().equals(destino)){
+                auxDestino = aux;
+            }
+            aux = aux.getSigVertice();
+        }
+
+        if(auxOrigen != null && auxDestino != null){
+            Lista visitados = new Lista();
+            exito = existeCaminoEtiquetadoAux(auxOrigen, destino, visitados, 0, puntaje);
+        }
+
+        return exito;
+    }
+    private boolean existeCaminoEtiquetadoAux(NodoVert nodo, Object dest, Lista vis, int puntajeAcumulado, int puntaje){
+        boolean exito = false;
+        if(nodo != null && puntajeAcumulado <= puntaje){
+            if(nodo.getElem().equals(dest)){
+                exito = true;
+            }else{
+                vis.insertar(nodo.getElem(), vis.longitud()+1);
+                NodoAdy ady = nodo.getPrimerAdy();
+                while(!exito && ady != null){
+                    if(vis.localizar(ady.getVertice().getElem()) < 0){
+                        exito = existeCaminoEtiquetadoAux(ady.getVertice(), dest, vis, puntajeAcumulado+ady.getEtiqueta(), puntaje);
+                    }
+                    ady = ady.getSigAdyacente();
+                }
+            }
+        }
+        return exito;
+    }
+
+    // ---- Caminos sin pasar por ----
     // Devuelve una lista de caminos posibles desde el origen al destino sin pasar por "noPasar" y con
     // una suma de etiquetas no mayor a puntajeActual
     public Lista caminosSinPasarPor(Object origen, Object destino, Object noPasar, int puntajeActual){

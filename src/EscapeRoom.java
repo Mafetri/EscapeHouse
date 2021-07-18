@@ -808,8 +808,9 @@ public class EscapeRoom {
             switch(opcion){
                 case 1: mostrarHabitacion(habitaciones); break;
                 case 2: habitacionesContiguas(casa); break;
-                case 3: esPosibleLlegar(casa); break;
-                case 4: sinPasar(casa);
+                case 3: esPosibleLlegar(casa, habitaciones); break;
+                case 4: sinPasar(casa);break;
+                case 5: esPosibleLlegar2(casa, habitaciones);
             }
         }while(opcion != 0);
     }
@@ -866,23 +867,55 @@ public class EscapeRoom {
         System.out.println("| La habitacion " + numero+ " es contigua con " + casa.nodosAdyacentes(numero));
         System.out.println("|------------------------------------------------|");
     }
-    // ---- Es Posible Llegar ----
-    public static void esPosibleLlegar(GrafoEtiq casa){
+    // ---- Es Posible Llegar ----  REVISAR, NO SE SI PIDE SI SE PUEDE IR DE HABITACION CONTIGUA O SI HAY CAMINO
+    public static void esPosibleLlegar(GrafoEtiq casa, DiccionarioAVL habitaciones){
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese numero de la primera habitacion: ");
         int hab1 = sc.nextInt();
-        System.out.print("| > Ingrese numero de la segunda habitacion: ");
-        int hab2 = sc.nextInt();
-        System.out.print("| > Ingrese puntaje acumulado: ");
-        int puntaje = sc.nextInt();
-        System.out.println("|------------------------------------------------|");
-
-        int puntajeNecesario = casa.etiquetaArco(hab1, hab2);
-        if(puntajeNecesario >= 0 && puntajeNecesario - puntaje <= 0){
-            System.out.println("| > Es posible llegar con " + puntaje + " puntos.");
+        if(habitaciones.pertenece(hab1)){
+            System.out.print("| > Ingrese numero de la segunda habitacion: ");
+            int hab2 = sc.nextInt();
+            if(habitaciones.pertenece(hab2)){
+                System.out.print("| > Ingrese puntaje acumulado: ");
+                int puntaje = sc.nextInt();
+                System.out.println("|------------------------------------------------|");
+        
+                int puntajeNecesario = casa.etiquetaArco(hab1, hab2);
+                if(puntajeNecesario >= 0 && puntajeNecesario - puntaje <= 0){
+                    System.out.println("| > Es posible llegar con " + puntaje + " puntos.");
+                }else{
+                    System.out.println("| > No es posible llegar");
+                }
+            }else{
+                System.out.println("| > La habitacion " + hab2 + " no existe.");
+            }
         }else{
-            System.out.println("| > No es posible llegar");
-        }   
+            System.out.println("| > La habitacion " + hab1 + " no existe.");
+        }
+    }
+    public static void esPosibleLlegar2(GrafoEtiq casa, DiccionarioAVL habitaciones){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("| > Ingrese numero de la primera habitacion: ");
+        int hab1 = sc.nextInt();
+        if(habitaciones.pertenece(hab1)){
+            System.out.print("| > Ingrese numero de la segunda habitacion: ");
+            int hab2 = sc.nextInt();
+            if(habitaciones.pertenece(hab2)){
+                System.out.print("| > Ingrese puntaje acumulado: ");
+                int puntaje = sc.nextInt();
+                System.out.println("|------------------------------------------------|");
+        
+                if(casa.existeCaminoEtiquetado(hab1, hab2, puntaje)){
+                    System.out.println("| > Es posible llegar con " + puntaje + " puntos.");
+                }else{
+                    System.out.println("| > No es posible llegar");
+                }  
+            }else{
+                System.out.println("| > La habitacion " + hab2 + " no existe.");
+            }
+        }else{
+            System.out.println("| > La habitacion " + hab1 + " no existe.");
+        }
     }
     // ---- Sin Pasar Por ----
     public static void sinPasar(GrafoEtiq casa){
@@ -979,22 +1012,22 @@ public class EscapeRoom {
         Scanner sc = new Scanner(System.in);
         String nombre;
         boolean existe = false;
-        do{
-            System.out.print("| > Ingrese nombre del equipo: ");
-            nombre = sc.nextLine();
-            existe = equipos.pertenece(nombre);
-            if(!existe){
-                System.out.println("| > El equipo no existe. ");
-            }
-        }while(!existe);
-
-        System.out.println("| > Los desafios resueltos por el equipo " + nombre + " son: " + desafiosResueltos.obtenerValores(nombre).toString());
+        System.out.print("| > Ingrese nombre del equipo: ");
+        nombre = sc.nextLine();
+        existe = equipos.pertenece(nombre);
+        if(!existe){
+            System.out.println("| > El equipo no existe. ");
+        }else{
+            System.out.println("| > Los desafios resueltos por el equipo " + nombre + " son: " + desafiosResueltos.obtenerValores(nombre).toString());
+        }
     }
     // ---- Mostrar Desafios Tipo ----
     public static void mostrarDesafiosTipo(DiccionarioAVL desafios){
         Scanner sc = new Scanner(System.in);
         int puntaje1, puntaje2;
         String tipo;
+        Desafio desafioActual;
+
         System.out.print("| > Ingrese puntaje minimo: ");
         puntaje1 = sc.nextInt();
         System.out.print("| > Ingrese puntaje maximo: ");
@@ -1009,7 +1042,7 @@ public class EscapeRoom {
 
         // Recorro la lista y pregunto si el tipo de cada dato de la lista es igual con el solicitado, si es asi, imprime todos los datos por pantalla
         for(int i = 1; i <= desafiosRango.longitud(); i++){
-            Desafio desafioActual = ((Desafio)desafiosRango.recuperar(i));
+            desafioActual = ((Desafio)desafiosRango.recuperar(i));
             if(desafioActual != null && desafioActual.getTipo().equals(tipo)){
                 System.out.println("| --> " + desafioActual.toString() + " con un puntaje de " + desafioActual.getPuntaje() + ". ");
             }
