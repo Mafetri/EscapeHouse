@@ -19,7 +19,7 @@ public class DiccionarioHash {
     private int cant;
 
     public DiccionarioHash() {
-        this.tabla = new NodoHashDicc[TAMANIO - 1];
+        this.tabla = new NodoHashDicc[TAMANIO];
         cant = 0;
     }
 

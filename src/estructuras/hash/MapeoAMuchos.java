@@ -8,7 +8,7 @@ public class MapeoAMuchos {
     private int cant;
 
     public MapeoAMuchos() {
-        this.tabla = new NodoHashMapeoM[TAMANIO - 1];
+        this.tabla = new NodoHashMapeoM[TAMANIO];
         cant = 0;
     }
 
@@ -21,10 +21,12 @@ public class MapeoAMuchos {
         // Busco si existe en los nodos de la posicion hash de elem
         while (!encontrado && aux != null) {
             encontrado = aux.getDominio().equals(elem);
-            aux = aux.getEnlace();
+            if(!encontrado){
+                aux = aux.getEnlace();
+            }
         }
 
-        // Si no existe el elem en la tabla, lo agrego con el nuevo rango
+        // Si no existe el elem en la tabla, lo agrego con el nuevo rango a la primera posicion de los nodos
         if (!encontrado) {
             Lista lis = new Lista();
             lis.insertar(rango, lis.longitud() + 1);
@@ -32,9 +34,9 @@ public class MapeoAMuchos {
             this.cant++;
         } else {
             // Si existe le agrego el nuevo elemento del rango al elem
-            Lista lis = this.tabla[pos].getRango();
+            Lista lis = aux.getRango();
             lis.insertar(rango, lis.longitud() + 1);
-            this.tabla[pos].setRango(lis);
+            aux.setRango(lis);
         }
 
         return encontrado;
@@ -49,7 +51,9 @@ public class MapeoAMuchos {
         // Busco si existe en los nodos de la posicion hash de elem
         while (!encontrado && aux != null) {
             encontrado = aux.getDominio().equals(elem);
-            aux = aux.getEnlace();
+            if(!encontrado){
+                aux = aux.getEnlace();
+            }
         }
 
         // Si no existe el elem en la tabla, lo agrego con el nuevo rango
@@ -58,7 +62,7 @@ public class MapeoAMuchos {
             this.cant++;
         } else {
             // Si existe le agrego el nuevo elemento del rango al elem
-            this.tabla[pos].setRango(lis);
+            aux.setRango(lis);
         }
 
         return encontrado;
@@ -249,7 +253,7 @@ public class MapeoAMuchos {
                     aRetornar += "\n";
                 }else{
                     while(aux != null){
-                        aRetornar += " - " + this.tabla[i].getDominio().toString() + this.tabla[i].getRango().toString();
+                        aRetornar += " - " + aux.getDominio().toString() + aux.getRango().toString();
                         aux = aux.getEnlace();
                     }
                     aRetornar += "\n";
