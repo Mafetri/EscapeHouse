@@ -130,6 +130,27 @@ public class DiccionarioHash {
         return lis;
     }
 
+    // ---- Listar ----
+    public Lista listarDatos(){
+        Lista lis = new Lista();
+        NodoHashDicc aux;
+        int i = 1, cantRecorridos = 0;
+
+        while(i < TAMANIO-1 && cantRecorridos < this.cant){
+            if(this.tabla[i] != null){
+                aux = this.tabla[i];
+                while(aux != null){
+                    lis.insertar(aux.getDato(), 1);
+                    cantRecorridos++;
+                    aux = aux.getEnlace();
+                }
+            }
+            i++;
+        }
+
+        return lis;
+    }
+
     // ---- Recuperar Datos ----
     public Object recuperarDatos(Object elem){
         int pos = funcionHash(elem);

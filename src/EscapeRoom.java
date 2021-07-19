@@ -1092,7 +1092,8 @@ public class EscapeRoom {
                 case 1: mostrarEquipo(equipos, desafiosResueltos); break;
                 case 2: jugarDesafio(equipos, desafiosResueltos, desafios); break;
                 case 3: pasarHabitacion(equipos, habitaciones, casa); break;
-                case 4: puedeSalir(equipos, habitaciones);
+                case 4: puedeSalir(equipos, habitaciones); break;
+                case 5: mostrarTodosEquipos(equipos);
             }
         }while(opcion != 0);
     }
@@ -1108,6 +1109,8 @@ public class EscapeRoom {
         System.out.println("| 3. Pasar a habitacion                          |");
         sleepMilisegundos(150);
         System.out.println("| 4. Puede salir                                 |");
+        sleepMilisegundos(150);
+        System.out.println("| 5. Mostrar todos                               |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
@@ -1233,6 +1236,19 @@ public class EscapeRoom {
         
         return exito;
     }
+    // ---- Mostrar Todos ----
+    public static void mostrarTodosEquipos(DiccionarioHash equipos){
+        Lista todos = equipos.listarDatos();
+        if(todos.esVacia()){
+            System.out.println("| > No hay equipos cargados en el sistema.");
+        }else{
+            System.out.println("| > Los deafios operativos son: ");
+            for(int i = 1; i <= todos.longitud(); i++){
+                System.out.println("| --> " + ((Equipo)todos.recuperar(i)).toString());
+            }
+        }
+    }
+
 
     // =========================
     //      Consulta General
