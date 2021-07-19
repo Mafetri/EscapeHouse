@@ -360,6 +360,29 @@ public class DiccionarioAVL {
 
     }
 
+    // ---- Listar Datos ----
+    public Lista listarDatos() {
+        Lista lis = new Lista();
+
+        if (this.raiz != null) {
+            listarDatosAux(this.raiz, lis);
+        }
+
+        return lis;
+    }
+
+    private void listarDatosAux(NodoAVLDicc aux, Lista lis) {
+        if (aux != null) {
+            // Guardo en la lista el elemento
+            lis.insertar(aux.getDato(), lis.longitud() + 1);
+
+            // Visita los hijos
+            listarDatosAux(aux.getIzquierdo(), lis);
+            listarDatosAux(aux.getDerecho(), lis);
+        }
+
+    }
+
     // ---- Listar Rango ----
     public Lista listarRango(Comparable min, Comparable max) {
         Lista lis = new Lista();
