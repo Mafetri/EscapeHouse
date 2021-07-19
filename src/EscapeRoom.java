@@ -808,10 +808,9 @@ public class EscapeRoom {
             switch(opcion){
                 case 1: mostrarHabitacion(habitaciones); break;
                 case 2: habitacionesContiguas(casa); break;
-                case 3: esPosibleLlegar(casa, habitaciones); break;
+                case 3: esPosibleLlegar2(casa, habitaciones); break;
                 case 4: sinPasar(casa);break;
-                case 5: esPosibleLlegar2(casa, habitaciones); break;
-                case 6: mostrarTodasHabitaciones(habitaciones);
+                case 5: mostrarTodasHabitaciones(habitaciones);
             }
         }while(opcion != 0);
     }
@@ -827,6 +826,8 @@ public class EscapeRoom {
         System.out.println("| 3. Es posible llegar                           |");
         sleepMilisegundos(150);
         System.out.println("| 4. Sin pasar por                               |");
+        sleepMilisegundos(150);
+        System.out.println("| 5. Mostrar todas                               |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
@@ -950,10 +951,10 @@ public class EscapeRoom {
     }
     // ---- Mostrar Todas las Habitaciones ----
     public static void mostrarTodasHabitaciones(DiccionarioAVL habitaciones){
-        Lista todas = habitaciones.listarDatos();
-        if(todas.esVacia()){
+        if(habitaciones.vacio()){
             System.out.println("| > No hay habitaciones cargadas en el sistema.");
         }else{
+            Lista todas = habitaciones.listarDatos();
             System.out.println("| > Las habitaciones operativas son: ");
             for(int i = 1; i <= todas.longitud(); i++){
                 System.out.println("| --> " + ((Habitacion)todas.recuperar(i)).toString());
@@ -974,7 +975,8 @@ public class EscapeRoom {
             switch(opcion){
                 case 1: mostrarDesafio(desafios); break;
                 case 2: mostrarDesafiosResueltos(equipos, desafiosResueltos); break;
-                case 3: mostrarDesafiosTipo(desafios);
+                case 3: mostrarDesafiosTipo(desafios); break;
+                case 4: mostrarTodosDesafios(desafios);
             }
         }while(opcion != 0);
     }
@@ -988,6 +990,8 @@ public class EscapeRoom {
         System.out.println("| 2. Mostrar desafios resueltos                  |");
         sleepMilisegundos(150);
         System.out.println("| 3. Mostrar desafios tipo                       |");
+        sleepMilisegundos(150);
+        System.out.println("| 4. Mostrar todos los desafios                  |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
@@ -1057,6 +1061,18 @@ public class EscapeRoom {
             desafioActual = ((Desafio)desafiosRango.recuperar(i));
             if(desafioActual != null && desafioActual.getTipo().equals(tipo)){
                 System.out.println("| --> " + desafioActual.toString() + " con un puntaje de " + desafioActual.getPuntaje() + ". ");
+            }
+        }
+    }
+    // ---- Mostrar Todos ----
+    public static void mostrarTodosDesafios(DiccionarioAVL desafios){
+        if(desafios.vacio()){
+            System.out.println("| > No hay desafios cargados en el sistema.");
+        }else{
+            Lista todos = desafios.listarDatos();
+            System.out.println("| > Los deafios operativos son: ");
+            for(int i = 1; i <= todos.longitud(); i++){
+                System.out.println("| --> " + ((Desafio)todos.recuperar(i)).toString());
             }
         }
     }
