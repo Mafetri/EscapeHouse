@@ -24,7 +24,7 @@ public class EscapeRoom {
         escritura("\n================================ " + formatter.format(fecha) + " ================================", true);
         
         // Leectura de txt
-        leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos, desafiosResueltos);
+        leectura("src/partidas/PartidaNueva.txt", casa, habitaciones, desafios, equipos, desafiosResueltos);
         
         // Carteles de inicio
         cartelInicio();
@@ -656,7 +656,7 @@ public class EscapeRoom {
     public static void modificarPuerta(GrafoEtiq casa){
         Scanner sc = new Scanner(System.in);
         boolean existe;
-        int opcion = 0, origen, destino;
+        int origen, destino;
         
         System.out.print("| > Ingrese origen de la puerta: ");
         origen = sc.nextInt();
@@ -810,7 +810,8 @@ public class EscapeRoom {
                 case 2: habitacionesContiguas(casa); break;
                 case 3: esPosibleLlegar(casa, habitaciones); break;
                 case 4: sinPasar(casa);break;
-                case 5: esPosibleLlegar2(casa, habitaciones);
+                case 5: esPosibleLlegar2(casa, habitaciones); break;
+                case 6: mostrarTodasHabitaciones(habitaciones);
             }
         }while(opcion != 0);
     }
@@ -947,7 +948,18 @@ public class EscapeRoom {
         }
         System.out.println("|------------------------------------------------|"); 
     }
-
+    // ---- Mostrar Todas las Habitaciones ----
+    public static void mostrarTodasHabitaciones(DiccionarioAVL habitaciones){
+        Lista todas = habitaciones.listarDatos();
+        if(todas.esVacia()){
+            System.out.println("| > No hay habitaciones cargadas en el sistema.");
+        }else{
+            System.out.println("| > Las habitaciones operativas son: ");
+            for(int i = 1; i <= todas.longitud(); i++){
+                System.out.println("| --> " + ((Habitacion)todas.recuperar(i)).toString());
+            }
+        }   
+    }
 
     // =========================
     //     Consulta Desafios
