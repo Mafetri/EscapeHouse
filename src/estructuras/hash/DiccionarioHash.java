@@ -161,13 +161,13 @@ public class DiccionarioHash {
         // Busco si existe en los nodos de la posicion hash de elem
         while (!encontrado && aux != null) {
             encontrado = aux.getElem().equals(elem);
-            if(!encontrado){
+            if(encontrado){
+                aRetornar = aux.getDato();
+            }else{
                 aux = aux.getEnlace();
             }
         }
-        if(aux != null){
-            aRetornar = aux.getDato();
-        }
+
         return aRetornar;
     }
 
@@ -186,8 +186,10 @@ public class DiccionarioHash {
     public String toString() {
         String aRetornar = "";
         NodoHashDicc aux;
+        int cantRecorridos = 0;
         for(int i= 0; i < TAMANIO-1; i++){
-            if(this.tabla[i] != null){
+            if(this.tabla[i] != null && cantRecorridos <= this.cant){
+                cantRecorridos++;
                 aRetornar += this.tabla[i].getElem().toString();
                 aux = this.tabla[i].getEnlace();
                 if(aux == null){
@@ -199,7 +201,6 @@ public class DiccionarioHash {
                     }
                     aRetornar += "\n";
                 }
-                
             }
         }
         return aRetornar;

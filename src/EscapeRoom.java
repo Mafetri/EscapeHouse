@@ -1238,10 +1238,10 @@ public class EscapeRoom {
     }
     // ---- Mostrar Todos ----
     public static void mostrarTodosEquipos(DiccionarioHash equipos){
-        Lista todos = equipos.listarDatos();
-        if(todos.esVacia()){
+        if(equipos.esVacia()){
             System.out.println("| > No hay equipos cargados en el sistema.");
         }else{
+            Lista todos = equipos.listarDatos();
             System.out.println("| > Los deafios operativos son: ");
             for(int i = 1; i <= todos.longitud(); i++){
                 System.out.println("| --> " + ((Equipo)todos.recuperar(i)).toString());
