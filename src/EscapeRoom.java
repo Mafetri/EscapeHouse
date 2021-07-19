@@ -21,7 +21,7 @@ public class EscapeRoom {
         // Inicio del log
         Date fecha = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        escritura("================================ " + formatter.format(fecha) + " ================================", false);
+        escritura("\n================================ " + formatter.format(fecha) + " ================================", true);
         
         // Leectura de txt
         leectura("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos, desafiosResueltos);
