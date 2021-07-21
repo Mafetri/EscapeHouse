@@ -223,14 +223,13 @@ public class DiccionarioAVL {
         if (this.raiz != null && elem != null) {
             exito = eliminarAux(this.raiz, null, elem);
         }
+        System.out.println("");
         return exito;
     }
 
     private boolean eliminarAux(NodoAVLDicc nodo, NodoAVLDicc padre, Comparable elem) {
         boolean exito = false;
-
         if (nodo != null) {
-
             if (elem.compareTo(nodo.getClave()) == 0) {
                 exito = true;
                 // Caso 1: el elemento buscado no tiene hijos
@@ -258,14 +257,14 @@ public class DiccionarioAVL {
         if (exito) {
             // Recalculo la altura del nodo
             nodo.recalcularAltura();
-
+            System.out.println(nodo.getClave());
             // Hago las rotaciones necesarias
             rotar(nodo, padre);
         }
 
         return exito;
     }
-
+    // Caso 1: el elemento buscado no tiene hijos
     private void eliminarCaso1(NodoAVLDicc nodo, Comparable elem) {
         // Si el elemento es la raiz entonces el nodo (padre) es nulo
         if (nodo == null) {
@@ -279,7 +278,7 @@ public class DiccionarioAVL {
             }
         }
     }
-
+    // Caso 2: el elemento buscado tiene al menos un hijo
     private void eliminarCaso2(NodoAVLDicc nodo, NodoAVLDicc padre, Comparable elem) {
         NodoAVLDicc izq = nodo.getIzquierdo();
         NodoAVLDicc der = nodo.getDerecho();
@@ -310,31 +309,26 @@ public class DiccionarioAVL {
             }
         }
     }
-
+    // Caso 3: el elemento buscado tiene ambos hijos
     private void eliminarCaso3(NodoAVLDicc nodo) {
         // Candidato A: El mayor elemento del subárbol izquierdo de N
         NodoAVLDicc nodoCandidato = nodo.getIzquierdo();
-        NodoAVLDicc padreCandidato = nodo;
 
         // Busco el mayor elemento del subárbol izquierdo de N
         while (nodoCandidato.getDerecho() != null) {
-            padreCandidato = nodoCandidato;
             nodoCandidato = nodoCandidato.getDerecho();
         }
 
-        nodo.setClave(nodoCandidato.getClave());
-        nodo.setDato(nodoCandidato.getDato());
+        // Guardo la clave y el dato del candidato
+        Comparable claveCandidato = nodoCandidato.getClave();
+        Object datoCandidato = nodoCandidato.getDato();
 
-        // Si el hijo izquierdo del nodo actual es igual al candidato (osea que el
-        // candidato no tiene hijos derechos)
-        if (nodo.getIzquierdo() == nodoCandidato) {
-            // Seteo a la izquierda del nodo, lo que tenga el candidato a la izquierda
-            nodo.setIzquierdo(nodoCandidato.getIzquierdo());
-        } else {
-            // Sino, seteo al padre la rama izquierda a la derecha (ya que candidato no va a
-            // tener hijo derecho)
-            padreCandidato.setDerecho(nodoCandidato.getIzquierdo());
-        }
+        // Y lo elimino del arbol, pasando por parametro el arbol izquierdo (donde esta el candidato) y como padre a nodo
+        eliminarAux(nodo.getIzquierdo(), nodo, claveCandidato);
+
+        // Y por ultimo, seteo al nodo que se debia eliminar, con la clave y dato del candidato
+        nodo.setClave(claveCandidato);
+        nodo.setDato(datoCandidato);
     }
 
     // ---- Listar (preorden) ----
