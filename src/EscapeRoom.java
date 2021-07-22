@@ -178,23 +178,41 @@ public class EscapeRoom {
             System.out.println("| > La habitacion " + nueva.toString() + " ha sido dado de alta");
         }
     }
-    public static void eliminarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa){
+    public static void eliminarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioHash equipos){
         Scanner sc = new Scanner(System.in);
         int codigo = 0;
-        boolean exitoHab = false, exitoCasa = false;
+        String opcion = "s";
         System.out.print("| > Indique codigo de habitacion a eliminar: ");
         codigo = sc.nextInt();
 
         // Elimino la habitacion de las habitaciones y de la casa
-        exitoHab = habitaciones.eliminar(codigo);
-        exitoCasa = casa.eliminarVertice(codigo);
-
-        System.out.print("| > La habitacion con codigo " + codigo);
-        if(exitoHab && exitoCasa){
-            System.out.println(" ha sido eliminada.");
-            escritura("| > La habitacion con codigo " + codigo + " ha sido eliminada.", true);
+        if(habitaciones.pertenece(codigo)){
+            Lista listaEquipos = equipos.listarDatos();
+            int i = 1;
+            boolean existeEquipo = false;
+            // Chequea que en esa habitacion no hay ningun equipo (para nada optimo)
+            while(!existeEquipo && i < listaEquipos.longitud()){
+                if(((Equipo)listaEquipos.recuperar(i)).getHabitacionActual() == codigo){
+                    existeEquipo = true;
+                }
+                i++;
+            }
+            if(existeEquipo){
+                System.out.print("| > Hay un equipo en esa habitacion, desea eliminar? (s/n): ");
+                opcion = sc.next();
+            }
+            if(opcion.trim().toLowerCase().equals("s")){
+                System.out.println(opcion);
+                habitaciones.eliminar(codigo);
+                if(casa.eliminarVertice(codigo)){
+                    System.out.println("| > La habitacion con codigo " + codigo + " ha sido eliminada.");
+                    escritura("| > La habitacion con codigo " + codigo + " ha sido eliminada.", true);
+                }
+            }else{
+                System.out.println("| > Eliminacion cancelada.");
+            }
         }else{
-            System.out.println(" no se ha encontrado.");
+            System.out.println("| > La habitacion con codigo " + codigo + " no existe.");
         }
     }
     public static void modificarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa){
@@ -732,7 +750,7 @@ public class EscapeRoom {
                     menuTipoDeABM("|                   B A J A S                    |");
                     opcion = sc.nextInt();
                     switch(opcion){
-                        case 1: eliminarHabitacion(habitaciones, casa); break;
+                        case 1: eliminarHabitacion(habitaciones, casa, equipos); break;
                         case 2: eliminarDesafio(desafios); break;
                         case 3: eliminarEquipo(equipos, desafiosResueltos); break;
                         case 4: eliminarPuerta(casa, habitaciones);

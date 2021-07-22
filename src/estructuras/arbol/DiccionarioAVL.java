@@ -223,7 +223,6 @@ public class DiccionarioAVL {
         if (this.raiz != null && elem != null) {
             exito = eliminarAux(this.raiz, null, elem);
         }
-        System.out.println("");
         return exito;
     }
 
@@ -257,7 +256,7 @@ public class DiccionarioAVL {
         if (exito) {
             // Recalculo la altura del nodo
             nodo.recalcularAltura();
-            System.out.println(nodo.getClave());
+
             // Hago las rotaciones necesarias
             rotar(nodo, padre);
         }
