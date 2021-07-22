@@ -1,21 +1,21 @@
 H;1;Entrada;0;10;true
 H;2;Living;0;35;false
-H;3;Cocina;0;24;false
+H;8;Pasillo;0;18;false
 H;4;Baño;0;10;false
+H;9;Quincho;0;25;false
 H;5;Lavadero;0;10;false
 H;6;Garage;0;25;true
 H;7;Patio Interno;0;15;false
-H;8;Pasillo;0;18;false
-H;9;Quincho;0;25;false
 H;10;Escaleras;0;10;false
 H;11;Patio;0;50;true
+H;3;Cocina;0;24;false
+H;16;Oficina;1;20;false
 H;12;Pasillo;1;19;false
-H;13;Habitacion Niños;1;16;false
+H;18;Baño Principal;1;20;false
 H;14;Baño;1;15;false
 H;15;Habitacion Huespedes;1;16;false
-H;16;Oficina;1;20;false
 H;17;Habitacion Principal;1;27;false
-H;18;Baño Principal;1;20;false
+H;13;Habitacion Niños;1;16;false
 H;19;Cine;-1;29;false
 H;20;Sotano;-1;17;false
 P;1;2;0

@@ -142,12 +142,13 @@ public class EscapeRoom {
         
         System.out.print("| > Indique codigo de habitacion: ");
         codigo = sc.nextInt();
+        sc.nextLine();
         existe = habitaciones.pertenece(codigo);
         if(existe){
             System.out.println("| > La habitacion con codigo " + codigo + " ya existe.");
         }else{
             System.out.print("| > Indique nombre de habitacion: ");
-            nombre = sc.next();
+            nombre = sc.nextLine();
             System.out.print("| > Indique planta de habitacion: ");
             planta = sc.nextInt();
             System.out.print("| > Indique metros cuadrados: ");
@@ -182,6 +183,7 @@ public class EscapeRoom {
         Scanner sc = new Scanner(System.in);
         int codigo = 0;
         String opcion = "s";
+        Equipo equipo = null;
         System.out.print("| > Indique codigo de habitacion a eliminar: ");
         codigo = sc.nextInt();
 
@@ -192,17 +194,17 @@ public class EscapeRoom {
             boolean existeEquipo = false;
             // Chequea que en esa habitacion no hay ningun equipo (para nada optimo)
             while(!existeEquipo && i < listaEquipos.longitud()){
-                if(((Equipo)listaEquipos.recuperar(i)).getHabitacionActual() == codigo){
+                equipo = (Equipo)listaEquipos.recuperar(i);
+                if(equipo.getHabitacionActual() == codigo){
                     existeEquipo = true;
                 }
                 i++;
             }
             if(existeEquipo){
-                System.out.print("| > Hay un equipo en esa habitacion, desea eliminar? (s/n): ");
+                System.out.print("| > El equipo "+ equipo.getNombre() + " esta en esa habitacion, desea eliminarla? (s/n): ");
                 opcion = sc.next();
             }
             if(opcion.trim().toLowerCase().equals("s")){
-                System.out.println(opcion);
                 habitaciones.eliminar(codigo);
                 if(casa.eliminarVertice(codigo)){
                     System.out.println("| > La habitacion con codigo " + codigo + " ha sido eliminada.");

@@ -66,3 +66,63 @@
 | > La habitacion con codigo 3 ha sido eliminada.
 | > La habitacion con codigo 2 ha sido eliminada.
 ================================== FIN DE EJECUCION =================================
+
+================================ 22-07-2021 17:15:18 ================================
+
+================================ 22-07-2021 17:19:02 ================================
+
+================================ 22-07-2021 17:21:05 ================================
+| > El equipo Trio se le ha quitado el desafio 75 quedando con un total de 153
+
+================================ 22-07-2021 17:41:22 ================================
+| > El equipo Terepin ha pasado a la habitacion 12. 
+| > El equipo Terepin acaba de resolver el desafio de 300 puntos.
+| > El equipo Terepin ha pasado a la habitacion 10. 
+| > El equipo Terepin ha pasado a la habitacion 2. 
+| > El equipo Terepin ha pasado a la habitacion 1. 
+| > El equipo Terepin acaba de resolver el desafio de 75 puntos.
+| > El equipo Terepin acaba de resolver el desafio de 50 puntos.
+| > El equipo Terepin ha pasado a la habitacion 2. 
+| > El equipo Terepin ha pasado a la habitacion 1. 
+| > El equipo Terepin se le ha quitado el desafio 50 quedando con un total de 375
+| > El desafio con un puntaje de 300 ha sido eliminado.
+
+================================ 22-07-2021 17:51:48 ================================
+
+================================ 22-07-2021 17:56:17 ================================
+
+================================ 22-07-2021 17:57:07 ================================
+
+================================ 22-07-2021 17:58:15 ================================
+
+================================ 22-07-2021 17:58:42 ================================
+| > La habitacion MegaSotano, en la planta -2, con 153m2, sin salida ha sido dado de alta.
+| > El desafio Sin piernas de tipo Salto ha sido dado de alta
+| > El equipo Jose luis que se encuentra en la habitacion 1, con un puntaje actual 1, total de 399 y necesario para salir de 400 puntos ha sido dado de alta.
+| > La puerta de 1 a 10 con un puntaje de 0 puntos ha sido dada de alta.
+| > La habitacion con codigo 11 ha sido eliminada.
+| > El equipo Jose luis ha sido eliminado.
+================================== FIN DE EJECUCION =================================
+
+================================ 22-07-2021 18:03:50 ================================
+| > La habitacion con codigo 11 ha sido eliminada.
+| > La puerta de 1 a 10 con un puntaje de 0 puntos ha sido dada de alta.
+| > La habitacion Sorete, en la planta -2, con 12m2, sin salida ha sido dado de alta.
+================================== FIN DE EJECUCION =================================
+
+================================ 22-07-2021 18:08:43 ================================
+================================== FIN DE EJECUCION =================================
+
+================================ 22-07-2021 18:11:36 ================================
+
+================================ 22-07-2021 18:12:40 ================================
+
+================================ 22-07-2021 18:14:08 ================================
+
+================================ 22-07-2021 18:14:46 ================================
+
+================================ 22-07-2021 18:18:35 ================================
+| > La habitacion Jose luis, en la planta -2, con 23m2, sin salida ha sido dado de alta.
+
+================================ 22-07-2021 18:19:41 ================================
+| > La habitacion Jose luis, en la planta -2, con 23m2, sin salida ha sido dado de alta.

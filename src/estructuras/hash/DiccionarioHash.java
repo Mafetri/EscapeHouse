@@ -130,7 +130,7 @@ public class DiccionarioHash {
         return lis;
     }
 
-    // ---- Listar ----
+    // ---- Listar Datos ----
     public Lista listarDatos(){
         Lista lis = new Lista();
         NodoHashDicc aux;

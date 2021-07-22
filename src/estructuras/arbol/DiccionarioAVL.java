@@ -225,7 +225,6 @@ public class DiccionarioAVL {
         }
         return exito;
     }
-
     private boolean eliminarAux(NodoAVLDicc nodo, NodoAVLDicc padre, Comparable elem) {
         boolean exito = false;
         if (nodo != null) {
@@ -340,7 +339,6 @@ public class DiccionarioAVL {
 
         return lis;
     }
-
     private void listarAux(NodoAVLDicc aux, Lista lis) {
         if (aux != null) {
             // Guardo en la lista el elemento
@@ -363,7 +361,6 @@ public class DiccionarioAVL {
 
         return lis;
     }
-
     private void listarDatosAux(NodoAVLDicc aux, Lista lis) {
         if (aux != null) {
             // Guardo en la lista el elemento
@@ -386,7 +383,6 @@ public class DiccionarioAVL {
 
         return lis;
     }
-
     private void listarRangoAux(NodoAVLDicc nodo, Lista lis, Comparable min, Comparable max) {
         // Mientras el nodo no sea nulo
         if (nodo != null) {
@@ -417,7 +413,6 @@ public class DiccionarioAVL {
 
         return lis;
     }
-
     private void listarRangoDatosAux(NodoAVLDicc nodo, Lista lis, Comparable min, Comparable max) {
         // Mientras el nodo no sea nulo
         if (nodo != null) {
@@ -447,7 +442,6 @@ public class DiccionarioAVL {
         }
         return min;
     }
-
     private Comparable minimoElemAux(NodoAVLDicc aux) {
         // Bajo por izquierda hasta que no haya mas nodos
         while (aux.getIzquierdo() != null) {
@@ -464,7 +458,6 @@ public class DiccionarioAVL {
         }
         return min;
     }
-
     private Comparable maximoElemAux(NodoAVLDicc nodo) {
         // Bajo por derecha hasta que no haya mas nodos
         while (nodo.getDerecho() != null) {
@@ -493,7 +486,6 @@ public class DiccionarioAVL {
 
         return clone;
     }
-
     private NodoAVLDicc cloneAux(NodoAVLDicc aux) {
         NodoAVLDicc clonado = null;
 
@@ -501,8 +493,7 @@ public class DiccionarioAVL {
         if (aux != null) {
             // Guardo en clonado un nuevo nodo con el elemento actual y sus hijos clonados
             // recursivos
-            clonado = new NodoAVLDicc(aux.getClave(), aux.getDato(), cloneAux(aux.getIzquierdo()),
-                    cloneAux(aux.getDerecho()));
+            clonado = new NodoAVLDicc(aux.getClave(), aux.getDato(), cloneAux(aux.getIzquierdo()), cloneAux(aux.getDerecho()));
         }
 
         return clonado;
@@ -518,7 +509,6 @@ public class DiccionarioAVL {
 
         return enTexto;
     }
-
     private String toStringAux(NodoAVLDicc aux) {
         String enTexto = "";
         if (aux != null) {
@@ -554,7 +544,6 @@ public class DiccionarioAVL {
         }
         return aRetornar;
     }
-
     private NodoAVLDicc recuperarNodoAux(Comparable clave, NodoAVLDicc nodo) {
         NodoAVLDicc aRetornar = new NodoAVLDicc(null, null, null, null);
         if (nodo != null) {

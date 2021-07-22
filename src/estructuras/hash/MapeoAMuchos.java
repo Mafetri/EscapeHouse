@@ -86,11 +86,8 @@ public class MapeoAMuchos {
 
         // Si fue encontrado
         if (encontrado) {
-            // Elimino al elemento del rango del rango del dominio
-            boolean existeEnRango = aux.getRango().eliminar(aux.getRango().localizar(rango));
-
-            // Si no existe el elemento rango en el rango del dominio, encontrado = false
-            if (!existeEnRango) {
+            // Elimino el elemento rango del rango del dominio y si no existe el elemento rango en el rango del dominio, encontrado = false
+            if (!(aux.getRango().eliminar(aux.getRango().localizar(rango)))) {
                 encontrado = false;
             } else {
                 // Si en el rango no quedan elementos, elimino al dominio
