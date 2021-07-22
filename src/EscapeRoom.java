@@ -24,7 +24,7 @@ public class EscapeRoom {
         escritura("\n================================ " + formatter.format(fecha) + " ================================", true);
         
         // Leectura de txt
-        leectura("src/partidas/PartidaNueva.txt", casa, habitaciones, desafios, equipos, desafiosResueltos);
+        leectura("D:\\Archivos\\Documentos\\Facultad\\.Materias no actuales\\Materias Cursadas\\Estructuras de Datos (Prom - Desarollo)\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\PartidaNueva.txt", casa, habitaciones, desafios, equipos, desafiosResueltos);
         
         // Carteles de inicio
         cartelInicio();
@@ -81,7 +81,7 @@ public class EscapeRoom {
     }
     public static void escritura(String frase, boolean seguir){
         try{
-            BufferedWriter archivo = new BufferedWriter(new FileWriter("D:\\Archivos\\Documentos\\Facultad\\Estructuras de Datos\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\log.txt", seguir));
+            BufferedWriter archivo = new BufferedWriter(new FileWriter("D:\\Archivos\\Documentos\\Facultad\\.Materias no actuales\\Materias Cursadas\\Estructuras de Datos (Prom - Desarollo)\\Codigo\\EDAT2021VSC\\TPFinal\\src\\partidas\\log.txt", seguir));
             archivo.write(frase);
             archivo.newLine();
             archivo.close();
@@ -424,7 +424,8 @@ public class EscapeRoom {
         sleepMilisegundos(150);
         System.out.println("| 4. Modificar habitacion actual                 |");
         sleepMilisegundos(150);
-        System.out.println("| 5. Quitar desafio resuelto                     |");
+        System.out.println("| 5. Quitar desafio resuelto y su respectivo     |");
+        System.out.println("| puntaje del puntaje total                      |");
         sleepMilisegundos(150);
         System.out.println("| 0. <-- Volver <--                              |");
         System.out.print("|");
@@ -808,7 +809,7 @@ public class EscapeRoom {
             switch(opcion){
                 case 1: mostrarHabitacion(habitaciones); break;
                 case 2: habitacionesContiguas(casa); break;
-                case 3: esPosibleLlegar2(casa, habitaciones); break;
+                case 3: esPosibleLlegar(casa, habitaciones); break;
                 case 4: sinPasar(casa);break;
                 case 5: mostrarTodasHabitaciones(habitaciones);
             }
@@ -869,33 +870,8 @@ public class EscapeRoom {
         System.out.println("| La habitacion " + numero+ " es contigua con " + casa.nodosAdyacentes(numero));
         System.out.println("|------------------------------------------------|");
     }
-    // ---- Es Posible Llegar ----  REVISAR, NO SE SI PIDE SI SE PUEDE IR DE HABITACION CONTIGUA O SI HAY CAMINO
+    // ---- Es Posible Llegar ---- 
     public static void esPosibleLlegar(GrafoEtiq casa, DiccionarioAVL habitaciones){
-        Scanner sc = new Scanner(System.in);
-        System.out.print("| > Ingrese numero de la primera habitacion: ");
-        int hab1 = sc.nextInt();
-        if(habitaciones.pertenece(hab1)){
-            System.out.print("| > Ingrese numero de la segunda habitacion: ");
-            int hab2 = sc.nextInt();
-            if(habitaciones.pertenece(hab2)){
-                System.out.print("| > Ingrese puntaje acumulado: ");
-                int puntaje = sc.nextInt();
-                System.out.println("|------------------------------------------------|");
-        
-                int puntajeNecesario = casa.etiquetaArco(hab1, hab2);
-                if(puntajeNecesario >= 0 && puntajeNecesario - puntaje <= 0){
-                    System.out.println("| > Es posible llegar con " + puntaje + " puntos.");
-                }else{
-                    System.out.println("| > No es posible llegar");
-                }
-            }else{
-                System.out.println("| > La habitacion " + hab2 + " no existe.");
-            }
-        }else{
-            System.out.println("| > La habitacion " + hab1 + " no existe.");
-        }
-    }
-    public static void esPosibleLlegar2(GrafoEtiq casa, DiccionarioAVL habitaciones){
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese numero de la primera habitacion: ");
         int hab1 = sc.nextInt();
@@ -961,6 +937,7 @@ public class EscapeRoom {
             }
         }   
     }
+
 
     // =========================
     //     Consulta Desafios
@@ -1286,8 +1263,8 @@ public class EscapeRoom {
         String titulo = "E S C A P E   H O U S E";
         String costado1 = "|            ";
         String costado2 = "             |";
-        int esperaRapida = 0;
-        int esperaLenta = 0;
+        int esperaRapida = 10;
+        int esperaLenta = 80;
         for(int i = 0; i <50; i++){
             System.out.print("=");
             sleepMilisegundos(esperaRapida);
@@ -1311,21 +1288,6 @@ public class EscapeRoom {
             sleepMilisegundos(esperaRapida);
         }
         System.out.println();
-    }
-    public static void cartelOpcionesInicio(){
-        System.out.println("| 1. Iniciar partida nueva                       |");
-        sleepMilisegundos(150);
-        System.out.println("| 2. Iniciar partida guardada                    |");
-        sleepMilisegundos(150);
-        System.out.println("| 0. Finalizar                                   |");
-        System.out.print("|");
-        for(int i = 0; i <48; i++){
-            System.out.print("-");
-            sleepMilisegundos(15);
-        }
-        System.out.println("|");
-        sleepMilisegundos(150);
-        System.out.print("| > Ingrese opcion: ");
     }
     public static void cartelMenuPrincipal(){
         System.out.println("==================================================");
@@ -1351,7 +1313,30 @@ public class EscapeRoom {
         sleepMilisegundos(150);
         System.out.print("| > Ingrese opcion: ");
     }
-    public static void cartelFinal(){}
+    public static void cartelFinal(){
+        String nombre = "Manuel Felipe Triñanes (FAI-2738)";
+        System.out.println("==================================================\n\n");
+        for(int i = 0; i <50; i++){
+            System.out.print("=");
+            sleepMilisegundos(10);
+        }
+        System.out.println("\n|           R E A L I Z A D O  P O R             |");
+        for(int i = 0; i <50; i++){
+            System.out.print("=");
+            sleepMilisegundos(10);
+        }
+        System.out.print("\n|       ");
+        for(int i = 0; i < nombre.length(); i++){
+            System.out.print(nombre.charAt(i));
+            sleepMilisegundos(80);
+        }
+        System.out.println("        |");
+        for(int i = 0; i <50; i++){
+            System.out.print("=");
+            sleepMilisegundos(10);
+        }
+        System.out.println("");
+    }
     public static void sleepMilisegundos(int tiempo){
         try{
             TimeUnit.MILLISECONDS.sleep(tiempo);
