@@ -828,9 +828,9 @@ public class EscapeRoom {
 
             switch(opcion){
                 case 1: mostrarHabitacion(habitaciones); break;
-                case 2: habitacionesContiguas(casa); break;
+                case 2: habitacionesContiguas(casa, habitaciones); break;
                 case 3: esPosibleLlegar(casa, habitaciones); break;
-                case 4: sinPasar(casa);break;
+                case 4: sinPasar(casa, habitaciones);break;
                 case 5: mostrarTodasHabitaciones(habitaciones);
             }
         }while(opcion != 0);
@@ -881,14 +881,18 @@ public class EscapeRoom {
         System.out.println("|------------------------------------------------|");
     }
     // ---- Habitaciones Contiguas ----
-    public static void habitacionesContiguas(GrafoEtiq casa){
+    public static void habitacionesContiguas(GrafoEtiq casa, DiccionarioAVL habitaciones){
         // Pregunto que habitacion se quiere consultar
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese numero de habitacion: ");
         int numero = sc.nextInt();
-        System.out.println("|------------------------------------------------|");
-        System.out.println("| La habitacion " + numero+ " es contigua con " + casa.nodosAdyacentes(numero));
-        System.out.println("|------------------------------------------------|");
+        if(habitaciones.pertenece(numero)){
+            System.out.println("|------------------------------------------------|");
+            System.out.println("| La habitacion " + numero  + " es contigua con " + casa.nodosAdyacentes(numero));
+            System.out.println("|------------------------------------------------|");
+        }else{
+            System.out.println("| > La habitacion " + numero + " no existe.");
+        }
     }
     // ---- Es Posible Llegar ---- 
     public static void esPosibleLlegar(GrafoEtiq casa, DiccionarioAVL habitaciones){
@@ -916,34 +920,46 @@ public class EscapeRoom {
         }
     }
     // ---- Sin Pasar Por ----
-    public static void sinPasar(GrafoEtiq casa){
+    public static void sinPasar(GrafoEtiq casa, DiccionarioAVL habitaciones){
         // Entrada de datos
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese numero de la primera habitacion: ");
         int hab1 = sc.nextInt();
-        System.out.print("| > Ingrese numero de la segunda habitacion: ");
-        int hab2 = sc.nextInt();
-        System.out.print("| > Ingrese numero habitacion a saltear: ");
-        int hab3 = sc.nextInt();
-        System.out.print("| > Ingrese puntaje acumulado: ");
-        int puntaje = sc.nextInt();
-        System.out.println("|------------------------------------------------|");
-
-        // Lista con los posibles caminos
-        Lista caminosPosibles = casa.caminosSinPasarPor(hab1, hab2, hab3, puntaje);
-
-        // Muestra los caminos posibles
-        if(caminosPosibles.longitud() > 0){
-            System.out.println("| > Los caminos posibles para ir de la habitacion " + hab1 + " a la " + hab2);
-            System.out.println("| salteando la habitacion " + hab3 + ", y con " + puntaje + " puntos son: ");
-            for(int i=1; i<=caminosPosibles.longitud();i++){
-                System.out.println("| --> " + caminosPosibles.recuperar(i).toString());
+        if(habitaciones.pertenece(hab1)){
+            System.out.print("| > Ingrese numero de la segunda habitacion: ");
+            int hab2 = sc.nextInt();
+            if(habitaciones.pertenece(hab2)){
+                System.out.print("| > Ingrese numero habitacion a saltear: ");
+                int hab3 = sc.nextInt();
+                if(habitaciones.pertenece(hab3)){
+                    System.out.print("| > Ingrese puntaje acumulado: ");
+                    int puntaje = sc.nextInt();
+                    System.out.println("|------------------------------------------------|");
+            
+                    // Lista con los posibles caminos
+                    Lista caminosPosibles = casa.caminosSinPasarPor(hab1, hab2, hab3, puntaje);
+            
+                    // Muestra los caminos posibles
+                    if(caminosPosibles.longitud() > 0){
+                        System.out.println("| > Los caminos posibles para ir de la habitacion " + hab1 + " a la " + hab2);
+                        System.out.println("| salteando la habitacion " + hab3 + ", y con " + puntaje + " puntos son: ");
+                        for(int i=1; i<=caminosPosibles.longitud();i++){
+                            System.out.println("| --> " + caminosPosibles.recuperar(i).toString());
+                        }
+                    }else{
+                        System.out.println("| > No hay caminos posibles para ir de la habitacion " + hab1 + " a la " + hab2);
+                        System.out.println("| salteando la habitacion " + hab3 + ", y con " + puntaje + " puntos.");
+                    }
+                    System.out.println("|------------------------------------------------|"); 
+                }else{
+                    System.out.println("| > La habitacion ingresada no existe.");
+                }
+            }else{
+                System.out.println("| > La habitacion ingresada no existe.");
             }
         }else{
-            System.out.println("| > No hay caminos posibles para ir de la habitacion " + hab1 + " a la " + hab2);
-            System.out.println("| salteando la habitacion " + hab3 + ", y con " + puntaje + " puntos.");
+            System.out.println("| > La habitacion ingresada no existe.");
         }
-        System.out.println("|------------------------------------------------|"); 
     }
     // ---- Mostrar Todas las Habitaciones ----
     public static void mostrarTodasHabitaciones(DiccionarioAVL habitaciones){
@@ -1024,11 +1040,9 @@ public class EscapeRoom {
     public static void mostrarDesafiosResueltos(DiccionarioHash equipos, MapeoAMuchos desafiosResueltos){
         Scanner sc = new Scanner(System.in);
         String nombre;
-        boolean existe = false;
         System.out.print("| > Ingrese nombre del equipo: ");
         nombre = sc.nextLine();
-        existe = equipos.pertenece(nombre);
-        if(!existe){
+        if(!equipos.pertenece(nombre)){
             System.out.println("| > El equipo no existe. ");
         }else{
             System.out.println("| > Los desafios resueltos por el equipo " + nombre + " son: " + desafiosResueltos.obtenerValores(nombre).toString());
