@@ -116,23 +116,24 @@ public class GrafoEtiq {
     // y lo elimina de la lista de adyacencia del nodo
     private boolean eliminarAdyacente(NodoVert nodo, Object elem) {
         boolean exito = false;
-        NodoAdy adyOrigen = nodo.getPrimerAdy();
-        if (adyOrigen != null) {
-            // Caso especial adyecente en primer lugar
-            if (adyOrigen.getVertice().getElem().equals(elem)) {
-                nodo.setPrimerAdy(adyOrigen.getSigAdyacente());
-            } else {
-                // Si no esta en la primera posicion, lo busco
-                while (adyOrigen != null) {
-                    // Si el siguiente adyacente es el elemento origen lo borro
-                    if (adyOrigen.getSigAdyacente() != null
-                            && adyOrigen.getSigAdyacente().getVertice().getElem().equals(elem)) {
-                        nodo = adyOrigen.getSigAdyacente().getVertice();
-                        adyOrigen.setSigAdyacente(adyOrigen.getSigAdyacente().getSigAdyacente());
-                        adyOrigen = null;
-                        exito = true;
-                    } else {
-                        adyOrigen = adyOrigen.getSigAdyacente();
+        if(nodo != null){
+            NodoAdy adyOrigen = nodo.getPrimerAdy();
+            if (adyOrigen != null) {
+                // Caso especial adyecente en primer lugar
+                if (adyOrigen.getVertice().getElem().equals(elem)) {
+                    nodo.setPrimerAdy(adyOrigen.getSigAdyacente());
+                } else {
+                    // Si no esta en la primera posicion, lo busco
+                    while (adyOrigen != null) {
+                        // Si el siguiente adyacente es el elemento origen lo borro
+                        if (adyOrigen.getSigAdyacente() != null && adyOrigen.getSigAdyacente().getVertice().getElem().equals(elem)) {
+                            nodo = adyOrigen.getSigAdyacente().getVertice();
+                            adyOrigen.setSigAdyacente(adyOrigen.getSigAdyacente().getSigAdyacente());
+                            adyOrigen = null;
+                            exito = true;
+                        } else {
+                            adyOrigen = adyOrigen.getSigAdyacente();
+                        }
                     }
                 }
             }
@@ -150,14 +151,17 @@ public class GrafoEtiq {
         boolean existe = false;
 
         if(this.inicio != null && origen != null && destino != null){
-            NodoAdy adyOrigen = ubicarVertice(origen).getPrimerAdy();
-            while (adyOrigen != null) {
-                // Si el siguiente adyacente es el elemento origen lo borro
-                if (adyOrigen.getVertice().getElem().equals(destino)) {
-                    existe = true;
-                    adyOrigen = null;
-                } else {
-                    adyOrigen = adyOrigen.getSigAdyacente();
+            NodoVert nodoOrigen = ubicarVertice(origen);
+            if(nodoOrigen != null){
+                NodoAdy adyOrigen = nodoOrigen.getPrimerAdy();
+                while (adyOrigen != null) {
+                    // Si el siguiente adyacente es el elemento origen lo borro
+                    if (adyOrigen.getVertice().getElem().equals(destino)) {
+                        existe = true;
+                        adyOrigen = null;
+                    } else {
+                        adyOrigen = adyOrigen.getSigAdyacente();
+                    }
                 }
             }
         }
@@ -196,15 +200,17 @@ public class GrafoEtiq {
     public String nodosAdyacentes(Object clave){
         String enTexto = "";
         NodoVert verticeClave = ubicarVertice(clave);
-        NodoAdy adyClave = verticeClave.getPrimerAdy();
-        while(adyClave != null){
-            enTexto += adyClave.getVertice().getElem().toString() + " con un puntaje necesario de " + adyClave.getEtiqueta() + " ";
-            if (adyClave.getSigAdyacente() != null) {
-                enTexto += ", ";
-            } else {
-                enTexto += ". ";
+        if(verticeClave != null){
+            NodoAdy adyClave = verticeClave.getPrimerAdy();
+            while(adyClave != null){
+                enTexto += adyClave.getVertice().getElem().toString() + " con un puntaje necesario de " + adyClave.getEtiqueta() + " ";
+                if (adyClave.getSigAdyacente() != null) {
+                    enTexto += ", ";
+                } else {
+                    enTexto += ". ";
+                }
+                adyClave = adyClave.getSigAdyacente();
             }
-            adyClave = adyClave.getSigAdyacente();
         }
         return enTexto;
     }
@@ -321,17 +327,6 @@ public class GrafoEtiq {
             vertice = vertice.getSigVertice();
         }
         return enTexto;
-    }
-
-    // ---- Cambiar Vertice ----
-    public boolean cambiarVertice(Object clave, Object nuevaClave){
-        boolean exito = false;
-        NodoVert aux = ubicarVertice(clave);
-        if(aux != null){
-            aux.setElem(nuevaClave);
-            exito = true;
-        }
-        return exito;
     }
 
     // ---- Cambiar Etiquieta ----
