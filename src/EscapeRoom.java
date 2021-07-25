@@ -182,26 +182,32 @@ public class EscapeRoom {
     public static void eliminarHabitacion(DiccionarioAVL habitaciones, GrafoEtiq casa, DiccionarioHash equipos){
         Scanner sc = new Scanner(System.in);
         int codigo = 0;
+        int i = 1;
         String opcion = "s";
-        Equipo equipo = null;
         System.out.print("| > Indique codigo de habitacion a eliminar: ");
         codigo = sc.nextInt();
 
         // Elimino la habitacion de las habitaciones y de la casa
         if(habitaciones.pertenece(codigo)){
             Lista listaEquipos = equipos.listarDatos();
-            int i = 1;
-            boolean existeEquipo = false;
-            // Chequea que en esa habitacion no hay ningun equipo (para nada optimo)
-            while(!existeEquipo && i < listaEquipos.longitud()){
-                equipo = (Equipo)listaEquipos.recuperar(i);
-                if(equipo.getHabitacionActual() == codigo){
-                    existeEquipo = true;
+
+            // Elimina de la listaEquipos, los equipos que no esten en la habitacion
+            while(listaEquipos.recuperar(i) != null){
+                if(((Equipo)listaEquipos.recuperar(i)).getHabitacionActual() == codigo){
+                    i++;
+                }else{
+                    listaEquipos.eliminar(i);
                 }
-                i++;
             }
-            if(existeEquipo){
-                System.out.print("| > El equipo "+ equipo.getNombre() + " esta en esa habitacion, desea eliminarla? (s/n): ");
+            // Si en la lista quedo mas de un elemento, entonces aviso al usuario que equipos estan en la habitacion
+            if(i > 1){
+                System.out.print("| > Los integrantes de " + ((Equipo)listaEquipos.recuperar(1)).getNombre() + ", ");
+                listaEquipos.eliminar(1);
+                while(!listaEquipos.esVacia()){
+                    System.out.print(((Equipo)listaEquipos.recuperar(1)).getNombre() + ", ");
+                    listaEquipos.eliminar(1);
+                }
+                System.out.print(" estan en esa habitacion, desea eliminarla? (s/n): ");
                 opcion = sc.next();
             }
             if(opcion.trim().toLowerCase().equals("s")){

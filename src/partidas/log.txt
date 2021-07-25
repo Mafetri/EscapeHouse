@@ -136,3 +136,28 @@
 ================================ 24-07-2021 15:41:13 ================================
 | > La habitacion con codigo 17 ha sido eliminada.
 ================================== FIN DE EJECUCION =================================
+
+================================ 25-07-2021 15:22:47 ================================
+
+================================ 25-07-2021 15:25:12 ================================
+
+================================ 25-07-2021 15:25:39 ================================
+
+================================ 25-07-2021 15:25:52 ================================
+
+================================ 25-07-2021 15:27:17 ================================
+
+================================ 25-07-2021 15:28:22 ================================
+
+================================ 25-07-2021 15:29:29 ================================
+| > El equipo Tia Maruca acaba de resolver el desafio de 75 puntos.
+| > El equipo Tia Maruca ha pasado a la habitacion 2. 
+| > El equipo Tia Maruca acaba de resolver el desafio de 76 puntos.
+| > El equipo Tia Maruca ha pasado a la habitacion 4. 
+
+================================ 25-07-2021 15:35:09 ================================
+| > El equipo Tia Maruca ahora se encuentra en la habitacion 4
+| > La habitacion con codigo 4 ha sido eliminada.
+| > El equipo Tia Maruca ahora se encuentra en la habitacion 1
+| > El equipo Tia Maruca ahora tiene un puntaje total de 530 puntos.
+| > La habitacion con codigo 1 ha sido eliminada.
