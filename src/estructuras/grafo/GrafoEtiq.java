@@ -334,15 +334,33 @@ public class GrafoEtiq {
         boolean exito = false;
         if(this.inicio != null && origen != null && destino != null){
             NodoVert nodoOrigen = ubicarVertice(origen);
+            NodoVert nodoDestino = null;
+            // Si existe el origen
             if(nodoOrigen != null){
+                // Cambio la etiqueta del nodo que apunte al destino
                 NodoAdy adyOrigen = nodoOrigen.getPrimerAdy();
                 while (adyOrigen != null && !exito) {
-                    // Si el siguiente adyacente es el elemento origen lo borro
                     if (adyOrigen.getVertice().getElem().equals(destino)) {
+                        // Cambio la etiqueta y guardo en nodoDestino el vertice del ady
+                        nodoDestino = adyOrigen.getVertice();
                         adyOrigen.setEtiqueta(etiqueta);
                         exito = true;
                     } else {
                         adyOrigen = adyOrigen.getSigAdyacente();
+                    }
+                }
+
+                if(exito){
+                    exito = false;
+                    // Y cambio la etiqueta del nodo que apunte al origen, si es que hay
+                    NodoAdy adyDestino = nodoDestino.getPrimerAdy();
+                    while (adyDestino != null && !exito) {
+                        if (adyDestino.getVertice().getElem().equals(origen)) {
+                            adyDestino.setEtiqueta(etiqueta);
+                            exito = true;
+                        } else {
+                            adyDestino = adyDestino.getSigAdyacente();
+                        }
                     }
                 }
             }
