@@ -122,14 +122,13 @@ public class GrafoEtiq {
                 // Caso especial adyecente en primer lugar
                 if (adyOrigen.getVertice().getElem().equals(elem)) {
                     nodo.setPrimerAdy(adyOrigen.getSigAdyacente());
+                    exito = true;
                 } else {
                     // Si no esta en la primera posicion, lo busco
-                    while (adyOrigen != null) {
+                    while (adyOrigen != null && !exito) {
                         // Si el siguiente adyacente es el elemento origen lo borro
                         if (adyOrigen.getSigAdyacente() != null && adyOrigen.getSigAdyacente().getVertice().getElem().equals(elem)) {
-                            nodo = adyOrigen.getSigAdyacente().getVertice();
                             adyOrigen.setSigAdyacente(adyOrigen.getSigAdyacente().getSigAdyacente());
-                            adyOrigen = null;
                             exito = true;
                         } else {
                             adyOrigen = adyOrigen.getSigAdyacente();

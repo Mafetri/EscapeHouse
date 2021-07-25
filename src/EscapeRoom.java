@@ -663,13 +663,11 @@ public class EscapeRoom {
             habDestino = sc.nextInt();
             
             if(habitaciones.pertenece(habDestino)){
-                exito = casa.eliminarArco(habOrigen, habDestino);
-    
                 System.out.print("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino);
                 
-                if(exito){
+                if(casa.eliminarArco(habOrigen, habDestino)){
                     System.out.println(" se ha eliminado. ");
-                    escritura("| > La puerta de la habitacion " + habOrigen + " a\n| la habitacion " + habDestino + " ha sido eliminada.", true);
+                    escritura("| > La puerta de la habitacion " + habOrigen + " a la habitacion " + habDestino + " ha sido eliminada.", true);
                 }else{
                     System.out.println(" no se ha encontrado.");
                 }
@@ -696,7 +694,7 @@ public class EscapeRoom {
             System.out.print("| > Ingrese nuevo puntaje de la puerta: ");
             int nuevoPuntaje = sc.nextInt();
             casa.cambiarEtiqueta(origen, destino, nuevoPuntaje);
-            System.out.print("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje + ".");
+            System.out.println("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje + ".");
             escritura("| > La puerta de " + origen + " a " + destino + " ha cambiado su puntaje a " + nuevoPuntaje + ".", true);
         }
     }
@@ -1237,15 +1235,20 @@ public class EscapeRoom {
 
         if(equipos.pertenece(nombre)){
             Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
-            if(((Habitacion)habitaciones.recuperarDatos(equipo.getHabitacionActual())).getSalida()){
-                if(equipo.getPuntajeTotal() >= equipo.getPuntajeSalida()){
-                    System.out.println("| > El equipo " + nombre + " puede salir de la casa!");
-                    exito = true;
+            Habitacion habEquipo = (Habitacion)habitaciones.recuperarDatos(equipo.getHabitacionActual());
+            if(habEquipo != null){
+                if(habEquipo.getSalida()){
+                    if(equipo.getPuntajeTotal() >= equipo.getPuntajeSalida()){
+                        System.out.println("| > El equipo " + nombre + " puede salir de la casa!");
+                        exito = true;
+                    }else{
+                        System.out.println("| > El equipo " + nombre + " tiene " + equipo.getPuntajeTotal() + " puntos\n| de " + equipo.getPuntajeSalida() + " puntos necesarios para salir.");
+                    }
                 }else{
-                    System.out.println("| > El equipo " + nombre + " tiene " + equipo.getPuntajeTotal() + " puntos\n| de " + equipo.getPuntajeSalida() + " puntos necesarios para salir.");
+                    System.out.println("| > El equipo no esta en una habitacion con salida.");
                 }
             }else{
-                System.out.println("| > El equipo " + nombre + " se encuentra en la habitacion " + equipo.getHabitacionActual() + " la cual no tiene salida.");
+                System.out.println("| > El equipo no esta en una habitacion existente\n| debe moverlo de forma manual en modificar equipo.");
             }
         }else{
             System.out.println("| > El equipo no existe.");

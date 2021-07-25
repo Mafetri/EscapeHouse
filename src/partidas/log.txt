@@ -161,3 +161,55 @@
 | > El equipo Tia Maruca ahora se encuentra en la habitacion 1
 | > El equipo Tia Maruca ahora tiene un puntaje total de 530 puntos.
 | > La habitacion con codigo 1 ha sido eliminada.
+
+================================ 25-07-2021 15:46:56 ================================
+| > El equipo Arcor ha pasado a la habitacion 11. 
+| > El equipo Arcor acaba de resolver el desafio de 100 puntos.
+| > El equipo Arcor ha pasado a la habitacion 9. 
+| > El equipo Arcor ha pasado a la habitacion 11. 
+| > La habitacion con codigo 11 ha sido eliminada.
+| > El equipo Arcor ahora se encuentra en la habitacion 1
+| > El equipo Arcor ha pasado a la habitacion 2. 
+| > La puerta de 2 a 1 ha cambiado su puntaje a 15.
+| > El equipo Arcor acaba de resolver el desafio de 55 puntos.
+| > El equipo Arcor ha pasado a la habitacion 1. 
+| > La puerta de 2 a 10 ha cambiado su puntaje a 33.
+| > La puerta de 7 a 3 ha cambiado su puntaje a 55.
+| > El equipo Coinco acaba de resolver el desafio de 55 puntos.
+| > El equipo Coinco ha pasado a la habitacion 3. 
+| > La puerta de 7 a 3 ha cambiado su puntaje a 9.
+| > El equipo Coinco acaba de resolver el desafio de 300 puntos.
+| > El equipo Coinco ha pasado a la habitacion 7. 
+
+================================ 25-07-2021 16:06:31 ================================
+| > La puerta de 2 a 3 ha cambiado su puntaje a 50.
+
+================================ 25-07-2021 16:10:29 ================================
+| > La puerta de 2 a 3 ha cambiado su puntaje a 55.
+
+================================ 25-07-2021 16:29:34 ================================
+| > La puerta de 2 a 3 ha cambiado su puntaje a 55.
+
+================================ 25-07-2021 16:34:09 ================================
+| > La puerta de 3 a 2 ha cambiado su puntaje a 43.
+| > La puerta de la habitacion 3 a
+| la habitacion 2 ha sido eliminada.
+
+================================ 25-07-2021 16:39:28 ================================
+| > El equipo Trio ahora se encuentra en la habitacion 1
+| > El equipo Trio ha pasado a la habitacion 2. 
+| > El equipo Trio ha pasado a la habitacion 1. 
+| > La puerta de 2 a 1 ha cambiado su puntaje a 25.
+| > El equipo Trio acaba de resolver el desafio de 55 puntos.
+| > El equipo Trio ha pasado a la habitacion 2. 
+
+================================ 25-07-2021 16:46:41 ================================
+
+================================ 25-07-2021 16:47:28 ================================
+
+================================ 25-07-2021 16:47:56 ================================
+
+================================ 25-07-2021 16:49:03 ================================
+| > La puerta de la habitacion 2 a la habitacion 1 ha sido eliminada.
+| > El equipo Trio ahora se encuentra en la habitacion 1
+| > La habitacion con codigo 1 ha sido eliminada.
