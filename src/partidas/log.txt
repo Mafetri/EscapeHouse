@@ -213,3 +213,26 @@
 | > La puerta de la habitacion 2 a la habitacion 1 ha sido eliminada.
 | > El equipo Trio ahora se encuentra en la habitacion 1
 | > La habitacion con codigo 1 ha sido eliminada.
+
+================================ 25-07-2021 16:55:44 ================================
+| > La habitacion con codigo 7 ha sido eliminada.
+| > La habitacion 1 ahora no tiene salida
+| > La habitacion 1 ahora tiene salida
+| > La habitacion 1 ahora no tiene salida
+| > La habitacion 1 paso a tener 23 metros cuadrados.
+| > El equipo Trio ahora se encuentra en la habitacion 1
+| > El equipo Trio ha pasado a la habitacion 2. 
+| > La puerta de 2 a 1 ha cambiado su puntaje a 15.
+| > El equipo Trio acaba de resolver el desafio de 55 puntos.
+| > El equipo Trio ha pasado a la habitacion 1. 
+| > La puerta de la habitacion 2 a la habitacion 1 ha sido eliminada.
+| > La puerta de 2 a 1 con un puntaje de 0 puntos ha sido dada de alta.
+| > El equipo Trio ha pasado a la habitacion 2. 
+| > La habitacion con codigo 3 ha sido eliminada.
+================================== FIN DE EJECUCION =================================
+
+================================ 25-07-2021 17:11:39 ================================
+| > La habitacion con codigo 3 ha sido eliminada.
+================================== FIN DE EJECUCION =================================
+
+================================ 25-07-2021 17:12:44 ================================

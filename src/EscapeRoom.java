@@ -51,6 +51,7 @@ public class EscapeRoom {
         escritura("================================== FIN DE EJECUCION =================================", true);
     }
 
+    
     // =================================
     //        Leectura y escritura
     //              de .txt
@@ -689,7 +690,7 @@ public class EscapeRoom {
         destino = sc.nextInt();
         existe = casa.existeArco(origen, destino);
         if(!existe){
-            System.out.print("| > La puerta de la habitacion " + origen + " a la " + destino + " no existe.");
+            System.out.println("| > La puerta de la habitacion " + origen + " a la " + destino + " no existe.");
         }else{
             System.out.print("| > Ingrese nuevo puntaje de la puerta: ");
             int nuevoPuntaje = sc.nextInt();
@@ -1201,20 +1202,24 @@ public class EscapeRoom {
                 Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
                 // Si la habitacion actual del equipo tiene puerta a la habitacion a la cual se quiere ir
                 int habActual = equipo.getHabitacionActual();
-                if(casa.existeArco(habActual, hab)){
-                    if(equipo.getPuntajeActual() >= casa.etiquetaArco(habActual, hab)){
-                        // El equipo pasa de habitacion
-                        equipo.setHabitacion(hab);
-                        // Sumo el puntaje actual al total y reinicio el actual
-                        equipo.setPuntajeTotal(equipo.getPuntajeTotal() + equipo.getPuntajeActual());
-                        equipo.setPuntajeActual(0);
-                        System.out.println("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + ". ");
-                        escritura("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + ". ", true);
+                if(habitaciones.pertenece(habActual)){
+                    if(casa.existeArco(habActual, hab)){
+                        if(equipo.getPuntajeActual() >= casa.etiquetaArco(habActual, hab)){
+                            // El equipo pasa de habitacion
+                            equipo.setHabitacion(hab);
+                            // Sumo el puntaje actual al total y reinicio el actual
+                            equipo.setPuntajeTotal(equipo.getPuntajeTotal() + equipo.getPuntajeActual());
+                            equipo.setPuntajeActual(0);
+                            System.out.println("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + ". ");
+                            escritura("| > El equipo " + nombre + " ha pasado a la habitacion " + hab + ". ", true);
+                        }else{
+                            System.out.println("| > El equipo tiene " + equipo.getPuntajeActual() + " puntos actuales de " + casa.etiquetaArco(habActual, hab) + " puntos necesarios.");
+                        }
                     }else{
-                        System.out.println("| > El equipo tiene " + equipo.getPuntajeActual() + " puntos actuales de " + casa.etiquetaArco(habActual, hab) + " puntos necesarios.");
+                        System.out.println("| > La habitacion actual " + habActual + " no tiene puerta a " + hab);
                     }
                 }else{
-                    System.out.println("| > La habitacion actual " + habActual + " no tiene puerta a " + hab);
+                    System.out.println("| > El equipo no esta en una habitacion existente\n| debe moverlo de forma manual en modificar equipo.");
                 }
             }else{
                 System.out.println("| > La habitacion " + hab + " no existe.");
