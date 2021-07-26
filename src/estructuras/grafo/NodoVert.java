@@ -1,3 +1,14 @@
+/*
+=================================================
+|     Estructuras de Datos 2021                 |
+=================================================
+|      Clase:                                   |
+|       > Nodo Vertice Grafo                    |
+|      Alumno:                                  |
+|        > Manuel Felipe Triñanes (FAI-2738)    |
+=================================================
+*/
+
 package estructuras.grafo;
 
 class NodoVert {

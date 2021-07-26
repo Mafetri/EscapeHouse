@@ -1,3 +1,14 @@
+/*
+=================================================
+|     Estructuras de Datos 2021                 |
+=================================================
+|      Clase:                                   |
+|       > Desafio                               |
+|      Alumno:                                  |
+|        > Manuel Felipe Triñanes (FAI-2738)    |
+=================================================
+*/
+
 package estructuras.datos;
 
 public class Desafio {
@@ -18,9 +29,6 @@ public class Desafio {
     }
     public String getTipo(){
         return tipo;
-    }
-    public void setPuntaje(int puntaje){
-        this.puntaje = puntaje;
     }
     public void setNombre(String nombre){
         this.nombre = nombre;

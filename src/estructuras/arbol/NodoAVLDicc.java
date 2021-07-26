@@ -1,3 +1,14 @@
+/*
+=================================================
+|     Estructuras de Datos 2021                 |
+=================================================
+|      Clase:                                   |
+|       > Nodo Diccionario Arbol AVL            |
+|      Alumno:                                  |
+|        > Manuel Felipe Triñanes (FAI-2738)    |
+=================================================
+*/
+
 package estructuras.arbol;
 
 public class NodoAVLDicc {

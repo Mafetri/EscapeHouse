@@ -1,14 +1,11 @@
-## Getting Started
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Trabajo Final de Estructuras de Datos (FAI, UNCo), 2021
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+[Plano de la casa](https://imgur.com/a/FJDMiXh)
 
-## Folder Structure
+[Enunciado](https://drive.google.com/file/d/1lNug6RdQQ8Osl-Cc1VdRg16Ssvgx2A-k/view)
 
-The workspace contains two folders by default, where:
+[Programa Principal](https://github.com/Mafetri/TPFinal/blob/master/src/EscapeHouse.java)
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+---------------------------------------------------------------------------------------------------------------------------------------------------------

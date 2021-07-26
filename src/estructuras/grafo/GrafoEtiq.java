@@ -4,8 +4,7 @@
 =================================================
 |      Clase:                                   |
 |       > Grafo Etiquetado Dinamico             |
-|         (no esta pensado para multigrafos)    |
-|      Alumnos:                                 |
+|      Alumno:                                  |
 |        > Manuel Felipe Triñanes (FAI-2738)    |
 =================================================
 */
@@ -46,21 +45,31 @@ public class GrafoEtiq {
         if (elem != null && this.inicio != null) {
             NodoVert verticeAnterior = this.inicio;
 
-            // Para cada vertice de la lista de vertice
-            while (verticeAnterior != null) {
-                // Caso especial que el elemento a eliminar es el inicio
-                if (this.inicio.getElem().equals(elem)) {
-                    this.inicio = this.inicio.getSigVertice();
+            // Caso especial que el elemento a eliminar es el inicio
+            if (this.inicio.getElem().equals(elem)) {
+                // Elimino de la lista de adyacencias de los vertices de la lista de ayacencia de elem a elem
+                NodoAdy adyacente = this.inicio.getPrimerAdy();
+                while(adyacente != null){
+                    eliminarAdyacente(adyacente.getVertice(), elem);
+                    adyacente = adyacente.getSigAdyacente();
                 }
+                this.inicio = this.inicio.getSigVertice();
+                exito = true;
+            }
 
+            // Para cada vertice de la lista de vertices
+            while (verticeAnterior != null && !exito) {
                 // Busco al vertice anterior de elem para eliminar a elem
                 if (verticeAnterior.getSigVertice() != null && verticeAnterior.getSigVertice().getElem().equals(elem)) {
+                    // Elimino de la lista de adyacencias de los vertices de la lista de ayacencia de elem a elem
+                    NodoAdy adyacente = verticeAnterior.getSigVertice().getPrimerAdy();
+                    while(adyacente != null){
+                        eliminarAdyacente(adyacente.getVertice(), elem);
+                        adyacente = adyacente.getSigAdyacente();
+                    }
                     verticeAnterior.setSigVertice(verticeAnterior.getSigVertice().getSigVertice());
                     exito = true;
                 }
-
-                eliminarAdyacente(verticeAnterior, elem);
-
                 verticeAnterior = verticeAnterior.getSigVertice();
             }
         }
@@ -195,27 +204,30 @@ public class GrafoEtiq {
         return this.inicio == null;
     }
 
-    // ---- nodosAdyacentes ----
-    public String nodosAdyacentes(Object clave){
-        String enTexto = "";
+    // ---- Nodos Adyacentes ----
+    // Devuelve una lista de tuplas (listas) con el elemento y la etiqueta a ese elemento
+    public Lista nodosAdyacentes(Object clave){
+        Lista aRetornar = new Lista();
         NodoVert verticeClave = ubicarVertice(clave);
         if(verticeClave != null){
             NodoAdy adyClave = verticeClave.getPrimerAdy();
             while(adyClave != null){
-                enTexto += adyClave.getVertice().getElem().toString() + " con un puntaje necesario de " + adyClave.getEtiqueta() + " ";
-                if (adyClave.getSigAdyacente() != null) {
-                    enTexto += ", ";
-                } else {
-                    enTexto += ". ";
-                }
+                // Creo una lista tupla, la cual guarda en pos 1 el elem y en 2 la etiqueta del arco
+                Lista tupla = new Lista();
+                tupla.insertar(adyClave.getVertice().getElem(), 1);
+                tupla.insertar(adyClave.getEtiqueta(), 2);
+
+                // Guardo la tupla en la lista a retornar
+                aRetornar.insertar(tupla, 1);
+
                 adyClave = adyClave.getSigAdyacente();
             }
         }
-        return enTexto;
+        return aRetornar;
     }
 
     // ---- Existe Camino Etiquetado ----
-    public boolean existeCaminoEtiquetado(Object origen, Object destino, int puntaje){
+    public boolean existeCaminoEtiquetado(Object origen, Object destino, int sumaMaxima){
         boolean exito = false;
 
         NodoVert auxOrigen = null;
@@ -234,14 +246,14 @@ public class GrafoEtiq {
 
         if(auxOrigen != null && auxDestino != null){
             Lista visitados = new Lista();
-            exito = existeCaminoEtiquetadoAux(auxOrigen, destino, visitados, 0, puntaje);
+            exito = existeCaminoEtiquetadoAux(auxOrigen, destino, visitados, 0, sumaMaxima);
         }
 
         return exito;
     }
-    private boolean existeCaminoEtiquetadoAux(NodoVert nodo, Object dest, Lista vis, int puntajeAcumulado, int puntaje){
+    private boolean existeCaminoEtiquetadoAux(NodoVert nodo, Object dest, Lista vis, int sumaActual, int sumaMaxima){
         boolean exito = false;
-        if(nodo != null && puntajeAcumulado <= puntaje){
+        if(nodo != null && sumaActual <= sumaMaxima){
             if(nodo.getElem().equals(dest)){
                 exito = true;
             }else{
@@ -249,19 +261,20 @@ public class GrafoEtiq {
                 NodoAdy ady = nodo.getPrimerAdy();
                 while(!exito && ady != null){
                     if(vis.localizar(ady.getVertice().getElem()) < 0){
-                        exito = existeCaminoEtiquetadoAux(ady.getVertice(), dest, vis, puntajeAcumulado+ady.getEtiqueta(), puntaje);
+                        exito = existeCaminoEtiquetadoAux(ady.getVertice(), dest, vis, sumaActual+ady.getEtiqueta(), sumaMaxima);
                     }
                     ady = ady.getSigAdyacente();
                 }
             }
+            vis.eliminar(vis.longitud());
         }
         return exito;
     }
 
     // ---- Caminos sin pasar por ----
     // Devuelve una lista de caminos posibles desde el origen al destino sin pasar por "noPasar" y con
-    // una suma de etiquetas no mayor a puntajeActual
-    public Lista caminosSinPasarPor(Object origen, Object destino, Object noPasar, int puntajeActual){
+    // una suma de etiquetas no mayor a sumaMaxima
+    public Lista caminosSinPasarPor(Object origen, Object destino, Object noPasar, int sumaMaxima){
         Lista todosLosCaminos = new Lista();
 
         NodoVert auxOrigen = null;
@@ -280,13 +293,13 @@ public class GrafoEtiq {
 
         if(auxOrigen != null && auxDestino != null){
             Lista visitados = new Lista();
-            caminosSinPasarPorAux(auxOrigen, destino, noPasar, visitados, todosLosCaminos, 0, puntajeActual);
+            caminosSinPasarPorAux(auxOrigen, destino, noPasar, visitados, todosLosCaminos, 0, sumaMaxima);
         }
 
         return todosLosCaminos;
     }
-    private void caminosSinPasarPorAux(NodoVert nodo, Object dest, Object noPasar, Lista vis, Lista todosLosCaminos, int puntajeNecesario, int puntajeActual){
-        if(nodo != null && !nodo.getElem().equals(noPasar) && puntajeNecesario <= puntajeActual){
+    private void caminosSinPasarPorAux(NodoVert nodo, Object dest, Object noPasar, Lista vis, Lista todosLosCaminos, int sumaActual, int sumaMaxima){
+        if(nodo != null && !nodo.getElem().equals(noPasar) && sumaActual <= sumaMaxima){
             if(nodo.getElem().equals(dest)){
                 vis.insertar(nodo.getElem(), vis.longitud()+1);
                 todosLosCaminos.insertar(vis.clone(), todosLosCaminos.longitud()+1);
@@ -295,7 +308,7 @@ public class GrafoEtiq {
                 NodoAdy ady = nodo.getPrimerAdy();
                 while(ady != null){
                     if(vis.localizar(ady.getVertice().getElem()) < 0){
-                        caminosSinPasarPorAux(ady.getVertice(), dest, noPasar, vis, todosLosCaminos, puntajeNecesario+ady.getEtiqueta(), puntajeActual);
+                        caminosSinPasarPorAux(ady.getVertice(), dest, noPasar, vis, todosLosCaminos, sumaActual+ady.getEtiqueta(), sumaMaxima);
                     }
                     ady = ady.getSigAdyacente();
                 }

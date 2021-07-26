@@ -1,3 +1,14 @@
+/*
+=================================================
+|     Estructuras de Datos 2021                 |
+=================================================
+|      Clase:                                   |
+|       > Habitacion                            |
+|      Alumno:                                  |
+|        > Manuel Felipe Triñanes (FAI-2738)    |
+=================================================
+*/
+
 package estructuras.datos;
 
 public class Habitacion {
@@ -28,9 +39,6 @@ public class Habitacion {
     }
     public boolean getSalida(){
         return salida;
-    }
-    public void setCodigo(int codigo){
-        this.codigo = codigo;
     }
     public void setNombre(String nombre){
         this.nombre = nombre;

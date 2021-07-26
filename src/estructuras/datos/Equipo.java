@@ -1,3 +1,14 @@
+/*
+=================================================
+|     Estructuras de Datos 2021                 |
+=================================================
+|      Clase:                                   |
+|       > Equipo                                |
+|      Alumno:                                  |
+|        > Manuel Felipe Triñanes (FAI-2738)    |
+=================================================
+*/
+
 package estructuras.datos;
 
 public class Equipo {
@@ -28,10 +39,6 @@ public class Equipo {
     }
     public int getPuntajeActual(){
         return puntajeActual;
-    }
-
-    public void setNombre(String nombre){
-        this.nombre = nombre;
     }
     public void setPuntajeSalida(int puntajeSalida){
         this.puntajeSalida = puntajeSalida;

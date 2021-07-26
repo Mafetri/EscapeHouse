@@ -1,14 +1,13 @@
 /*
-=====================================
-|     Estructuras de Datos 2021     |
-=====================================
-|      Clase:                       |
-|       > Tabla Hash (abierta)      |
-|      Alumno:                      |
-|        > Manuel Felipe Triñanes   |
-|        > FAI - 2738               |
-=====================================
- */
+=================================================
+|     Estructuras de Datos 2021                 |
+=================================================
+|      Clase:                                   |
+|       > Diccionario Hash Abierto              |
+|      Alumno:                                  |
+|        > Manuel Felipe Triñanes (FAI-2738)    |
+=================================================
+*/
 
 package estructuras.hash;
 import estructuras.lista.Lista;

@@ -1,3 +1,14 @@
+/*
+==================================================
+|   Trabajo Final de Estructuras de Datos 2021   |
+==================================================
+|      Clase:                                    |
+|       > Escape House                           |
+|      Alumno:                                   |
+|       > Manuel Felipe Triñanes (FAI-2738)      |
+==================================================
+*/
+
 import estructuras.arbol.*;
 import estructuras.datos.*;
 import estructuras.hash.*;
@@ -9,6 +20,7 @@ import java.io.*;
 import java.util.StringTokenizer;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+
 public class EscapeHouse {
     public static void main(String[] args) {
         // Estructuras
@@ -892,9 +904,19 @@ public class EscapeHouse {
         System.out.print("| > Ingrese numero de habitacion: ");
         int numero = sc.nextInt();
         if(habitaciones.pertenece(numero)){
-            System.out.println("|------------------------------------------------|");
-            System.out.println("| La habitacion " + numero  + " es contigua con " + casa.nodosAdyacentes(numero));
-            System.out.println("|------------------------------------------------|");
+            int i = 1;
+            Lista tuplas = casa.nodosAdyacentes(numero);
+            if(tuplas.longitud() > 0){
+                System.out.println("|------------------------------------------------|");
+                System.out.println("| > La habitacion " + numero  + " es contigua con: ");
+                while(!tuplas.esVacia()){
+                    System.out.println("| --> " + ((Lista)tuplas.recuperar(i)).recuperar(1) + " con un puntaje necesario de " + ((Lista)tuplas.recuperar(i)).recuperar(2) + " puntos.");
+                    tuplas.eliminar(1);
+                }
+            }else{
+                System.out.println("| > La habitacion " + numero + " no tiene habitaciones contiguas.");
+            }
+            
         }else{
             System.out.println("| > La habitacion " + numero + " no existe.");
         }
@@ -955,7 +977,6 @@ public class EscapeHouse {
                         System.out.println("| > No hay caminos posibles para ir de la habitacion " + hab1 + " a la " + hab2);
                         System.out.println("| salteando la habitacion " + hab3 + ", y con " + puntaje + " puntos.");
                     }
-                    System.out.println("|------------------------------------------------|"); 
                 }else{
                     System.out.println("| > La habitacion ingresada no existe.");
                 }
@@ -1230,13 +1251,12 @@ public class EscapeHouse {
 
     }
     // ---- Puede Salir ----
-    public static boolean puedeSalir(DiccionarioHash equipos, DiccionarioAVL habitaciones){
+    public static void puedeSalir(DiccionarioHash equipos, DiccionarioAVL habitaciones){
         // Pregunto que equipo quiere pasar de habitacion
         Scanner sc = new Scanner(System.in);
         System.out.print("| > Ingrese nombre del equipo: ");
         String nombre = sc.nextLine();
         System.out.println("|------------------------------------------------|");
-        boolean exito = false;
 
         if(equipos.pertenece(nombre)){
             Equipo equipo = (Equipo)equipos.recuperarDatos(nombre);
@@ -1245,7 +1265,6 @@ public class EscapeHouse {
                 if(habEquipo.getSalida()){
                     if(equipo.getPuntajeTotal() >= equipo.getPuntajeSalida()){
                         System.out.println("| > El equipo " + nombre + " puede salir de la casa!");
-                        exito = true;
                     }else{
                         System.out.println("| > El equipo " + nombre + " tiene " + equipo.getPuntajeTotal() + " puntos\n| de " + equipo.getPuntajeSalida() + " puntos necesarios para salir.");
                     }
@@ -1258,8 +1277,6 @@ public class EscapeHouse {
         }else{
             System.out.println("| > El equipo no existe.");
         }
-        
-        return exito;
     }
     // ---- Mostrar Todos ----
     public static void mostrarTodosEquipos(DiccionarioHash equipos){
