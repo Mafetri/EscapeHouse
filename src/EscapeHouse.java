@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.StringTokenizer;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-public class EscapeRoom {
+public class EscapeHouse {
     public static void main(String[] args) {
         // Estructuras
         GrafoEtiq casa = new GrafoEtiq();
